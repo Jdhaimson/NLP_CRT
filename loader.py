@@ -1,10 +1,31 @@
 import json
+import os
 
-#loads annonomyzed data from JSON file into nested dictionary
-def get_data():
-    with open('data/anon_data.json', 'r') as f:
+# Deprecated
+#loads old annonomyzed data from JSON file into nested dictionary
+def get_old_data():
+    with open('data/anon_data_OLD.json', 'r') as f:
         data = json.load(f)
     return data
+
+def get_data(patient_range=range(0,10)):
+    patients_path = '/home/ubuntu/project/data/patients/'
+    files = os.listdir(patients_path)
+    # Sort by number order
+    files = sorted(files, key=lambda x: int(x.split('.json')[0].split('_')[2]))
+
+    # Get all patients in patient range
+    patients = []
+    for i in patient_range:
+        if i < len(files):
+            file_path = patients_path + files[i]
+            with open(file_path, 'r') as f:
+                patient = json.load(f)
+                patients.append(patient)
+    return patients
+
+def get_dummy_non_anonymized_patient():
+    return {'First_Name':'Josh', 'Last_Name':'Haimson', 'EMPI':'1234emPI', 'NEW_EMPI':'FAKE_EMPI_1', 'MRNS':['mrn12','mrn34']}
 
 #Removes empty fields from data
 #Recursive, modifies object, returns nothing
@@ -40,8 +61,9 @@ def explore(data):
         print
         inp = raw_input("[ Press enter to continue ]")
         print
+
 #Makes dictionaries and nested dictionaries easy to read
-def format(myDict, tabs = 0, width = 100):
+def dict_to_string(myDict, tabs = 0, width = 100):
     tab = "    "
     output = ""
     for key in myDict:
@@ -63,6 +85,6 @@ def format(myDict, tabs = 0, width = 100):
 
 #prints dictionaries in easy to read way, abstracting the format function
 def print_dict(myDict):
-    print format(myDict)
+    print dict_to_string(myDict)
 
     

@@ -1,7 +1,9 @@
-import re
+import csv
 import json
+import os 
+import re
 
-path = '/media/josh/Josh/CRT MGH 950 cohort/'
+path = '/home/josh/code/healthanon/CRT MGH 950 cohort/'
 file_template = 'cl491_092315161707361168_'
 
 def anonymize_doc(patient, doc):
@@ -106,10 +108,75 @@ def get_patient_dem_info():
 
     return patients
 
+def get_mrn_to_empi(patients):
+    mrn_empi = {}
+    for empi in patients.keys():
+        patient = patients[empi]
+        for mrn in patient['MRNS']:
+            mrn_empi[mrn] = empi
+    return mrn_empi
+
+
+def parse_procedure_date_file(patients):
+    proc_file = path + 'additional data/PATIENT_LIST_with_appointment_dates.csv'
+
+    mrn_to_empi = get_mrn_to_empi(patients)
+    patients_procs = {}
+    with open(proc_file, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            mrn = row['MR#'].strip().replace('-','')
+            if mrn != '':
+                try:
+                    empi = mrn_to_empi[mrn]
+                    patient = patients[empi]
+
+                    del row['Name']
+                    del row['MR#']
+                    patients[empi]['Procedure'] = row
+                except KeyError:
+                    print "Error parsing procedure date for MRN:" + mrn
+
+    write_null_if_empty(patients, 'Procedure')
+
+
+def write_null_if_empty(patients, key):
+    for empi in patients.keys():
+        if key not in patients[empi]:
+            patients[empi][key] = None
+            
+
+def parse_response_file(patients):
+    resp_file = path + 'additional data/9 24 14 CRT Database for Charlotta.csv'
+
+    mrn_to_empi = get_mrn_to_empi(patients)
+    patients_procs = {}
+    with open(resp_file, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            mrn = row['Patient_ID'].strip()
+            if mrn != '':
+                try:
+                    empi = mrn_to_empi[mrn]
+                    patient = patients[empi]
+
+                    del row['First_Name']
+                    del row['Last_Name']
+                    del row['Patient_ID']
+                    del row['DOB']
+                    patients[empi]['Supplemental'] = row
+                except KeyError:
+                    print "Error parsing supplemental data for MRN:" + mrn
+
+    write_null_if_empty(patients, 'Supplemental')
+        
+
 if __name__ == "__main__":
     # Do the anonymization!
 
     patients = get_patient_dem_info()
+    parse_procedure_date_file(patients)
+    parse_response_file(patients)
 
     report_types = ['Car', 'Dis', 'End', 'Lno', 'Mic', 'Opn', 'Pat', 'Pul', 'Rad']
     for report_type in report_types:
@@ -148,9 +215,14 @@ if __name__ == "__main__":
         del patient['Middle_Name']
         anon_patients[patient['NEW_EMPI']] = patient
      
-    with open('mapping.csv', 'w') as f:
+    out_path = '/home/josh/code/healthanon/data/'
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+
+    with open(out_path + 'mapping.csv', 'w') as f:
         for key in old_mapping.keys():
             f.write(key + ',' + old_mapping[key] + '\n')
 
-    with open('anon_data.json', 'w') as f:
-        json.dump(anon_patients, f)
+    for key in anon_patients.keys():
+        with open(out_path + key + '.json','w') as f:
+            json.dump(anon_patients[key], f)
