@@ -72,11 +72,13 @@ pipeline =  Pipeline([
     ('feature_union', FeatureUnion([
         ('Car', Pipeline([
             ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-            ('bag_of_words', CountVectorizer())
+            ('tfidf', TfidfVectorizer())
+            #('bag_of_words', CountVectorizer())
         ])),
         ('Lno', Pipeline([
             ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-            ('bag_of_words', CountVectorizer())
+            ('tfidf', TfidfVectorizer())
+            #('bag_of_words', CountVectorizer())
         ]))
     ])),
     #('transpose', TransposeTransformer()),
