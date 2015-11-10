@@ -1,2 +1,3 @@
 Name, Git commit, Mse, r2
 Bag of words- Car LNO, 27c958f, 15185.7065637, -0.00380086143959
+Tfidf- Car LNO, e2191f4, 15227.2586873, 7.29021104973e-05
