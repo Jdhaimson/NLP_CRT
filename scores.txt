@@ -1,3 +1,4 @@
-Name, Git commit, Mse, r2
-Bag of words- Car LNO, 27c958f, 15185.7065637, -0.00380086143959
-Tfidf- Car LNO, e2191f4, 15227.2586873, 7.29021104973e-05
+Name, Git commit, Mse, r2, precision, recall, f1
+Bag of words- Car LNO - regression, 27c958f, 15185.7065637, -0.00380086143959, N/A, N/A, N/A
+Tfidf- Car LNO - regression, e2191f4, 15227.2586873, 7.29021104973e-05, N/A, N/A, N/A, N/A
+tfidf- Car LNO - classification, N/A, N/A, 0.311910023448, 0.355212355212, 0.31078118674

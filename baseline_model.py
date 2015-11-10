@@ -6,7 +6,7 @@ from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from baseline_transformer import GetConcatenatedNotesTransformer
@@ -31,6 +31,19 @@ def get_preprocessed_patients():
                 patients_out.append(patient_data['NEW_EMPI'])
                 delta_efs_out.append(ef_delta)
     return patients_out, delta_efs_out
+
+def change_ef_values_to_categories(ef_values):
+    output = []
+    for value in ef_values:
+        if value <-2:
+            output.append("reduction")
+        elif value < 5:
+            output.append("non-responder")
+        elif value < 10:
+            output.append("responder")
+        else:
+            output.append("super-responder")
+    return output
             
 
 def get_ef_delta(patient_data):
@@ -48,9 +61,6 @@ def get_ef_delta(patient_data):
     else:
         return None
 
-print 'Preprocessing...'
-X, Y = get_preprocessed_patients()
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
 class PrintTransformer(TransformerMixin):
     def fit(self, X, y=None, **fit_params):
@@ -67,6 +77,24 @@ class TransposeTransformer(TransformerMixin):
     def transform(self, X, **transform_params):
         return np.array(map(lambda x: np.transpose(x), X))
 
+is_regression = True
+
+print 'Preprocessing...'
+X, Y = get_preprocessed_patients()
+is_regression = False
+Y = change_ef_values_to_categories(Y)
+print str(len(X)) + " patients in dataset"
+if not is_regression:
+    counts = {}
+    for y in Y:
+        if y not in counts:
+            counts[y] = 0
+        counts[y] += 1
+    print "Summary:"
+    print counts
+    
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
 pipeline =  Pipeline([
     ('feature_union', FeatureUnion([
@@ -93,7 +121,19 @@ print "Predicting..."
 Y_predict = pipeline.predict(X_test)
 
 print "Evaluating..."
-mse = mean_squared_error(Y_test, Y_predict)
-r2 = r2_score(Y_test, Y_predict)
-print "Mean Squared Error: " + str(mse)
-print "R2 Score: " + str(r2)
+for i in range(20):
+    print "Actual: " + str(Y_test[i]) + ", Predicted: " + str(Y_predict[i])
+if is_regression:
+    mse = mean_squared_error(Y_test, Y_predict)
+    print "Mean Squared Error: " + str(mse)
+    r2 = r2_score(Y_test, Y_predict)
+    print "R2 Score: " + str(r2)
+else:
+    precision = precision_score(Y_test, Y_predict)
+    print "Precision: " + str(precision)
+    recall = recall_score(Y_test, Y_predict)
+    print "Recall: " + str(recall)
+    f1 = f1_score(Y_test, Y_predict)
+    print "F1 Score: " + str(f1)
+    accuracy = accuracy_score(Y_test, Y_predict)
+    print "Accuracy: " + str(accuracy)
