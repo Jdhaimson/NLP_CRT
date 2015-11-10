@@ -17,12 +17,13 @@ from loader import get_data
 
 
 def get_preprocessed_patients():
-    #patient_nums = range(906)
+    patient_nums = range(906)
     # patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
-        print i
+        if i%100 == 0:
+            print str(i) + '/' + str(patient_nums[-1])
         patient_data = get_data([i])[0]
         if patient_data is not None:
             ef_delta = get_ef_delta(patient_data)
@@ -47,6 +48,7 @@ def get_ef_delta(patient_data):
     else:
         return None
 
+print 'Preprocessing...'
 X, Y = get_preprocessed_patients()
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
@@ -82,8 +84,13 @@ pipeline =  Pipeline([
     ('logistic_regression', LogisticRegression())
 ])
 
+print "Training..."
 pipeline.fit(X_train, Y_train)
+
+print "Predicting..."
 Y_predict = pipeline.predict(X_test)
+
+print "Evaluating..."
 mse = mean_squared_error(Y_test, Y_predict)
 r2 = r2_score(Y_test, Y_predict)
 print "Mean Squared Error: " + str(mse)
