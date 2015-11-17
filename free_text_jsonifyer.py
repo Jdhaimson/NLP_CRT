@@ -20,4 +20,5 @@ def jsonify_all(num_of_patients):
         jsonify_text(i)
 
 if __name__ == '__main__':
-   jsonify_all(907)     
+    # uncomment below to JSONIFY all files, but they should already be jsonified to be careful...
+    # jsonify_all(907)     

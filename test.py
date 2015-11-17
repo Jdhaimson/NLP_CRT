@@ -3,7 +3,7 @@ from language_processing import *
 from extract_data import *
 from build_graphs import *
 
-if raw_input("Do you want to generate plots? (y/n) ").lower() == 'y':
+while raw_input("Do you want to generate plots? (y/n) ").lower() == 'y':
     lower_range = int(raw_input("Lower bound on range (0-912): "))
     upper_range = int(raw_input("Upper bound on range (1-913): "))
     plot_num_docs(range(lower_range, upper_range))

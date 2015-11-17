@@ -10,9 +10,9 @@ from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precis
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from baseline_transformer import GetConcatenatedNotesTransformer
-from build_graphs import get_doc_rel_dates, get_operation_date, get_ef_values
-from extract_data import get_operation_date, parse_date
-from language_processing import is_note_doc, get_date_key
+from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
+from extract_data import get_operation_date,  is_note_doc, get_date_key
+from language_processing import parse_date 
 from loader import get_data
 
 
@@ -32,6 +32,8 @@ def get_preprocessed_patients():
                 delta_efs_out.append(ef_delta)
     return patients_out, delta_efs_out
 
+# 6 month followup is best, change above code
+
 def change_ef_values_to_categories(ef_values):
     output = []
     for value in ef_values:
@@ -39,13 +41,12 @@ def change_ef_values_to_categories(ef_values):
             output.append("reduction")
         elif value < 5:
             output.append("non-responder")
-        elif value < 10:
+        elif value < 15:
             output.append("responder")
         else:
             output.append("super-responder")
     return output
             
-
 def get_ef_delta(patient_data):
     ef_values = get_ef_values(patient_data)
     sorted_ef = sorted(ef_values)
@@ -67,8 +68,7 @@ class PrintTransformer(TransformerMixin):
         return self
     def transform(self, X, **transform_params):
         print X.shape
-        for x in X:
-            print x.shape
+        print X[0].shape
         return X
 
 class TransposeTransformer(TransformerMixin):
@@ -110,7 +110,7 @@ pipeline =  Pipeline([
         ]))
     ])),
     #('transpose', TransposeTransformer()),
-    #('print', PrintTransformer()),
+    ('print', PrintTransformer()),
     ('logistic_regression', LogisticRegression())
 ])
 

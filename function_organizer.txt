@@ -1,0 +1,33 @@
+
+File:           loader.py
+Description:    contains all the functions for retrieving and interacting with data
+Functions:      get_old_data #deprecated
+                get_patient_by_EMPI
+                get_data
+                clean_data
+                get_dummy_non_anonymized_patient
+                explore
+
+File:           extract_data.py
+Description:    contains all functions for finding specific values and fields in the data
+Functions:      get_operation_date
+                get_doc_rel_dates
+                get_ef_values
+                get_doc_keywords
+                is_note_doc
+                get_date_key
+                parse_note_header
+
+File:           language_processing.py
+Description:    contains functions for parsing values from fields
+Functions:      parse_m_d_y
+                parse_m_y
+                parse_date
+                format_date
+                get_sentence
+                split_sentences
+                is_sentence_end
+
+File:           build_graphs.py
+Description:    executes plot building functionality
+Functions:      plot_num_docs

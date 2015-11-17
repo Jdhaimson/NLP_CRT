@@ -20,6 +20,9 @@ def get_patient_by_EMPI(empi):
         raise ValueError("Patient with EMPI: " + empi + " does not exist")
 
 def get_data(patient_range=range(0,10)):
+    if len(patient_range) > 50:
+        raise ValueError("You've attempted to load too many patients into memory at once.")
+
     patients_path = '/home/ubuntu/project/data/patients/'
     files = os.listdir(patients_path)
     # Sort by number order
@@ -92,29 +95,4 @@ def explore(data):
         inp = raw_input("[ Press enter to continue ]")
         print
 
-#Makes dictionaries and nested dictionaries easy to read
-def dict_to_string(myDict, tabs = 0, width = 100):
-    tab = "    "
-    output = ""
-    for key in myDict:
-        output += tab * tabs + str(key) + ":\n"
-        item = myDict[key]
-        if type(item) == type(dict()):
-            output += format(item, tabs + 1, width)
-        else:
-            item = item.strip("\n")
-            item = item.strip("\t")
-            item = item.replace("\n", "; ")
-            item = item.replace("\t", "   ")
-            size = width - len(tab)*(tabs+1)
-            if(len(item) <= size):
-                output += tab * (tabs + 1) + item + "\n"
-            else:
-                output += tab * (tabs + 1) + item[:(size + 5) / 2] + " ... " + item[-1*(size+5) / 2 : ] + "\n"    
-    return output
-
-#prints dictionaries in easy to read way, abstracting the format function
-def print_dict(myDict):
-    print dict_to_string(myDict)
-
-    
+  

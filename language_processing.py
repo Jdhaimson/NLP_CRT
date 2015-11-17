@@ -1,68 +1,64 @@
-from extract_data import *
+import re
+import datetime
+from datetime import timedelta
+
 
 #----------------------------------------------------------
 # Functions for parsing the header of a note file and modifying
 # the JSON to incorporate these structured fields
 #----------------------------------------------------------
 
-def is_note_doc(doc_type):
-    return doc_type.upper() in ["LNO", "CAR", "RAD", "PAT", "OPN", "DIS", "MIC", "PUL"]
-
-def get_date_key(doc_type):
-    keys = {u'Enc': u'Discharge_Date', u'Pat': u'date', u'Mic': u'date', u'Pul': u'date', u'Med': u'Medication_Date', u'Lab': u'Seq_Date_Time', u'Phy': u'Date', u'Opn': u'date', u'Lme': u'LMR_Medication_Date_Time', u'Rdt': u'Date', u'Lvs': u'LMR_Vital_Date_Time', u'Trn': u'Transaction_Date_Time', u'Car': u'date', u'Lhm': u'LMR_Health_Maintenance_Date_Time', u'Dia': u'Date', u'Lpr': u'LMR_Problem_Date', u'Dis': u'date', u'Rad': u'date', u'Prc': u'Date', u'Lno': u'date'}
-    if doc_type in keys:
-        return keys[doc_type]
+def parse_m_d_y(s):
+    # I (Josh) added this to catch a date that had a typo in it
+    s = s.replace(".", '')
+    re_m_d_y = r"([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{4})|([0-9]{1,2})[/-]([0-9]{1,2})[/-]([0-9]{2})"
+    match = re.search(re_m_d_y, s)   
+    if match:
+        groups = list(match.groups())
+        if groups[0] == None:
+            groups = groups[3:]
+            if int(groups[2]) - 17 >= 0:
+                groups[2] = '19' + groups[2]
+            else:
+                groups[2] = '20' + groups[2]
+        else:
+            groups = groups[:3]
+        return datetime.date(int(groups[2]),int(groups[0]),int(groups[1]))
     else:
         return None
 
+def parse_m_y(s):
+    re_m_y = "([0-9]{1,2})/([0-9]{4})|([0-9]{1,2})/([0-9]{2})"
+    match = re.search(re_m_y, s)   
+    if match:
+        groups = list(match.groups())
+        if groups[0] == None:
+            groups = groups[2:]
+            if int(groups[1]) - 17 >= 0:
+                groups[1] = str(19) + groups[1]
+            else:
+                groups[1] = str(20) + groups[1]
+        else:
+            groups = groups[:2]
+       
+        return datetime.date(int(groups[1]),int(groups[0]), 1)
+    else:
+        return None
 
-'''
-description
-    parses the notes header
-input
-    header_string: the first line of the notes document
-output
-    dictionary of values with keys ['date', 'doctor', 'hospital']
-'''
-def parse_note_header(head_string, doc_type):
-    if not is_note_doc(doc_type):
-        return dict()
-    result = {'Date' : None, 'Doctor' : None, 'Hospital' : None, 'Procedure' : None}
-    head_split = head_string.split("|")
-    #print head_split
-    result['Hospital'] = head_split[1]
-    doc_type = doc_type.upper()
-    if doc_type == "LNO":    
-        result['Date'] = head_split[3].split()[0]
-        result['Doctor'] = head_split[6]
-        result['Procedure'] = head_split[10]
-    elif doc_type in [ "DIS" , "CAR",  "RAD" , "PAT" , "OPN" ]:
-        result['Date'] = head_split[5].split()[0]
-        result['Procedure'] = head_split[6]
-    elif doc_type in [  "MIC" , "PUL" ]:
-        result['Date'] = head_split[4].split()[0]
-        result['Procedure'] = head_split[5]
-    
-    if result['Date'] != None:
-        result['Date'] = format_date(result['Date'])    
-    return result
+def parse_date(s):
+    date = parse_m_d_y(s)
+    if not date:
+        date = parse_m_y(s)
+    if not date:
+        return None
+    return date
 
-'''
-description
-    given data, which can be text, a JSON, or a list of these, and the type of document
-    we return a new JSON with the sturctured fields pulled out from parse_note_header
-input
-    data: a string, JSON, or list of these
-    doc_type: the tag of the type of document, e.g. Lno, Enc
-output:
-    --if a string given and string represents a note, then a JSON with the note and the 
-      structured fields extracted
-    --if string but is not a note, then just the string
-    --if a JSON, then return the same
-    --if a list, then a list of the same size with each element modified as above
-'''
-def add_structured_fields(data, doc_type):
-    pass
+def format_date(s):
+    if type(s) in [type(""), type(u'')]:
+        date = parse_date(s)
+    else:
+        date = s
+    return date.strftime("%m/%d/%Y 00:00")
 
 #----------------------------------------------------------
 # Functions for extracting sentences from text
@@ -152,83 +148,5 @@ def is_sentence_end(s, i):
         else: #e.g. "I have work until 5.I need a friend"
             return True
     #TODO: include cases for Mr. , Mrs. or any arbitary list of abreviations
-
-
-#----------------------------------------------------------
-# Functions for generating a bag of words and combining these
-#----------------------------------------------------------
-
-'''
-decription  
-    pulls out a dictionary of word counts from a document
-inputs 
-    doc: string
-    vocabulary: bag of words to build on (default is None)
-outputs
-    dictionary of words with counts
-details
-    uses clean_word method to remove punctation and get rid of numeric tokens
-    all words converted to lower-case
-'''
-def bag_of_words(doc, vocabulary = None):
-    bag = dict()
-    if vocabulary != None:
-        bag = vocabulary
-    #replace all punctuation that will never be in a word
-    #with spaces (e.g. \r, \n, ',', =>)
-    doc = doc.lower()
-    doc = doc.expandtabs(1)
-    doc = doc.replace("\r", " ").replace("\n", " ").replace("->", " ")
-    doc = doc.replace(",", " ").replace("=>", " ")
-    #split by spaces
-    words = doc.split(" ")
-    for word in words: #for each word clean it and insert into bag
-        word = clean_word(word)        
-        if word in bag:
-            bag[word] += 1
-        else:
-            bag[word] = 1
-    bag.pop("") #remove the "" word
-    return bag
-
-def clean_word(word):
-    charList = list(word)
-    #if any numbers in the word, remove the word (by returning empty string)
-    hasNumeric = any([unicode(l).isnumeric() for l in charList])
-    if hasNumeric:
-        word = u''
-    else:
-        #if any of these symbols in the word, then it is not a word
-        hasSym = any([l in [u'|', u'/',u'_',u'*'] for l in charList])
-        if hasSym:
-            word = u''
-        else:
-            last = ""
-            #remove these chars from outside of word until none present
-            while word != last:
-                last = word
-                word = word.strip(".").strip(",").strip(":").strip("-").strip("+").strip("<")
-                word = word.strip("?").strip(";").strip("(").strip(")")
-                word = word.strip("\"").strip(">").strip("[").strip("]")
-    return unicode(word)
-
-'''
-Given two dictionaries of word counts, makes one dictionary of combined word counts
-'''
-def combine_bags(dict1, dict2):
-    result = dict()
-    keys1 = dict1.keys()
-    for k in keys1:
-        if k in dict2:
-            result[k] = dict1.pop(k) + dict2.pop(k)
-        else:
-            result[k] = dict1.pop(k)
-    keys2 = dict2.keys()
-    for k in keys2:
-        if k in dict1:
-            result[k] = dict1.pop(k) + dict2.pop(k)
-        else:
-            result[k] = dict2.pop(k)
-    return result
 
 
