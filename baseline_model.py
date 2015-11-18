@@ -110,25 +110,17 @@ def main():
         
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
-    icd9 = ICD9_Transformer()
-    enc = GetEncountersFeaturesTransformer(10)
-    car_tfidf = TfidfVectorizer()
-    lno_tfidf = TfidfVectorizer()
-    logitR = LogisticRegression()
-
     features = FeatureUnion([
-            ('Dia', icd9 ),
-            #('Car', FeaturePipeline([
-            #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-            #    ('tfidf', car_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
-            #('Lno', FeaturePipeline([
-            #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-            #    ('tfidf', lno_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
-            ('Enc', enc),
+            ('Dia', ICD9_Transformer()),
+            ('Car', FeaturePipeline([
+                ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+                ('tfidf', TfidfVectorizer())
+            ])),
+            ('Lno', FeaturePipeline([
+                ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
+                ('tfidf', TfidfVectorizer())
+            ])),
+            ('Enc', GetEncountersFeaturesTransformer(10)),
             ('Labs_Counts',FeaturePipeline([
                 ('labs_counts_transformer', GetLabsCountsDictTransformer()),
                 ('dict_vectorizer', DictVectorizer())
@@ -151,33 +143,33 @@ def main():
             ])),
         ])
 
+    logr = LogisticRegression()
     pipeline =  Pipeline([
         ('feature_union', features),
         #('pca', sklearn.decomposition.PCA(1000)), 
         #('print', PrintTransformer()),
-        ('logistic_regression', logitR)
+        ('logistic_regression', logr)
     ])
-
-
 
     print "Training..."
     pipeline.fit(X_train, Y_train)
 
- #   column_names = ['icd9_'+name for name in icd9.get_feature_names()] + ['car_' + name for name in car_tfidf.get_feature_names()] + ['lno_' + name for name in lno_tfidf.get_feature_names()]
+    # Print top 100 features
     try:
         column_names = features.get_feature_names()
         print "Number of column names: " + str( len(column_names))
-        print "Number of coefficients: " + str(logitR.coef_.shape)
-       # print "Num of coef 2: ", len(col_2)
-        if len(column_names) == logitR.coef_.shape[1]:
-            Z = zip(column_names, logitR.coef_[0])
+        if len(column_names) == logr.coef_.shape[1]:
+            Z = zip(column_names, logr.coef_[0])
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components:"
             print
             for z in Z[:100]:
                 print z[1], "\t", z[0]
-    except:
+    except Exception as e:
         print "Feature name extraction failed"
+        print e
+
+
     print "Predicting..."
     Y_predict = pipeline.predict(X_test)
 
