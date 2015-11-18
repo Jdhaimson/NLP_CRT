@@ -28,29 +28,55 @@ class ICD9_Transformer(TransformerMixin):
         patient = loader.get_patient_by_EMPI(empi)
         operation_date = extract_data.get_operation_date(patient)
         diagnoses = get_diagnoses(empi)
+
+        # Build a diagnosis history vector for the whole patient
+        diagnosis_history = None
         for (date, code_type, code, diagnosis_name) in diagnoses:
             if date < operation_date:
                 if code_type == 'ICD9':
-                    diagnosis_cat = self.categories[code.replace('.','')]
-                    base = ''
-                    for component in diagnosis_cat.split('.'):
-                        base += component
+                    cleaned_code = code.replace('.','')
+                    if cleaned_code in  self.categories:
+                        diagnosis_cat = self.categories[cleaned_code]
+                        diagnosis_vec = self.get_vector_from_category(diagnosis_cat)
+                        if diagnosis_history is None:
+                            diagnosis_history = diagnosis_vec
+                        else:
+                            diagnosis_history += diagnosis_vec
                 else:
-                    print "Non-ICD9 Code for Patient: " + empi                
+                    #print "Non-ICD9 Code for Patient: " + empi                
+                    pass
+
+        # Normalize array to be 1's or zeros, not counts
+        if diagnosis_history is not None:
+            diagnosis_history = np.array(map(int, diagnosis_history > 0))
+
+        return diagnosis_history
+        
 
     def get_vector_from_category(self, category):
+        '''
+        Turns an ICD9 Category into a vector of concatenated vectors where each
+        vector is a one-hot vector representing the presence of a diagnosis in
+        that level of the hierarchy
+        '''
+        # Normalize the category array with 0s so they are all the same length
         category_array = map(int, category.split('.'))
         while len(category_array) < len(self.category_maxes):
             category_array.append(0)
 
+        # Build a shape array specifying dimensionality of each category
         shape = []
         for i in range(len(self.category_maxes)):
             # Codes are 1 indexed- zeroth element represents missing
             shape.append(self.category_maxes[i]+1)
         
-        for i in range(len(self.category_maxes)):
+        # Build an array at each level in the hierarchy
+        vectors = []
+        for i in range(1,len(self.category_maxes)+1):
             vec = np.zeros(shape[:i])
             subvec = vec
-            for j in range(i):
+            for j in range(i-1):
                 subvec = subvec[category_array[j]]
-            subvec[
+            subvec[category_array[i-1]] = 1
+            vectors.append(vec)
+        return reduce(lambda a,b: np.concatenate((a.flatten(), b.flatten())), vectors)
