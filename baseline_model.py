@@ -1,7 +1,7 @@
 import re
 
 import numpy as np
-import profile
+import cProfile
 from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction import DictVectorizer
@@ -20,7 +20,7 @@ from loader import get_data
 
 def get_preprocessed_patients():
     patient_nums = range(906)
-    # patient_nums = range(25)
+    patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
@@ -174,7 +174,7 @@ def main():
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components:"
             print
-            for z in Z:
+            for z in Z[:100]:
                 print z[1], "\t", z[0]
     except:
         print "Feature name extraction failed"
@@ -182,8 +182,6 @@ def main():
     Y_predict = pipeline.predict(X_test)
 
     print "Evaluating..."
-    for i in range(20):
-        print "Actual: " + str(Y_test[i]) + ", Predicted: " + str(Y_predict[i])
     if is_regression:
         mse = mean_squared_error(Y_test, Y_predict)
         print "Mean Squared Error: " + str(mse)
@@ -200,5 +198,5 @@ def main():
         print "Accuracy: " + str(accuracy)
 
 if __name__ == "__main__":
-    #main()
-    profile.run('main()')
+    main()
+    #cProfile.run('main()')
