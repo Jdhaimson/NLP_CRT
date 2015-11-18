@@ -1,4 +1,5 @@
 from collections import defaultdict
+import argparse
 import os
 
 def get_diagnosis_categories(return_descriptions=False):
@@ -45,3 +46,17 @@ def get_max_diagnosis_info():
             if maxes[i] < num:
                 maxes[i] = num
     return dict(maxes)
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cat", nargs='?', default=None)
+    args = parser.parse_args()
+
+    descriptions = get_diagnosis_categories(return_descriptions=True)
+
+    if args.cat is None:
+        args.cat = raw_input("Please enter the ICD category you would like to demistify: ")
+
+    print descriptions[args.cat.strip()]

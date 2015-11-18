@@ -4,6 +4,7 @@ import language_processing
 import datetime
 import structured_data_extractor
 import build_graphs
+import numpy as np
 from sklearn.base import TransformerMixin
 
 class GetConcatenatedNotesTransformer(TransformerMixin):
@@ -22,13 +23,13 @@ class GetConcatenatedNotesTransformer(TransformerMixin):
 
     def get_concatenated_notes(self, empi):
         person = loader.get_patient_by_EMPI(empi)
-        operation_date = extract_data.get_operation_date(person)
+        operation_date = build_graphs.get_operation_date(person)
         date_key = extract_data.get_date_key(self.type)
         notes = []
         if self.type in person.keys() and date_key != None:
             for i in range(len(person[self.type])):
                 doc = person[self.type][i]
-                date = language_processing.parse_date(doc[date_key])
+                date = extract_data.parse_date(doc[date_key])
                 if date != None and date < operation_date:
                     notes.append(doc['free_text'])
         return '\n\n'.join(notes)        
@@ -51,16 +52,20 @@ class GetLatestNotesTransformer(TransformerMixin):
         transformed_X = map(self.get_latest_concatenated_notes, X)
         return transformed_X 
 
+    def get_feature_names(self):
+        names = ['latest_note_' + str(i) for i in range(self.max_notes)]
+        return np.array(names) 
+
     def get_latest_concatenated_notes(self, empi):
         person = loader.get_patient_by_EMPI(empi)
-        operation_date = extract_data.get_operation_date(person)
-        date_key = extract_data.get_date_key(self.type)
+        operation_date = build_graphs.get_operation_date(person)
+        date_key = language_processing.get_date_key(self.type)
         notes = []
         if self.type in person.keys() and date_key != None:
             time_key_pairs = []
             for i in range(len(person[self.type])):
                 doc = person[self.type][i]
-                date = language_processing.parse_date(doc[date_key])
+                date = extract_data.parse_date(doc[date_key])
                 if date != None and date < operation_date:
                     time_key_pairs.append((operation_date - date, i))
             time_key_pairs.sort()
@@ -72,9 +77,15 @@ class GetLatestNotesTransformer(TransformerMixin):
             delta = self.max_notes - len(notes)
             for i in range(delta):
                 notes.append('')  
-        return notes
+        return np.array(notes)
 
 class GetEncountersFeaturesTransformer(TransformerMixin):
+    """Returns a feature vector for each empi from the encounters history
+    of that patient.  Check below for details as it may change, but in general
+    the feature vector will have two parts: (a) small feature vector for each
+    of the encounters before the operation (with max_encounters as the max);
+    (b) a series of features derived from the overall encounter history for the
+    given patient (such as averages, sums, counts, maximums, etc.)."""
     def __init__(self, max_encounters):
         self.max_encounters = max_encounters
 
@@ -84,11 +95,22 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
     def transform(self, X, **transform_params):
         transformed_X = map(self.get_encounters_features, X)
         return transformed_X
+
+    def get_feature_names(self):
+        names = []
+        for i in range(self.max_encounters):
+            names.append('Inpatient_Outpatient_Enc_' + str(i))
+            names.append('LOS_Enc_' + str(i))
+            names.append('Num_Extra_Diagnoses_Enc_' + str(i))
+        names.append('Enc_Inpatient_Ratio')
+        names.append('Enc_Average_LOS')
+        names.append('Enc_Average_Extra_Diagnoses')
+        return np.array(names)
     
     def get_encounters_features(self, empi):
         encounters = structured_data_extractor.get_encounters(empi)
         person = loader.get_patient_by_EMPI(empi)
-        operation_date = extract_data.get_operation_date(person)
+        operation_date = build_graphs.get_operation_date(person)
         operation_index = 0
         for enc in encounters:
             if enc[0] < operation_date:
@@ -140,7 +162,106 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
             features.append(0)
         # OVERALL FEATURE 3 - Average Extra Diagnoses
         if len(tracked_encounters) > 0:
-            features.append(total_extra_diagnoses / tracked_encounters)
+            features.append(total_extra_diagnoses / len(tracked_encounters))
         else:
             features.append(0)
-        return features 
+        return np.array(features) 
+
+class GetLabsCountsDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a count
+    of the amount of times that patient has received that test before the
+    operation. Output should then be fed into DictVectorizer."""
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_labs_counts, X)
+        return transformed_X
+    
+    def get_labs_counts(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        return structured_data_extractor.get_labs_before_date(empi, operation_date)[0]
+
+class GetLabsLowCountsDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a count
+    of the amount of times that patient has received that test before the
+    operation and the test value was low. Output should then be fed into DictVectorizer."""
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_low_counts, X)
+        return transformed_X
+    
+    def get_low_counts(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        return structured_data_extractor.get_labs_before_date(empi, operation_date)[1]
+
+class GetLabsHighCountsDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a count
+    of the amount of times that patient has received that test before the
+    operation and the test value was high. Output should then be fed into DictVectorizer."""
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_high_counts, X)
+        return transformed_X
+    
+    def get_high_counts(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        return structured_data_extractor.get_labs_before_date(empi, operation_date)[2]
+
+class GetLabsLatestHighDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a boolean
+    indicating if the test value was high the last time the patient received
+    that test (before the procedue). Output should then be fed into DictVectorizer."""
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_labs_latest_high, X)
+        return transformed_X
+    
+    def get_labs_latest_high(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        labs_latest = structured_data_extractor.get_labs_before_date(empi, operation_date)[3]
+        labs_latest_high = {}
+        for lab in labs_latest:
+            if labs_latest[lab][1] == 'H':
+                labs_latest_high[lab] = 1
+            else:
+                labs_latest_high[lab] = 0
+        return labs_latest_high
+
+class GetLabsLatestLowDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a boolean
+    indicating if the test value was low the last time the patient received
+    that test (before the procedue). Output should then be fed into DictVectorizer.""" 
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_labs_latest_low, X)
+        return transformed_X
+    
+    def get_labs_latest_low(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        labs_latest = structured_data_extractor.get_labs_before_date(empi, operation_date)[3]
+        labs_latest_low = {}
+        for lab in labs_latest:
+            if labs_latest[lab][1] == 'L':
+                labs_latest_low[lab] = 1
+            else:
+                labs_latest_low[lab] = 0
+        return labs_latest_low
+
+if __name__ == '__main__':
+    t = GetEncountersFeaturesTransformer(10)
+    test_empi = 'FAKE_EMPI_739'
+    print(t.get_encounters_features(test_empi))

@@ -115,8 +115,48 @@ def get_encounters(empi):
                     extra_diagnoses += 1
             if enc['Admit_Date']:
                 encounters.append((extract_data.parse_date(enc['Admit_Date']), str(enc['Inpatient_Outpatient']), extract_data.parse_date(enc['Discharge_Date']), int(enc['LOS_Days']) if enc['LOS_Days'] else 0, extra_diagnoses))
-        encounters.sort()
+        encounters.sort(key = lambda x: x[0]) # just sort on Admit_Date
     return encounters
+
+def get_labs_before_date(empi, date):
+    """Given an empi and a date, will return the labs for that patient before that date.
+    Specifically, will return four dictionaries where the key is always the lab test code
+    and the values are the total counts, low counts, high counts, and latest (date, low/high) tuple for 
+    that test respectively. Note that low and high mean the test value was below or above the norm respectively."""
+    p = loader.get_patient_by_EMPI(empi)
+    lab_counts = {}
+    lab_lows = {}
+    lab_highs = {}
+    lab_latest = {}
+    if 'Lab' in p.keys():
+        for lab in p['Lab']:
+            if lab['Seq_Date_Time'] and extract_data.parse_date(lab['Seq_Date_Time']) < date: 
+                if lab['Test_Description'] in lab_counts:
+                    lab_counts[lab['Test_Description']] += 1
+                else:
+                    lab_counts[lab['Test_Description']] = 1
+                lab_date = extract_data.parse_date(lab['Seq_Date_Time'])
+                if lab['Test_Description'] in lab_latest:
+                    recorded_test_date = lab_latest[lab['Test_Description']][0]
+                    if lab_date > recorded_test_date: # keep most recent test value
+                        lab_latest[lab['Test_Description']] = (lab_date, lab['Abnormal_Flag'])
+                else:
+                    lab_latest[lab['Test_Description']] = (lab_date, lab['Abnormal_Flag'])
+                if lab['Abnormal_Flag']:
+                    if lab['Abnormal_Flag'] == 'L':
+                        if lab['Test_Description'] in lab_lows:
+                            lab_lows[lab['Test_Description']] += 1
+                        else:
+                            lab_lows[lab['Test_Description']] = 1
+                    elif lab['Abnormal_Flag'] == 'H':
+                        if lab['Test_Description'] in lab_highs:
+                            lab_highs[lab['Test_Description']] += 1
+                        else:
+                            lab_highs[lab['Test_Description']] = 1
+    return lab_counts, lab_lows, lab_highs, lab_latest
+
+# def get_special_labs_before_date(empi, date):
+                
 
 if __name__ == "__main__":
     # get_supplemental_details('Supplemental')
@@ -141,3 +181,12 @@ if __name__ == "__main__":
         for enc in encounters:
             print(enc)
         #get_encounters_details(empi)
+    elif command == 'labs':
+        lab_counts, lab_lows, lab_highs, lab_latest = get_labs_before_date(empi, extract_data.parse_date('11/16/2015'))
+        for lab in lab_counts:
+            print(lab)
+            print('COUNT: ' + str(lab_counts[lab]))
+            print('LOWS: ' + str(lab_lows[lab]) if lab in lab_lows else 'LOWS: 0')
+            print('HIGHS: ' + str(lab_highs[lab]) if lab in lab_highs else 'HIGHS: 0')
+            print('LATEST: ' + str(lab_latest[lab]))
+            print('')
