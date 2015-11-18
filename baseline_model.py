@@ -20,7 +20,7 @@ from loader import get_data
 
 def get_preprocessed_patients():
     patient_nums = range(906)
-    patient_nums = range(25)
+    #patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
