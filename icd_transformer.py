@@ -89,22 +89,26 @@ class ICD9_Transformer(TransformerMixin):
             # Codes are 1 indexed- zeroth element represents missing
             shape.append(self.category_maxes[i]+1)
 
+        code_to_description = get_diagnosis_categories(return_descriptions=True)
         vectors = []
         for i in range(1,len(self.category_maxes)+1):
             vec = np.empty(shape[:i], 'U30')
-            vectors.append(self.label_vector(vec))
+            vectors.append(self.label_vector(code_to_description, vec))
         return reduce(lambda a,b: np.concatenate((a.flatten(), b.flatten())), vectors)
 
-    def label_vector(self, vector, root="ICD9_Category"):
+    def label_vector(self, code_to_description, vector, root=""):
         for i in range(len(vector)):
             element = vector[i]
 
             # Recursive Case
             if isinstance(element, np.ndarray):
-                vector[i] = self.label_vector(vector[i], root + "." + str(i))
+                vector[i] = self.label_vector(code_to_description, vector[i], root + "." + str(i))
 
             # Base Case
             else:
-                vector[i] = root + "." + str(i)
+                desc = (root + "." + str(i))[1:]
+                if desc in code_to_description:
+                    desc = desc + '_' + code_to_description[desc]
+                vector[i] = desc
         return vector
 
