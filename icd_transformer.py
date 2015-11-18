@@ -80,3 +80,31 @@ class ICD9_Transformer(TransformerMixin):
             subvec[category_array[i-1]] = 1
             vectors.append(vec)
         return reduce(lambda a,b: np.concatenate((a.flatten(), b.flatten())), vectors)
+
+
+    def get_feature_names(self):
+        # Build a shape array specifying dimensionality of each category
+        shape = []
+        for i in range(len(self.category_maxes)):
+            # Codes are 1 indexed- zeroth element represents missing
+            shape.append(self.category_maxes[i]+1)
+
+        vectors = []
+        for i in range(1,len(self.category_maxes)+1):
+            vec = np.empty(shape[:i], 'U30')
+            vectors.append(self.label_vector(vec))
+        return reduce(lambda a,b: np.concatenate((a.flatten(), b.flatten())), vectors)
+
+    def label_vector(self, vector, root="ICD9_Category"):
+        for i in range(len(vector)):
+            element = vector[i]
+
+            # Recursive Case
+            if isinstance(element, np.ndarray):
+                vector[i] = self.label_vector(vector[i], root + "." + str(i))
+
+            # Base Case
+            else:
+                vector[i] = root + "." + str(i)
+        return vector
+
