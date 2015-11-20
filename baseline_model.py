@@ -1,7 +1,7 @@
 import re
 
 import numpy as np
-import profile
+import cProfile
 from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction import DictVectorizer
@@ -14,13 +14,14 @@ from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotes
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
+from value_extractor_transformer import EFTransformer, LBBBTransformer
 from language_processing import parse_date 
 from loader import get_data
 
 
 def get_preprocessed_patients():
     patient_nums = range(906)
-    # patient_nums = range(25)
+   # patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
@@ -110,24 +111,20 @@ def main():
         
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
-    icd9 = ICD9_Transformer()
-    enc = GetEncountersFeaturesTransformer(10)
-    car_tfidf = TfidfVectorizer()
-    lno_tfidf = TfidfVectorizer()
-    logitR = LogisticRegression()
-
     features = FeatureUnion([
-            ('Dia', icd9 ),
-            #('Car', FeaturePipeline([
-            #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-            #    ('tfidf', car_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
-            #('Lno', FeaturePipeline([
-            #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-            #    ('tfidf', lno_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
+           # ('Dia', icd9 ),
+            ('EF', EFTransformer('all', 5, None)),
+            ('LBBB', LBBBTransformer())
+        ])
+    """
+            ('Car', FeaturePipeline([
+                ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+                ('tfidf', car_tfidf)
+            ])),
+            ('Lno', FeaturePipeline([
+                ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
+                ('tfidf', lno_tfidf)
+            ])),
             ('Enc', enc),
             ('Labs_Counts',FeaturePipeline([
                 ('labs_counts_transformer', GetLabsCountsDictTransformer()),
@@ -149,40 +146,41 @@ def main():
                 ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
                 ('dict_vectorizer', DictVectorizer())
             ])),
-        ])
+    """
+        
 
+    logr = LogisticRegression()
     pipeline =  Pipeline([
         ('feature_union', features),
         #('pca', sklearn.decomposition.PCA(1000)), 
         #('print', PrintTransformer()),
-        ('logistic_regression', logitR)
+        ('logistic_regression', logr)
     ])
-
-
 
     print "Training..."
     pipeline.fit(X_train, Y_train)
 
- #   column_names = ['icd9_'+name for name in icd9.get_feature_names()] + ['car_' + name for name in car_tfidf.get_feature_names()] + ['lno_' + name for name in lno_tfidf.get_feature_names()]
+    # Print top 100 features
     try:
         column_names = features.get_feature_names()
         print "Number of column names: " + str( len(column_names))
-        print "Number of coefficients: " + str(logitR.coef_.shape)
-       # print "Num of coef 2: ", len(col_2)
-        if len(column_names) == logitR.coef_.shape[1]:
-            Z = zip(column_names, logitR.coef_[0])
+        if len(column_names) == logr.coef_.shape[1]:
+            Z = zip(column_names, logr.coef_[0])
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components:"
             print
-            for z in Z:
+            for z in Z[:100]:
                 print z[1], "\t", z[0]
-    except:
+    except Exception as e:
         print "Feature name extraction failed"
+        print e
+
+
     print "Predicting..."
     Y_predict = pipeline.predict(X_test)
 
     print "Evaluating..."
-    for i in range(20):
+    for i in range(min(20, len(Y_test), len(Y_predict))):
         print "Actual: " + str(Y_test[i]) + ", Predicted: " + str(Y_predict[i])
     if is_regression:
         mse = mean_squared_error(Y_test, Y_predict)
@@ -200,5 +198,5 @@ def main():
         print "Accuracy: " + str(accuracy)
 
 if __name__ == "__main__":
-    #main()
-    profile.run('main()')
+    main()
+    #cProfile.run('main()')
