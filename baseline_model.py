@@ -14,13 +14,14 @@ from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotes
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
+from value_extractor_transformer import EFTransformer, LBBBTransformer
 from language_processing import parse_date 
 from loader import get_data
 
 
 def get_preprocessed_patients():
     patient_nums = range(906)
-    # patient_nums = range(25)
+   # patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
@@ -117,7 +118,11 @@ def main():
     logitR = LogisticRegression()
 
     features = FeatureUnion([
-            ('Dia', icd9 ),
+           # ('Dia', icd9 ),
+            ('EF', EFTransformer('all', 5, None)),
+            ('LBBB', LBBBTransformer())
+        ])
+    """
             ('Car', FeaturePipeline([
                 ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
                 ('tfidf', car_tfidf)
@@ -147,7 +152,8 @@ def main():
                 ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
                 ('dict_vectorizer', DictVectorizer())
             ])),
-        ])
+    """
+        
 
     pipeline =  Pipeline([
         ('feature_union', features),
@@ -174,13 +180,14 @@ def main():
             print
             for z in Z[:250]:
                 print z[1], "\t", z[0]
-    except:
+    except Exception, e:
+        print e
         print "Feature name extraction failed"
     print "Predicting..."
     Y_predict = pipeline.predict(X_test)
 
     print "Evaluating..."
-    for i in range(20):
+    for i in range(min(20, len(Y_test), len(Y_predict))):
         print "Actual: " + str(Y_test[i]) + ", Predicted: " + str(Y_predict[i])
     if is_regression:
         mse = mean_squared_error(Y_test, Y_predict)
