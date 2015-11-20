@@ -118,16 +118,14 @@ def main():
 
     features = FeatureUnion([
             ('Dia', icd9 ),
-            #('Car', FeaturePipeline([
-            #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-            #    ('tfidf', car_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
-            #('Lno', FeaturePipeline([
-            #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-            #    ('tfidf', lno_tfidf)
-            #    #('bag_of_words', CountVectorizer())
-            #])),
+            ('Car', FeaturePipeline([
+                ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+                ('tfidf', car_tfidf)
+            ])),
+            ('Lno', FeaturePipeline([
+                ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
+                ('tfidf', lno_tfidf)
+            ])),
             ('Enc', enc),
             ('Labs_Counts',FeaturePipeline([
                 ('labs_counts_transformer', GetLabsCountsDictTransformer()),
@@ -174,7 +172,7 @@ def main():
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components:"
             print
-            for z in Z:
+            for z in Z[:250]:
                 print z[1], "\t", z[0]
     except:
         print "Feature name extraction failed"

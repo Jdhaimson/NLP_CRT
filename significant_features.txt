@@ -1,0 +1,1271 @@
+a__ICD9_Category.7.2.8.1
+0.88329370823   Dia__ICD9_Category.2
+0.86951971176   Dia__ICD9_Category.7.2.5
+0.86951971176   Dia__ICD9_Category.7.2.5.0
+-0.649364158615     Labs_Latest_High__Plasma Potassium
+0.639626082337  Labs_Counts__Haptoglobin
+-0.608341895904     Labs_Counts__Cortisol
+0.605219804863  Dia__ICD9_Category.13.2
+-0.599176431032     Labs_Low_Counts__HDL CHOLESTEROL
+0.582213791934  Dia__ICD9_Category.7.2.4.1
+0.567556106956  Labs_Latest_High__Plasma Glucose
+0.560204360113  Labs_High_Counts__RBC
+0.55938724073   Labs_Latest_High__Plasma Urea Nitrogen
+0.551289582885  Labs_Latest_Low__Phosphorus
+-0.549753373097     Labs_Latest_High__Magnesium
+0.549160028413  Labs_Counts__GLUCOSE,RANDOM
+0.548959218428  Dia__ICD9_Category.7.2.9
+-0.542743374148     Dia__ICD9_Category.7.2.1.3
+0.542409149634  Dia__ICD9_Category.7.4.4
+-0.538901416234     Dia__ICD9_Category.7.1
+-0.527716229947     Dia__ICD9_Category.7.2.9.7
+-0.510094665884     Dia__ICD9_Category.9.10
+-0.502489469322     Labs_Counts__Isoc,Testing
+0.496709734524  Labs_Latest_High__Hemoglobin A1C
+0.496355236091  Dia__ICD9_Category.9.4.1
+-0.489019964516     Labs_Counts__Uric Acid
+0.487889913774  Dia__ICD9_Category.16.10.2.5
+0.483928596277  Dia__ICD9_Category.1
+0.47034822421   Labs_Low_Counts__Creatinine
+-0.468374741168     Labs_Counts__UA-Protein
+-0.468190993828     Labs_Latest_Low__HCT
+0.464619922259  Labs_Low_Counts__Lipase
+0.463061944939  Dia__ICD9_Category.8.2.4
+0.463061944939  Dia__ICD9_Category.8.2.4.0
+-0.45287332216  Labs_Latest_High__Triglycerides
+-0.452153329577     Labs_Counts__Troponin-I
+-0.450803970123     Dia__ICD9_Category.7.4.1
+-0.450771801532     Dia__ICD9_Category.7.4.1.2
+0.449600381317  Dia__ICD9_Category.13.2.3
+0.449600381317  Dia__ICD9_Category.13.2.3.0
+0.438240439581  Enc__LOS_Enc_5
+0.435260726609  Enc__Enc_Average_LOS
+-0.432767875441     Labs_High_Counts__UA-Specific Gravity
+-0.428148968687     Dia__ICD9_Category.7.4
+-0.42518831232  Labs_High_Counts__CO2
+-0.423255594885     Dia__ICD9_Category.7.2.11.0
+0.420372977103  Labs_High_Counts__LDL
+-0.417127300007     Labs_Latest_Low__Chloride
+0.41694827257   Labs_Low_Counts__Osmolality
+0.416869029451  Dia__ICD9_Category.7.2.2.2
+-0.413342657858     Dia__ICD9_Category.7.3
+0.413028156529  Labs_Low_Counts__Potassium (Stat Lab)
+0.406703752371  Dia__ICD9_Category.13
+-0.402860336423     Labs_Counts__Plasma Anion GAP
+-0.400166308945     Dia__ICD9_Category.9
+-0.399543882843     Labs_Low_Counts__Iron
+-0.398254666431     Labs_Counts__CPK Isoenzymes Index
+-0.398138906593     Dia__ICD9_Category.7.2.10
+-0.398138906593     Dia__ICD9_Category.7.2.10.0
+0.395050556437  Labs_Latest_Low__Plasma Chloride
+-0.39249695613  Enc__LOS_Enc_4
+0.390745258791  Labs_Counts__PHOSPHATE
+-0.389911847575     Labs_Counts__Transaminase-SGPT
+0.388390877624  Labs_Counts__eGFR
+0.384340487517  Dia__ICD9_Category.7.2.9.2
+-0.383048960201     Dia__ICD9_Category.17.2.2
+-0.383048960201     Dia__ICD9_Category.17.2.2.0
+0.381087297266  Labs_Counts__Urobilinogen
+-0.380065115835     Dia__ICD9_Category.14
+0.378768982965  Labs_Counts__Total Protein
+0.378497267816  Dia__ICD9_Category.7.2.9.1
+-0.373503681781     Labs_High_Counts__Creatine Kinase
+-0.371118717276     Dia__ICD9_Category.6
+-0.370353504508     Labs_Counts__Ionic Calcium
+-0.36973085796  Labs_High_Counts__CHOLESTEROL, SERUM
+-0.368721210461     Dia__ICD9_Category.7.5
+-0.367693222771     Enc__Inpatient_Outpatient_Enc_0
+0.366193877314  Enc__LOS_Enc_6
+0.366009674253  Labs_Latest_High__Creatinine (Stat Lab)
+0.365569781874  Dia__ICD9_Category.7.4.4.1
+-0.365426702353     Labs_High_Counts__Lipase
+-0.362736200606     Dia__ICD9_Category.5.5
+-0.36180858621  Dia__ICD9_Category.16.10
+-0.360184411567     Dia__ICD9_Category.9.10.7
+-0.360184411567     Dia__ICD9_Category.9.10.7.0
+-0.357005947742     Labs_Low_Counts__Alkaline Phosphatase
+0.355499968823  Dia__ICD9_Category.7.2.11.1
+0.354848744013  Labs_Low_Counts__Globulin
+0.354030710373  Labs_High_Counts__CPK Isoenzymes Index
+-0.353906312269     Labs_Latest_Low__Total Protein
+0.353488315755  Labs_Counts__ANTINUCLEAR ANTIBODY
+-0.351088239077     Dia__ICD9_Category.10.1.2.1
+-0.350394516764     Labs_Latest_High__UA-Specific Gravity
+-0.349508652743     Labs_High_Counts__Crea
+0.343776398303  Labs_Low_Counts__Sodium (Stat Lab)
+0.342694985119  Dia__ICD9_Category.16.6
+-0.342460785489     Labs_Counts__Urea Nitrogen
+0.341102420792  Labs_Low_Counts__Plasma Potassium
+0.340598952603  Enc__LOS_Enc_7
+0.337673117483  Dia__ICD9_Category.3.3
+-0.337651087527     Labs_High_Counts__Hemoglobin A1C
+-0.336677810905     Dia__ICD9_Category.4.1.3
+0.334721544227  Labs_Latest_High__Plasma Anion GAP
+-0.334130364678     Enc__Inpatient_Outpatient_Enc_5
+-0.33147123058  Dia__ICD9_Category.7.2.8
+0.331293139557  Labs_High_Counts__BUN
+0.330324644718  Labs_High_Counts__ALT (SGPT)
+-0.329021051991     Dia__ICD9_Category.3.11.2
+-0.329021051991     Dia__ICD9_Category.3.11.2.0
+0.328630655774  Labs_Latest_High__Total Protein
+-0.327910817394     Dia__ICD9_Category.8.8.2
+-0.327910817394     Dia__ICD9_Category.8.8.2.0
+-0.326182522899     Dia__ICD9_Category.16.10.1
+-0.325806854973     Dia__ICD9_Category.7.2.1.1
+-0.324881959008     Dia__ICD9_Category.5.5.2
+-0.324881959008     Dia__ICD9_Category.5.5.2.0
+-0.321031089514     Labs_High_Counts__AST
+0.320748360615  Dia__ICD9_Category.16.5
+0.320748360615  Dia__ICD9_Category.16.5.0
+0.320748360615  Dia__ICD9_Category.16.5.0.0
+0.320268565072  Dia__ICD9_Category.9.4.1.2
+-0.319915606129     Dia__ICD9_Category.7.1.2.2
+-0.319769440989     Dia__ICD9_Category.18
+-0.319769440989     Dia__ICD9_Category.18.0
+-0.319769440989     Dia__ICD9_Category.18.0.0
+-0.319769440989     Dia__ICD9_Category.18.0.0.0
+-0.318715820078     Dia__ICD9_Category.8.4
+-0.318715820078     Dia__ICD9_Category.8.4.0
+-0.318715820078     Dia__ICD9_Category.8.4.0.0
+-0.318620414147     Labs_Low_Counts__HDL
+-0.318498230652     Dia__ICD9_Category.17.1.8
+-0.318498230652     Dia__ICD9_Category.17.1.8.0
+0.318494299372  Labs_High_Counts__GLUCOSE
+-0.318384716973     Dia__ICD9_Category.13.3.3
+0.318343024966  Labs_Latest_High__BUN
+-0.318125489831     Labs_Counts__TP
+-0.317688378323     Labs_High_Counts__MCHC
+0.314815364741  Dia__ICD9_Category.17.2.5
+0.314815364741  Dia__ICD9_Category.17.2.5.0
+-0.313851126289     Dia__ICD9_Category.9.12
+0.31251607428   Labs_Counts__Urine Microalbumin
+0.309403795642  Labs_Counts__Creatine Kinase
+-0.308614096256     Dia__ICD9_Category.16.12
+-0.308614096256     Dia__ICD9_Category.16.12.0
+-0.308614096256     Dia__ICD9_Category.16.12.0.0
+0.308388066444  Labs_Counts__PHOSPHOROUS
+0.303840245313  Enc__Inpatient_Outpatient_Enc_6
+0.300221399079  Labs_High_Counts__Glucose (Stat Lab)
+-0.299738538099     Labs_Counts__HCT
+0.298407530779  Labs_Counts__DIR BILI
+0.297924422734  Labs_Counts__LDL CHOLESTEROL
+-0.295742522109     Dia__ICD9_Category.7.2.1.4
+-0.294463364793     Dia__ICD9_Category.16.4
+-0.29317110475  Labs_High_Counts__Plasma Anion GAP
+-0.292846332802     Labs_High_Counts__PLATELET COUNT
+0.292258981378  Labs_High_Counts__PLT
+0.292105321011  Dia__ICD9_Category.17.1.6
+0.292105321011  Dia__ICD9_Category.17.1.6.0
+0.29151507847   Labs_Counts__MPV
+0.291271604481  Dia__ICD9_Category.5.14.2
+0.291271604481  Dia__ICD9_Category.5.14.2.0
+0.289531126926  Labs_Low_Counts__Urea Nitrogen
+0.288580583253  Labs_High_Counts__Potassium (Stat Lab)
+0.286925456566  Labs_Latest_High__MCH
+0.286014066164  Labs_Counts__LIPASE
+-0.285364122967     Labs_High_Counts__Arterial pH
+-0.285188193628     Labs_Low_Counts__MPV
+0.285026932169  Labs_Counts__ALBUMIN
+-0.284458373131     Labs_Counts__UA-Glucose
+-0.284458373131     Labs_Counts__UA-Specific Gravity
+-0.28427166769  Dia__ICD9_Category.8
+0.283117484273  Labs_High_Counts__CHOLESTEROL
+-0.282846137432     Dia__ICD9_Category.9.8
+-0.282846137432     Dia__ICD9_Category.9.8.2
+-0.282391976628     Labs_Counts__Glucose (Stat Lab)
+0.281917507442  Dia__ICD9_Category.7.2.1.2
+-0.280504609596     Labs_Counts__Vitamin B12
+0.279838598211  Dia__ICD9_Category.16.6.1
+0.279838598211  Dia__ICD9_Category.16.6.1.0
+0.279302012132  Labs_Latest_High__RDW
+0.278840556655  Labs_Low_Counts__Ferritin
+-0.278638766648     Labs_Counts__RDW-CV
+0.2775786759    Labs_Latest_High__Potassium
+0.275361126734  Labs_Counts__PLT
+-0.275088021217     Dia__ICD9_Category.9.8.2.4
+-0.27439843645  Labs_High_Counts__CHLORIDE
+0.274036713975  Dia__ICD9_Category.3.8.3
+0.274036713975  Dia__ICD9_Category.3.8.3.0
+0.273750831611  Labs_Low_Counts__Magnesium
+-0.273585581123     Dia__ICD9_Category.13.3
+-0.270990121123     Labs_Low_Counts__Transaminase-SGPT
+0.269598378665  Labs_High_Counts__Alk Phos
+0.268896553205  Labs_Counts__Sodium
+0.268112517858  Labs_Counts__AST/SGOT
+-0.267902076956     Dia__ICD9_Category.5.14.1
+-0.267902076956     Dia__ICD9_Category.5.14.1.0
+0.267347422531  Labs_Latest_High__Globulin
+-0.267039036319     Labs_Counts__C-REACTIVE PROTEIN
+0.266463260283  Dia__ICD9_Category.2.10
+-0.265711431673     Enc__Inpatient_Outpatient_Enc_1
+-0.265555509073     Dia__ICD9_Category.7.2.4.2
+0.264338704695  Dia__ICD9_Category.8.1.5.4
+0.263553340139  Labs_Counts__TROPONIN T
+0.262380430327  Dia__ICD9_Category.9.6.4.2
+-0.260838435313     Labs_Latest_High__Parathyroid Hormone
+-0.259382647198     Labs_High_Counts__DIRECT BILI
+0.258731163045  Labs_Latest_Low__Globulin
+-0.258705074656     Dia__ICD9_Category.16.4.2
+-0.258705074656     Dia__ICD9_Category.16.4.2.0
+-0.258249099185     Dia__ICD9_Category.3.8
+-0.255375642821     Dia__ICD9_Category.7.2.4.3
+0.255185486488  Dia__ICD9_Category.7
+0.255185486488  Dia__ICD9_Category.7.2
+-0.255184413121     Labs_Low_Counts__Creatine Kinase
+-0.255183854105     Dia__ICD9_Category.9.10.2
+-0.255183854105     Dia__ICD9_Category.9.10.2.0
+-0.254519504744     Dia__ICD9_Category.4.1.3.3
+0.253699967955  Labs_Counts__Ferritin
+-0.2534316033   Labs_Counts__Plasma Creatinine
+0.251994071593  Dia__ICD9_Category.2.10.2
+0.251994071593  Dia__ICD9_Category.2.10.2.0
+-0.251769497083     Dia__ICD9_Category.9.6.3
+-0.251734591493     Dia__ICD9_Category.8.1
+-0.251216964592     Labs_Latest_Low__High Density Lipoprotein
+0.251006906386  Dia__ICD9_Category.3.11.3
+0.251006906386  Dia__ICD9_Category.3.11.3.0
+0.2504294222    Labs_High_Counts__Ionic Calcium
+-0.250274481281     Labs_High_Counts__Creatine Kinase Isoenzymes
+0.250226605816  Labs_Latest_High__Crea
+0.25022121514   Dia__ICD9_Category.2.5
+0.25022121514   Dia__ICD9_Category.2.5.0
+0.25022121514   Dia__ICD9_Category.2.5.0.0
+-0.249010504889     Labs_High_Counts__CARBON DIOXIDE
+0.248775269584  Dia__ICD9_Category.10.1.3
+0.248775269584  Dia__ICD9_Category.10.1.3.0
+-0.248570725933     Labs_Latest_High__MCV
+-0.248204324422     Dia__ICD9_Category.7.2.9.6
+0.247964313313  Labs_Counts__DIRECT LDL
+-0.247721336746     Labs_Counts__Urine Osmolality
+0.2473813762    Dia__ICD9_Category.7.2.9.4
+-0.247011133879     Labs_Counts__ALT/SGPT
+-0.246899170943     Dia__ICD9_Category.16.10.1.1
+-0.246896990803     Dia__ICD9_Category.7.2.8.2
+-0.246782046682     Labs_Low_Counts__TOTAL PROTEIN, SERUM
+-0.245904701738     Labs_High_Counts__Transaminase-SGOT
+0.245891195683  Dia__ICD9_Category.2.16.2.2
+-0.245472459523     Labs_Counts__Glucose
+0.244037394286  Labs_High_Counts__HCT
+0.243935161461  Labs_Counts__ALK PHOS
+0.243740023819  Labs_Latest_Low__CO2 (Stat Lab)
+-0.243531291968     Labs_Latest_Low__Iron
+-0.242869395938     Labs_High_Counts__Venous PCO2
+0.241859130576  Labs_High_Counts__POTASSIUM
+-0.241812969905     Dia__ICD9_Category.7.3.1.2
+-0.241662907476     Dia__ICD9_Category.7.2.1
+-0.241596237664     Dia__ICD9_Category.13.3.1
+-0.241596237664     Dia__ICD9_Category.13.3.1.0
+0.241343545972  Labs_Latest_Low__Plasma Glucose
+0.239698618122  Labs_Latest_Low__HGB
+0.239375014135  Labs_Counts__Plasma Urea Nitrogen
+-0.238742501584     Labs_Low_Counts__PLATELET
+-0.238052855414     Dia__ICD9_Category.8.8.1
+-0.238052855414     Dia__ICD9_Category.8.8.1.0
+-0.236500466825     Enc__Inpatient_Outpatient_Enc_8
+0.236167895652  Dia__ICD9_Category.16.10.2.7
+-0.235931289332     Labs_Latest_High__Plasma Creatinine
+-0.235638785993     Labs_Latest_Low__MCHC
+0.235535309022  Labs_Low_Counts__UA-Specific Gravity
+0.235435067452  Labs_Latest_High__CO2
+-0.235286043663     Labs_Counts__CREATININE
+0.235211724794  Dia__ICD9_Category.5.4
+0.235211724794  Dia__ICD9_Category.5.4.0
+0.235211724794  Dia__ICD9_Category.5.4.0.0
+0.235140546141  Labs_Counts__HEMOGLOBIN A1C, WB
+0.234102651088  Labs_High_Counts__HGB
+-0.23401989765  Enc__Num_Extra_Diagnoses_Enc_7
+0.233945764702  Labs_Latest_High__Free T4 Index
+0.233660263447  Labs_High_Counts__Urea Nitrogen
+-0.232703083378     Labs_Counts__Thyroxine
+-0.232326572297     Dia__ICD9_Category.7.2.4.5
+-0.231865553975     Dia__ICD9_Category.8.1.5.1
+-0.231358166077     Dia__ICD9_Category.6.7.6
+-0.231358166077     Dia__ICD9_Category.6.7.6.0
+0.231104151341  Labs_High_Counts__Triglycerides
+0.230863286641  Labs_Counts__T3
+0.230859118462  Labs_Counts__Urine Glucose
+0.229152003961  Labs_High_Counts__HEMOGLOBIN A1C, WB
+-0.228035870501     Labs_Latest_High__Troponin-T
+0.227885980619  Dia__ICD9_Category.10.1.7.2
+-0.227317739227     Labs_Low_Counts__Glucose
+-0.226786782907     Dia__ICD9_Category.3.8.4
+-0.226786782907     Dia__ICD9_Category.3.8.4.0
+0.226783293243  Labs_Low_Counts__HEMATOCRIT
+0.226058733528  Labs_Counts__Parathyroid Hormone
+-0.224493364074     Labs_Latest_High__Uric Acid
+0.224154090459  Dia__ICD9_Category.3.3.1
+0.224154090459  Dia__ICD9_Category.3.3.1.0
+0.223707855262  Dia__ICD9_Category.7.4.3
+-0.223151888894     Labs_High_Counts__Arterial PCO2
+-0.222885542666     Labs_Latest_High__Direct Bilirubin
+0.222130930079  Labs_Latest_Low__Free T4
+0.219350732029  Labs_Latest_Low__Plasma Potassium
+-0.219175761471     Dia__ICD9_Category.7.2.6
+-0.219175761471     Dia__ICD9_Category.7.2.6.0
+0.21906172059   Labs_Counts__Globulin
+0.219026274898  Labs_Counts__HDL CHOLESTEROL
+0.218758018447  Labs_Counts__PERCENT O2
+0.218238701541  Dia__ICD9_Category.2.14
+0.218238701541  Dia__ICD9_Category.2.14.0
+0.218238701541  Dia__ICD9_Category.2.14.0.0
+0.217862268071  Labs_Counts__Crea
+0.217563260629  Dia__ICD9_Category.3.5.2
+0.217563260629  Dia__ICD9_Category.3.5.2.0
+0.216985425359  Dia__ICD9_Category.4.1.3.7
+0.216919224784  Labs_High_Counts__Iron Binding Capacity
+-0.216060924571     Labs_High_Counts__B-TYPE NATRIURETIC PEPTIDE
+0.214438490045  Dia__ICD9_Category.10.1.8
+0.213965250135  Labs_Counts__GGT
+-0.213680950949     Dia__ICD9_Category.6.8
+0.213203469477  Labs_Latest_Low__Albumin
+0.212707827748  Dia__ICD9_Category.7.2.11.2
+-0.21167752761  Labs_Latest_Low__WBC
+0.211249930386  Dia__ICD9_Category.3
+-0.21124961242  Labs_Counts__HEMOGLOBIN
+0.210268548814  Dia__ICD9_Category.8.5.1
+0.210268548814  Dia__ICD9_Category.8.5.1.0
+-0.20883367984  Labs_Counts__DIRECT BILIRUBIN
+-0.206811702991     Dia__ICD9_Category.1.3.3.1
+-0.206518152429     Dia__ICD9_Category.7.2.4
+-0.206279857461     Dia__ICD9_Category.9.6.3.1
+0.205711036521  Dia__ICD9_Category.2.4.2
+0.205711036521  Dia__ICD9_Category.2.4.2.0
+-0.205027831039     Dia__ICD9_Category.16.10.1.0
+0.204760927396  Labs_Latest_High__ALT (SGPT)
+0.204712733668  Dia__ICD9_Category.8.3
+-0.203665985743     Enc__Enc_Average_Extra_Diagnoses
+-0.203640229571     Labs_Counts__CO2 (Stat Lab)
+0.203495703323  Labs_Low_Counts__Calcium
+0.203165783426  Enc__Num_Extra_Diagnoses_Enc_3
+0.20300225247   Labs_Latest_Low__UA-Specific Gravity
+-0.200577489065     Dia__ICD9_Category.7.3.1
+0.200492168565  Labs_Latest_High__MPV
+-0.200252470903     Dia__ICD9_Category.6.3
+0.199286978142  Labs_Latest_Low__PLATELET COUNT
+0.197919482001  Dia__ICD9_Category.10.1.5.1
+0.197533058086  Labs_Latest_High__Calcium
+-0.196878854765     Labs_Counts__Creatinine
+-0.195246768626     Labs_Latest_High__Arterial PCO2
+0.195153666353  Dia__ICD9_Category.2.4
+0.195030870764  Dia__ICD9_Category.9.1
+0.195030870764  Dia__ICD9_Category.9.1.0
+0.195030870764  Dia__ICD9_Category.9.1.0.0
+0.193563300131  Labs_Counts__T4
+0.193021096079  Dia__ICD9_Category.16
+-0.191972816431     Dia__ICD9_Category.9.6
+-0.19167536239  Labs_High_Counts__Uric
+-0.191657239155     Labs_Counts__Plasma Chloride
+-0.19139083665  Dia__ICD9_Category.7.3.4
+-0.19139083665  Dia__ICD9_Category.7.3.4.0
+0.191058461737  Dia__ICD9_Category.10.1.7
+-0.190936007689     Dia__ICD9_Category.16.10.2.1
+0.190207008646  Dia__ICD9_Category.9.4
+0.190058620077  Labs_High_Counts__Transaminase-SGPT
+0.190002099008  Dia__ICD9_Category.12.1.1.7
+0.189902535966  Labs_Low_Counts__RED BLOOD COUNT
+-0.189898311989     Labs_High_Counts__Cholesterol,LL
+-0.189531394826     Dia__ICD9_Category.4.1.3.2
+0.188799077347  Labs_Counts__Potassium
+-0.188678976538     Dia__ICD9_Category.7.2.9.3
+-0.188614837058     Enc__Inpatient_Outpatient_Enc_9
+-0.188309597404     Labs_High_Counts__BUN (Stat Lab)
+-0.188178855877     Labs_Counts__Low Density Lipoprotein
+0.188026821457  Dia__ICD9_Category.6.7.3
+0.188026821457  Dia__ICD9_Category.6.7.3.0
+0.187210711277  Dia__ICD9_Category.17
+0.186980767476  Labs_Counts__Anion GAP
+0.185745741504  Dia__ICD9_Category.10.1.8.1
+0.1855612863    Labs_High_Counts__Troponin-T
+-0.184893746295     Dia__ICD9_Category.6.4
+-0.184862660095     Dia__ICD9_Category.9.10.1
+-0.184862660095     Dia__ICD9_Category.9.10.1.0
+0.184057755009  Dia__ICD9_Category.1.5
+0.184057755009  Dia__ICD9_Category.1.5.0
+0.184057755009  Dia__ICD9_Category.1.5.0.0
+0.183962541561  Labs_Latest_High__Urine Total Protein
+0.183916368038  Labs_Counts__UA-Albumin
+-0.18380167521  Dia__ICD9_Category.4.1
+0.183482441417  Labs_Latest_Low__ANION GAP
+0.183216990149  Labs_Counts__25OH Vitamin D
+-0.182388704332     Labs_Latest_Low__HDL CHOLESTEROL
+-0.181706322977     Dia__ICD9_Category.13.9
+-0.181706322977     Dia__ICD9_Category.13.9.0
+-0.181706322977     Dia__ICD9_Category.13.9.0.0
+-0.18166870522  Labs_Counts__Hematocrit
+-0.179343233733     Enc__Num_Extra_Diagnoses_Enc_9
+0.178714497655  Dia__ICD9_Category.10.2
+0.178611322048  Labs_Counts__O2SAT MEASURED ARTERIAL
+0.178570985737  Dia__ICD9_Category.5.10
+0.178570985737  Dia__ICD9_Category.5.10.0
+0.178570985737  Dia__ICD9_Category.5.10.0.0
+0.178521679854  Labs_Counts__Creatine Kinase Isoenzymes
+-0.178459139817     Labs_Counts__CRP
+-0.178267975576     Labs_Counts__Ceruloplasmin
+0.177609298455  Labs_Latest_Low__MCH
+-0.177073701336     Labs_Counts__ALT (SGPT)
+-0.176886947616     Dia__ICD9_Category.14.1
+-0.17650686885  Labs_Low_Counts__MCHC
+-0.176234909591     Labs_Latest_High__Iron
+0.175649965114  Dia__ICD9_Category.8.5.3
+0.175649965114  Dia__ICD9_Category.8.5.3.0
+-0.175512743935     Dia__ICD9_Category.13.3.3.2
+-0.175250134277     Labs_High_Counts__AST/SGOT
+-0.174911990592     Labs_High_Counts__Plasma Chloride
+0.174882815306  Labs_High_Counts__Total Bilirubin
+0.174306825419  Dia__ICD9_Category.14.1.6
+0.174306825419  Dia__ICD9_Category.14.1.6.0
+0.173442011062  Dia__ICD9_Category.10.1.4
+0.173108340177  Dia__ICD9_Category.8.6.1
+0.173108340177  Dia__ICD9_Category.8.6.1.0
+0.172620739859  Labs_Latest_High__Alkaline Phosphatase
+-0.172381685637     Labs_High_Counts__SGPT/ALT
+0.172191222133  Labs_Counts__.VD TOTAL
+-0.172118235447     Labs_Low_Counts__CHLORIDE
+-0.171727564537     Labs_Latest_Low__Sodium (Stat Lab)
+-0.170207414622     Labs_Counts__Plasma Lactic Acid
+0.169679731483  Labs_Latest_High__Albumin
+-0.16955823029  Dia__ICD9_Category.7.2.9.5
+0.169202317575  Dia__ICD9_Category.9.4.3.3
+0.1692004336    Labs_High_Counts__Osmolality
+-0.168826860011     Labs_Latest_Low__Arterial pH
+-0.168433174295     Labs_Low_Counts__Arterial pH
+0.167794689359  Labs_Latest_Low__Urea Nitrogen
+0.167788170519  Dia__ICD9_Category.3.10
+0.167788170519  Dia__ICD9_Category.3.10.0
+0.167788170519  Dia__ICD9_Category.3.10.0.0
+0.167278096875  Labs_High_Counts__Globulin
+-0.167143182402     Dia__ICD9_Category.13.3.3.6
+0.167079527608  Dia__ICD9_Category.5
+0.166597856137  Dia__ICD9_Category.13.4
+0.166597856137  Dia__ICD9_Category.13.4.0
+0.166597856137  Dia__ICD9_Category.13.4.0.0
+-0.166510407386     Labs_Low_Counts__Sodium
+0.166447627894  Dia__ICD9_Category.10.1.4.2
+0.166270084827  Dia__ICD9_Category.9.10.5
+0.166270084827  Dia__ICD9_Category.9.10.5.0
+-0.164223764447     Labs_Latest_High__Creatine Kinase Isoenzymes
+0.1640385346    Labs_Latest_High__Potassium (Stat Lab)
+0.163565500949  Labs_Counts__BILIRUBIN,TOTAL
+0.163325836997  Dia__ICD9_Category.13.6.2
+0.163325836997  Dia__ICD9_Category.13.6.2.0
+-0.162664387721     Dia__ICD9_Category.10.1.2
+0.162575382967  Dia__ICD9_Category.10.1.5
+-0.162076463439     Dia__ICD9_Category.3.3.3
+-0.162076463439     Dia__ICD9_Category.3.3.3.0
+0.161737400276  Labs_Counts__.MICROALBUMIN, URINE
+-0.161620052327     Dia__ICD9_Category.7.5.4
+-0.161620052327     Dia__ICD9_Category.7.5.4.0
+-0.161028646345     Dia__ICD9_Category.13.6.1
+-0.161028646345     Dia__ICD9_Category.13.6.1.0
+-0.160874902594     Labs_Latest_High__Ionic Calcium
+-0.160816648889     Labs_Latest_High__Cholesterol,LL
+0.160576944793  Labs_Counts__TRANSFERRIN
+-0.160329881878     Labs_Counts__FREE T4
+-0.160184119105     Labs_Counts__PLATELET
+-0.159734487378     Labs_Counts__Alkaline Phosphatase
+-0.159372821307     Dia__ICD9_Category.10.3.7
+-0.159372821307     Dia__ICD9_Category.10.3.7.0
+-0.159361183916     Labs_Counts__Urine Urea Nitrogen
+0.159314832009  Dia__ICD9_Category.9.7.6
+0.159314832009  Dia__ICD9_Category.9.7.6.0
+-0.159018968833     Dia__ICD9_Category.14.1.22
+-0.159018968833     Dia__ICD9_Category.14.1.22.0
+0.158562086665  Dia__ICD9_Category.8.3.1
+0.158266012825  Dia__ICD9_Category.12.1.1.5
+0.158229646553  Dia__ICD9_Category.14.1.4
+0.158229646553  Dia__ICD9_Category.14.1.4.0
+0.158204042778  Labs_Counts__Free T4
+-0.158137573574     Labs_High_Counts__TRIG
+-0.158111896063     Dia__ICD9_Category.10.3.5
+-0.158111896063     Dia__ICD9_Category.10.3.5.0
+-0.157537137342     Labs_Latest_High__Phosphorus
+0.157523475332  Labs_Counts__UA-Color
+-0.157512045357     Labs_Low_Counts__eGFR
+-0.157492164014     Labs_Counts__URIC ACID
+-0.157395575987     Dia__ICD9_Category.7.2.8.4
+0.157277964737  Labs_High_Counts__NT-proBNP
+0.15720047432   Labs_Counts__Uric
+-0.156537235515     Labs_Latest_Low__HEMOGLOBIN
+-0.15644668467  Dia__ICD9_Category.7.3.2
+-0.15644668467  Dia__ICD9_Category.7.3.2.0
+0.155674937593  Dia__ICD9_Category.1.2.2
+0.155674937593  Dia__ICD9_Category.1.2.2.0
+-0.155347838484     Dia__ICD9_Category.16.8
+-0.155347838484     Dia__ICD9_Category.16.8.0
+-0.155347838484     Dia__ICD9_Category.16.8.0.0
+0.155270994539  Labs_Latest_High__Folic Acid
+-0.155129255635     Labs_Low_Counts__Arterial PCO2
+0.15420194923   Labs_Counts__Plasma Carbon Dioxide
+0.153860602576  Dia__ICD9_Category.7.2.2.1
+-0.15361311842  Labs_Low_Counts__MHCT
+0.153473112426  Labs_High_Counts__Potassium
+0.153084420716  Labs_Low_Counts__CARBON DIOXIDE
+0.152514649217  Labs_High_Counts__ALK PHOS
+0.152491694683  Labs_Counts__HGB A1C
+0.152334170757  Labs_Counts__Plasma Potassium
+-0.151839166595     Dia__ICD9_Category.12.4
+-0.151839166595     Dia__ICD9_Category.12.4.0
+-0.151839166595     Dia__ICD9_Category.12.4.0.0
+-0.151538360175     Labs_Low_Counts__Potassium
+-0.15153769797  Dia__ICD9_Category.14.3
+-0.151044181717     Labs_Counts__POTASSIUM
+-0.15089274783  Labs_High_Counts__Iron
+0.150873893692  Labs_Low_Counts__Carbon Dioxide
+0.150501012628  Dia__ICD9_Category.10.3.9.2
+0.149954694956  Labs_Counts__Schistocytes
+-0.149940014355     Dia__ICD9_Category.7.4.1.3
+-0.149733048104     Dia__ICD9_Category.6.5
+-0.149620856428     Labs_Low_Counts__HEMOGLOBIN
+0.149246230619  Labs_Counts__BLOOD UA
+0.149246230619  Labs_Counts__COLOR UA
+0.149246230619  Labs_Counts__GLUCOSE UA
+0.149246230619  Labs_Counts__KETONES UA
+0.149246230619  Labs_Counts__NITRITE UA
+0.149246230619  Labs_Counts__PROTEIN UA
+0.149246230619  Labs_Counts__SPECIFIC GRAVITY UA
+0.149246230619  Labs_Counts__UROBILINOGEN UA
+0.148941034145  Dia__ICD9_Category.7.4.2.1
+0.148713358162  Dia__ICD9_Category.1.3.3.3
+0.148573348508  Labs_High_Counts__AST (SGOT)
+0.148064626744  Labs_Counts__UA-Urobilinogen
+0.147936332707  Labs_Latest_Low__Creatinine
+-0.147814738293     Labs_Latest_High__B-TYPE NATRIURETIC PEPTIDE
+0.147748022343  Dia__ICD9_Category.7.2.7
+0.147748022343  Dia__ICD9_Category.7.2.7.0
+-0.147726656625     Labs_Latest_High__PLATELET COUNT
+-0.147464572926     Dia__ICD9_Category.2.16.2.5
+0.146873908402  Dia__ICD9_Category.13.8
+0.146873908402  Dia__ICD9_Category.13.8.0
+0.146873908402  Dia__ICD9_Category.13.8.0.0
+-0.146128517769     Labs_Latest_High__Venous PO2
+-0.146022877636     Labs_Counts__CALCIUM
+-0.145930714246     Labs_Counts__B-TYPE NATRIURETIC PEPTIDE
+-0.14592259842  Labs_Counts__HDL
+-0.145895283211     Labs_Low_Counts__Plasma Urea Nitrogen
+0.145817761587  Labs_Counts__IRON
+-0.145775789943     Dia__ICD9_Category.5.12
+-0.145775789943     Dia__ICD9_Category.5.12.0
+-0.145775789943     Dia__ICD9_Category.5.12.0.0
+-0.14563348568  Labs_Counts__Chol
+0.145424353237  Enc__Enc_Inpatient_Ratio
+-0.145024948029     Dia__ICD9_Category.9.6.4.1
+0.144817620641  Dia__ICD9_Category.14.1.2
+0.144817620641  Dia__ICD9_Category.14.1.2.0
+-0.144674560907     Dia__ICD9_Category.4
+0.144557022921  Dia__ICD9_Category.17.1.2
+0.144557022921  Dia__ICD9_Category.17.1.2.0
+-0.144493324462     Labs_Counts__TROPONIN I, PLASMA
+0.143946629876  Dia__ICD9_Category.3.8.1
+0.143946629876  Dia__ICD9_Category.3.8.1.0
+-0.1438066305   Dia__ICD9_Category.10.3
+0.143709386781  Dia__ICD9_Category.2.9
+-0.143284898861     Labs_Latest_High__TRIG
+0.142767596318  Labs_High_Counts__Free T4 Index
+0.142132007925  Dia__ICD9_Category.6.2
+0.141854282466  Labs_Latest_Low__MCV
+-0.141846091393     Labs_Low_Counts__WBC
+-0.141624794587     Labs_Counts__GLU
+0.141485722963  Labs_Counts__GLUCOSE FASTING
+-0.140941018368     Dia__ICD9_Category.2.4.1
+-0.140941018368     Dia__ICD9_Category.2.4.1.0
+0.140653896206  Labs_Low_Counts__IRON
+-0.140140571163     Dia__ICD9_Category.1.2.1
+-0.140140571163     Dia__ICD9_Category.1.2.1.0
+0.140048080699  Dia__ICD9_Category.1.1
+0.139525291947  Labs_Counts__HGB
+0.13888615729   Dia__ICD9_Category.13.2.2.1
+0.138860577119  Labs_Counts__Transaminase-SGOT
+-0.138810227395     Dia__ICD9_Category.5.3
+-0.138810227395     Dia__ICD9_Category.5.3.3
+-0.138810227395     Dia__ICD9_Category.5.3.3.0
+0.138372749254  Labs_Low_Counts__PHOSPHOROUS
+0.1382636736    Dia__ICD9_Category.3.3.4
+0.1382636736    Dia__ICD9_Category.3.3.4.0
+0.138220114346  Dia__ICD9_Category.1.4
+0.138220114346  Dia__ICD9_Category.1.4.0
+0.138220114346  Dia__ICD9_Category.1.4.0.0
+-0.138054090387     Labs_Latest_High__Venous PCO2
+-0.137684932413     Dia__ICD9_Category.3.1.2
+-0.137684932413     Dia__ICD9_Category.3.1.2.0
+-0.137678417925     Dia__ICD9_Category.4.4
+-0.137678417925     Dia__ICD9_Category.4.4.0
+-0.137678417925     Dia__ICD9_Category.4.4.0.0
+0.13754094216   Labs_High_Counts__Magnesium
+-0.137388763734     Labs_Counts__TRIG
+-0.137067369834     Labs_Counts__Magnesium
+-0.137057504975     Labs_High_Counts__Ceruloplasmin
+-0.137057504975     Labs_Latest_High__Ceruloplasmin
+-0.136859826523     Labs_Counts__Lipoprotein (a),MP
+-0.136827178781     Enc__Num_Extra_Diagnoses_Enc_4
+0.136297322002  Dia__ICD9_Category.9.4.2.3
+-0.135853434043     Dia__ICD9_Category.9.12.3
+-0.135853434043     Dia__ICD9_Category.9.12.3.0
+-0.135694199403     Dia__ICD9_Category.13.3.3.3
+0.135285887772  Enc__LOS_Enc_3
+0.134061015003  Labs_Counts__Free T4 Index
+0.133195252974  Dia__ICD9_Category.16.2.3.0
+0.132943451292  Labs_High_Counts__Urine Total Protein
+0.132777274885  Enc__Num_Extra_Diagnoses_Enc_0
+-0.132664846405     Dia__ICD9_Category.12
+-0.132471763997     Labs_Counts__Platelets
+0.132467489332  Dia__ICD9_Category.7.4.4.2
+0.132343491296  Dia__ICD9_Category.5.1
+0.132343491296  Dia__ICD9_Category.5.1.0
+0.132343491296  Dia__ICD9_Category.5.1.0.0
+0.130964832735  Labs_Low_Counts__Ionic Calcium
+0.13091212203   Labs_Latest_High__Ferritin
+-0.13085269897  Labs_Latest_High__Urea Nitrogen
+-0.130764949868     Labs_High_Counts__GLUCOSE, PLASMA
+0.130373623972  Labs_Latest_Low__Plasma Carbon Dioxide
+-0.13033181365  Dia__ICD9_Category.9.4.4
+-0.13033181365  Dia__ICD9_Category.9.4.4.0
+0.130049428589  Labs_Counts__D BILIRUBIN
+-0.130041389951     Labs_High_Counts__Uric Acid
+0.130004385382  Labs_High_Counts__T BILIRUBIN
+0.129948608033  Dia__ICD9_Category.5.8.1
+0.129948608033  Dia__ICD9_Category.5.8.1.0
+0.129905539093  Labs_High_Counts__MPV
+0.129508161344  Dia__ICD9_Category.2.16.2
+-0.129437962274     Labs_Counts__RDW
+-0.129406348224     Labs_Counts__TROPONIN I
+0.12936184257   Labs_High_Counts__Alkaline Phosphatase
+0.12922943755   Dia__ICD9_Category.3.3.5
+0.12922943755   Dia__ICD9_Category.3.3.5.0
+0.129100746633  Dia__ICD9_Category.16.10.2
+0.129039809478  Dia__ICD9_Category.13.2.2
+-0.128427264527     Labs_High_i1.11356513395    Dia__ICD9_Category.7.2.8.1
+0.88329370823   Dia__ICD9_Category.2
+0.86951971176   Dia__ICD9_Category.7.2.5
+0.86951971176   Dia__ICD9_Category.7.2.5.0
+-0.649364158615     Labs_Latest_High__Plasma Potassium
+0.639626082337  Labs_Counts__Haptoglobin
+-0.608341895904     Labs_Counts__Cortisol
+0.605219804863  Dia__ICD9_Category.13.2
+-0.599176431032     Labs_Low_Counts__HDL CHOLESTEROL
+0.582213791934  Dia__ICD9_Category.7.2.4.1
+0.567556106956  Labs_Latest_High__Plasma Glucose
+0.560204360113  Labs_High_Counts__RBC
+0.55938724073   Labs_Latest_High__Plasma Urea Nitrogen
+0.551289582885  Labs_Latest_Low__Phosphorus
+-0.549753373097     Labs_Latest_High__Magnesium
+0.549160028413  Labs_Counts__GLUCOSE,RANDOM
+0.548959218428  Dia__ICD9_Category.7.2.9
+-0.542743374148     Dia__ICD9_Category.7.2.1.3
+0.542409149634  Dia__ICD9_Category.7.4.4
+-0.538901416234     Dia__ICD9_Category.7.1
+-0.527716229947     Dia__ICD9_Category.7.2.9.7
+-0.510094665884     Dia__ICD9_Category.9.10
+-0.502489469322     Labs_Counts__Isoc,Testing
+0.496709734524  Labs_Latest_High__Hemoglobin A1C
+0.496355236091  Dia__ICD9_Category.9.4.1
+-0.489019964516     Labs_Counts__Uric Acid
+0.487889913774  Dia__ICD9_Category.16.10.2.5
+0.483928596277  Dia__ICD9_Category.1
+0.47034822421   Labs_Low_Counts__Creatinine
+-0.468374741168     Labs_Counts__UA-Protein
+-0.468190993828     Labs_Latest_Low__HCT
+0.464619922259  Labs_Low_Counts__Lipase
+0.463061944939  Dia__ICD9_Category.8.2.4
+0.463061944939  Dia__ICD9_Category.8.2.4.0
+-0.45287332216  Labs_Latest_High__Triglycerides
+-0.452153329577     Labs_Counts__Troponin-I
+-0.450803970123     Dia__ICD9_Category.7.4.1
+-0.450771801532     Dia__ICD9_Category.7.4.1.2
+0.449600381317  Dia__ICD9_Category.13.2.3
+0.449600381317  Dia__ICD9_Category.13.2.3.0
+0.438240439581  Enc__LOS_Enc_5
+0.435260726609  Enc__Enc_Average_LOS
+-0.432767875441     Labs_High_Counts__UA-Specific Gravity
+-0.428148968687     Dia__ICD9_Category.7.4
+-0.42518831232  Labs_High_Counts__CO2
+-0.423255594885     Dia__ICD9_Category.7.2.11.0
+0.420372977103  Labs_High_Counts__LDL
+-0.417127300007     Labs_Latest_Low__Chloride
+0.41694827257   Labs_Low_Counts__Osmolality
+0.416869029451  Dia__ICD9_Category.7.2.2.2
+-0.413342657858     Dia__ICD9_Category.7.3
+0.413028156529  Labs_Low_Counts__Potassium (Stat Lab)
+0.406703752371  Dia__ICD9_Category.13
+-0.402860336423     Labs_Counts__Plasma Anion GAP
+-0.400166308945     Dia__ICD9_Category.9
+-0.399543882843     Labs_Low_Counts__Iron
+-0.398254666431     Labs_Counts__CPK Isoenzymes Index
+-0.398138906593     Dia__ICD9_Category.7.2.10
+-0.398138906593     Dia__ICD9_Category.7.2.10.0
+0.395050556437  Labs_Latest_Low__Plasma Chloride
+-0.39249695613  Enc__LOS_Enc_4
+0.390745258791  Labs_Counts__PHOSPHATE
+-0.389911847575     Labs_Counts__Transaminase-SGPT
+0.388390877624  Labs_Counts__eGFR
+0.384340487517  Dia__ICD9_Category.7.2.9.2
+-0.383048960201     Dia__ICD9_Category.17.2.2
+-0.383048960201     Dia__ICD9_Category.17.2.2.0
+0.381087297266  Labs_Counts__Urobilinogen
+-0.380065115835     Dia__ICD9_Category.14
+0.378768982965  Labs_Counts__Total Protein
+0.378497267816  Dia__ICD9_Category.7.2.9.1
+-0.373503681781     Labs_High_Counts__Creatine Kinase
+-0.371118717276     Dia__ICD9_Category.6
+-0.370353504508     Labs_Counts__Ionic Calcium
+-0.36973085796  Labs_High_Counts__CHOLESTEROL, SERUM
+-0.368721210461     Dia__ICD9_Category.7.5
+-0.367693222771     Enc__Inpatient_Outpatient_Enc_0
+0.366193877314  Enc__LOS_Enc_6
+0.366009674253  Labs_Latest_High__Creatinine (Stat Lab)
+0.365569781874  Dia__ICD9_Category.7.4.4.1
+-0.365426702353     Labs_High_Counts__Lipase
+-0.362736200606     Dia__ICD9_Category.5.5
+-0.36180858621  Dia__ICD9_Category.16.10
+-0.360184411567     Dia__ICD9_Category.9.10.7
+-0.360184411567     Dia__ICD9_Category.9.10.7.0
+-0.357005947742     Labs_Low_Counts__Alkaline Phosphatase
+0.355499968823  Dia__ICD9_Category.7.2.11.1
+0.354848744013  Labs_Low_Counts__Globulin
+0.354030710373  Labs_High_Counts__CPK Isoenzymes Index
+-0.353906312269     Labs_Latest_Low__Total Protein
+0.353488315755  Labs_Counts__ANTINUCLEAR ANTIBODY
+-0.351088239077     Dia__ICD9_Category.10.1.2.1
+-0.350394516764     Labs_Latest_High__UA-Specific Gravity
+-0.349508652743     Labs_High_Counts__Crea
+0.343776398303  Labs_Low_Counts__Sodium (Stat Lab)
+0.342694985119  Dia__ICD9_Category.16.6
+-0.342460785489     Labs_Counts__Urea Nitrogen
+0.341102420792  Labs_Low_Counts__Plasma Potassium
+0.340598952603  Enc__LOS_Enc_7
+0.337673117483  Dia__ICD9_Category.3.3
+-0.337651087527     Labs_High_Counts__Hemoglobin A1C
+-0.336677810905     Dia__ICD9_Category.4.1.3
+0.334721544227  Labs_Latest_High__Plasma Anion GAP
+-0.334130364678     Enc__Inpatient_Outpatient_Enc_5
+-0.33147123058  Dia__ICD9_Category.7.2.8
+0.331293139557  Labs_High_Counts__BUN
+0.330324644718  Labs_High_Counts__ALT (SGPT)
+-0.329021051991     Dia__ICD9_Category.3.11.2
+-0.329021051991     Dia__ICD9_Category.3.11.2.0
+0.328630655774  Labs_Latest_High__Total Protein
+-0.327910817394     Dia__ICD9_Category.8.8.2
+-0.327910817394     Dia__ICD9_Category.8.8.2.0
+-0.326182522899     Dia__ICD9_Category.16.10.1
+-0.325806854973     Dia__ICD9_Category.7.2.1.1
+-0.324881959008     Dia__ICD9_Category.5.5.2
+-0.324881959008     Dia__ICD9_Category.5.5.2.0
+-0.321031089514     Labs_High_Counts__AST
+0.320748360615  Dia__ICD9_Category.16.5
+0.320748360615  Dia__ICD9_Category.16.5.0
+0.320748360615  Dia__ICD9_Category.16.5.0.0
+0.320268565072  Dia__ICD9_Category.9.4.1.2
+-0.319915606129     Dia__ICD9_Category.7.1.2.2
+-0.319769440989     Dia__ICD9_Category.18
+-0.319769440989     Dia__ICD9_Category.18.0
+-0.319769440989     Dia__ICD9_Category.18.0.0
+-0.319769440989     Dia__ICD9_Category.18.0.0.0
+-0.318715820078     Dia__ICD9_Category.8.4
+-0.318715820078     Dia__ICD9_Category.8.4.0
+-0.318715820078     Dia__ICD9_Category.8.4.0.0
+-0.318620414147     Labs_Low_Counts__HDL
+-0.318498230652     Dia__ICD9_Category.17.1.8
+-0.318498230652     Dia__ICD9_Category.17.1.8.0
+0.318494299372  Labs_High_Counts__GLUCOSE
+-0.318384716973     Dia__ICD9_Category.13.3.3
+0.318343024966  Labs_Latest_High__BUN
+-0.318125489831     Labs_Counts__TP
+-0.317688378323     Labs_High_Counts__MCHC
+0.314815364741  Dia__ICD9_Category.17.2.5
+0.314815364741  Dia__ICD9_Category.17.2.5.0
+-0.313851126289     Dia__ICD9_Category.9.12
+0.31251607428   Labs_Counts__Urine Microalbumin
+0.309403795642  Labs_Counts__Creatine Kinase
+-0.308614096256     Dia__ICD9_Category.16.12
+-0.308614096256     Dia__ICD9_Category.16.12.0
+-0.308614096256     Dia__ICD9_Category.16.12.0.0
+0.308388066444  Labs_Counts__PHOSPHOROUS
+0.303840245313  Enc__Inpatient_Outpatient_Enc_6
+0.300221399079  Labs_High_Counts__Glucose (Stat Lab)
+-0.299738538099     Labs_Counts__HCT
+0.298407530779  Labs_Counts__DIR BILI
+0.297924422734  Labs_Counts__LDL CHOLESTEROL
+-0.295742522109     Dia__ICD9_Category.7.2.1.4
+-0.294463364793     Dia__ICD9_Category.16.4
+-0.29317110475  Labs_High_Counts__Plasma Anion GAP
+-0.292846332802     Labs_High_Counts__PLATELET COUNT
+0.292258981378  Labs_High_Counts__PLT
+0.292105321011  Dia__ICD9_Category.17.1.6
+0.292105321011  Dia__ICD9_Category.17.1.6.0
+0.29151507847   Labs_Counts__MPV
+0.291271604481  Dia__ICD9_Category.5.14.2
+0.291271604481  Dia__ICD9_Category.5.14.2.0
+0.289531126926  Labs_Low_Counts__Urea Nitrogen
+0.288580583253  Labs_High_Counts__Potassium (Stat Lab)
+0.286925456566  Labs_Latest_High__MCH
+0.286014066164  Labs_Counts__LIPASE
+-0.285364122967     Labs_High_Counts__Arterial pH
+-0.285188193628     Labs_Low_Counts__MPV
+0.285026932169  Labs_Counts__ALBUMIN
+-0.284458373131     Labs_Counts__UA-Glucose
+-0.284458373131     Labs_Counts__UA-Specific Gravity
+-0.28427166769  Dia__ICD9_Category.8
+0.283117484273  Labs_High_Counts__CHOLESTEROL
+-0.282846137432     Dia__ICD9_Category.9.8
+-0.282846137432     Dia__ICD9_Category.9.8.2
+-0.282391976628     Labs_Counts__Glucose (Stat Lab)
+0.281917507442  Dia__ICD9_Category.7.2.1.2
+-0.280504609596     Labs_Counts__Vitamin B12
+0.279838598211  Dia__ICD9_Category.16.6.1
+0.279838598211  Dia__ICD9_Category.16.6.1.0
+0.279302012132  Labs_Latest_High__RDW
+0.278840556655  Labs_Low_Counts__Ferritin
+-0.278638766648     Labs_Counts__RDW-CV
+0.2775786759    Labs_Latest_High__Potassium
+0.275361126734  Labs_Counts__PLT
+-0.275088021217     Dia__ICD9_Category.9.8.2.4
+-0.27439843645  Labs_High_Counts__CHLORIDE
+0.274036713975  Dia__ICD9_Category.3.8.3
+0.274036713975  Dia__ICD9_Category.3.8.3.0
+0.273750831611  Labs_Low_Counts__Magnesium
+-0.273585581123     Dia__ICD9_Category.13.3
+-0.270990121123     Labs_Low_Counts__Transaminase-SGPT
+0.269598378665  Labs_High_Counts__Alk Phos
+0.268896553205  Labs_Counts__Sodium
+0.268112517858  Labs_Counts__AST/SGOT
+-0.267902076956     Dia__ICD9_Category.5.14.1
+-0.267902076956     Dia__ICD9_Category.5.14.1.0
+0.267347422531  Labs_Latest_High__Globulin
+-0.267039036319     Labs_Counts__C-REACTIVE PROTEIN
+0.266463260283  Dia__ICD9_Category.2.10
+-0.265711431673     Enc__Inpatient_Outpatient_Enc_1
+-0.265555509073     Dia__ICD9_Category.7.2.4.2
+0.264338704695  Dia__ICD9_Category.8.1.5.4
+0.263553340139  Labs_Counts__TROPONIN T
+0.262380430327  Dia__ICD9_Category.9.6.4.2
+-0.260838435313     Labs_Latest_High__Parathyroid Hormone
+-0.259382647198     Labs_High_Counts__DIRECT BILI
+0.258731163045  Labs_Latest_Low__Globulin
+-0.258705074656     Dia__ICD9_Category.16.4.2
+-0.258705074656     Dia__ICD9_Category.16.4.2.0
+-0.258249099185     Dia__ICD9_Category.3.8
+-0.255375642821     Dia__ICD9_Category.7.2.4.3
+0.255185486488  Dia__ICD9_Category.7
+0.255185486488  Dia__ICD9_Category.7.2
+-0.255184413121     Labs_Low_Counts__Creatine Kinase
+-0.255183854105     Dia__ICD9_Category.9.10.2
+-0.255183854105     Dia__ICD9_Category.9.10.2.0
+-0.254519504744     Dia__ICD9_Category.4.1.3.3
+0.253699967955  Labs_Counts__Ferritin
+-0.2534316033   Labs_Counts__Plasma Creatinine
+0.251994071593  Dia__ICD9_Category.2.10.2
+0.251994071593  Dia__ICD9_Category.2.10.2.0
+-0.251769497083     Dia__ICD9_Category.9.6.3
+-0.251734591493     Dia__ICD9_Category.8.1
+-0.251216964592     Labs_Latest_Low__High Density Lipoprotein
+0.251006906386  Dia__ICD9_Category.3.11.3
+0.251006906386  Dia__ICD9_Category.3.11.3.0
+0.2504294222    Labs_High_Counts__Ionic Calcium
+-0.250274481281     Labs_High_Counts__Creatine Kinase Isoenzymes
+0.250226605816  Labs_Latest_High__Crea
+0.25022121514   Dia__ICD9_Category.2.5
+0.25022121514   Dia__ICD9_Category.2.5.0
+0.25022121514   Dia__ICD9_Category.2.5.0.0
+-0.249010504889     Labs_High_Counts__CARBON DIOXIDE
+0.248775269584  Dia__ICD9_Category.10.1.3
+0.248775269584  Dia__ICD9_Category.10.1.3.0
+-0.248570725933     Labs_Latest_High__MCV
+-0.248204324422     Dia__ICD9_Category.7.2.9.6
+0.247964313313  Labs_Counts__DIRECT LDL
+-0.247721336746     Labs_Counts__Urine Osmolality
+0.2473813762    Dia__ICD9_Category.7.2.9.4
+-0.247011133879     Labs_Counts__ALT/SGPT
+-0.246899170943     Dia__ICD9_Category.16.10.1.1
+-0.246896990803     Dia__ICD9_Category.7.2.8.2
+-0.246782046682     Labs_Low_Counts__TOTAL PROTEIN, SERUM
+-0.245904701738     Labs_High_Counts__Transaminase-SGOT
+0.245891195683  Dia__ICD9_Category.2.16.2.2
+-0.245472459523     Labs_Counts__Glucose
+0.244037394286  Labs_High_Counts__HCT
+0.243935161461  Labs_Counts__ALK PHOS
+0.243740023819  Labs_Latest_Low__CO2 (Stat Lab)
+-0.243531291968     Labs_Latest_Low__Iron
+-0.242869395938     Labs_High_Counts__Venous PCO2
+0.241859130576  Labs_High_Counts__POTASSIUM
+-0.241812969905     Dia__ICD9_Category.7.3.1.2
+-0.241662907476     Dia__ICD9_Category.7.2.1
+-0.241596237664     Dia__ICD9_Category.13.3.1
+-0.241596237664     Dia__ICD9_Category.13.3.1.0
+0.241343545972  Labs_Latest_Low__Plasma Glucose
+0.239698618122  Labs_Latest_Low__HGB
+0.239375014135  Labs_Counts__Plasma Urea Nitrogen
+-0.238742501584     Labs_Low_Counts__PLATELET
+-0.238052855414     Dia__ICD9_Category.8.8.1
+-0.238052855414     Dia__ICD9_Category.8.8.1.0
+-0.236500466825     Enc__Inpatient_Outpatient_Enc_8
+0.236167895652  Dia__ICD9_Category.16.10.2.7
+-0.235931289332     Labs_Latest_High__Plasma Creatinine
+-0.235638785993     Labs_Latest_Low__MCHC
+0.235535309022  Labs_Low_Counts__UA-Specific Gravity
+0.235435067452  Labs_Latest_High__CO2
+-0.235286043663     Labs_Counts__CREATININE
+0.235211724794  Dia__ICD9_Category.5.4
+0.235211724794  Dia__ICD9_Category.5.4.0
+0.235211724794  Dia__ICD9_Category.5.4.0.0
+0.235140546141  Labs_Counts__HEMOGLOBIN A1C, WB
+0.234102651088  Labs_High_Counts__HGB
+-0.23401989765  Enc__Num_Extra_Diagnoses_Enc_7
+0.233945764702  Labs_Latest_High__Free T4 Index
+0.233660263447  Labs_High_Counts__Urea Nitrogen
+-0.232703083378     Labs_Counts__Thyroxine
+-0.232326572297     Dia__ICD9_Category.7.2.4.5
+-0.231865553975     Dia__ICD9_Category.8.1.5.1
+-0.231358166077     Dia__ICD9_Category.6.7.6
+-0.231358166077     Dia__ICD9_Category.6.7.6.0
+0.231104151341  Labs_High_Counts__Triglycerides
+0.230863286641  Labs_Counts__T3
+0.230859118462  Labs_Counts__Urine Glucose
+0.229152003961  Labs_High_Counts__HEMOGLOBIN A1C, WB
+-0.228035870501     Labs_Latest_High__Troponin-T
+0.227885980619  Dia__ICD9_Category.10.1.7.2
+-0.227317739227     Labs_Low_Counts__Glucose
+-0.226786782907     Dia__ICD9_Category.3.8.4
+-0.226786782907     Dia__ICD9_Category.3.8.4.0
+0.226783293243  Labs_Low_Counts__HEMATOCRIT
+0.226058733528  Labs_Counts__Parathyroid Hormone
+-0.224493364074     Labs_Latest_High__Uric Acid
+0.224154090459  Dia__ICD9_Category.3.3.1
+0.224154090459  Dia__ICD9_Category.3.3.1.0
+0.223707855262  Dia__ICD9_Category.7.4.3
+-0.223151888894     Labs_High_Counts__Arterial PCO2
+-0.222885542666     Labs_Latest_High__Direct Bilirubin
+0.222130930079  Labs_Latest_Low__Free T4
+0.219350732029  Labs_Latest_Low__Plasma Potassium
+-0.219175761471     Dia__ICD9_Category.7.2.6
+-0.219175761471     Dia__ICD9_Category.7.2.6.0
+0.21906172059   Labs_Counts__Globulin
+0.219026274898  Labs_Counts__HDL CHOLESTEROL
+0.218758018447  Labs_Counts__PERCENT O2
+0.218238701541  Dia__ICD9_Category.2.14
+0.218238701541  Dia__ICD9_Category.2.14.0
+0.218238701541  Dia__ICD9_Category.2.14.0.0
+0.217862268071  Labs_Counts__Crea
+0.217563260629  Dia__ICD9_Category.3.5.2
+0.217563260629  Dia__ICD9_Category.3.5.2.0
+0.216985425359  Dia__ICD9_Category.4.1.3.7
+0.216919224784  Labs_High_Counts__Iron Binding Capacity
+-0.216060924571     Labs_High_Counts__B-TYPE NATRIURETIC PEPTIDE
+0.214438490045  Dia__ICD9_Category.10.1.8
+0.213965250135  Labs_Counts__GGT
+-0.213680950949     Dia__ICD9_Category.6.8
+0.213203469477  Labs_Latest_Low__Albumin
+0.212707827748  Dia__ICD9_Category.7.2.11.2
+-0.21167752761  Labs_Latest_Low__WBC
+0.211249930386  Dia__ICD9_Category.3
+-0.21124961242  Labs_Counts__HEMOGLOBIN
+0.210268548814  Dia__ICD9_Category.8.5.1
+0.210268548814  Dia__ICD9_Category.8.5.1.0
+-0.20883367984  Labs_Counts__DIRECT BILIRUBIN
+-0.206811702991     Dia__ICD9_Category.1.3.3.1
+-0.206518152429     Dia__ICD9_Category.7.2.4
+-0.206279857461     Dia__ICD9_Category.9.6.3.1
+0.205711036521  Dia__ICD9_Category.2.4.2
+0.205711036521  Dia__ICD9_Category.2.4.2.0
+-0.205027831039     Dia__ICD9_Category.16.10.1.0
+0.204760927396  Labs_Latest_High__ALT (SGPT)
+0.204712733668  Dia__ICD9_Category.8.3
+-0.203665985743     Enc__Enc_Average_Extra_Diagnoses
+-0.203640229571     Labs_Counts__CO2 (Stat Lab)
+0.203495703323  Labs_Low_Counts__Calcium
+0.203165783426  Enc__Num_Extra_Diagnoses_Enc_3
+0.20300225247   Labs_Latest_Low__UA-Specific Gravity
+-0.200577489065     Dia__ICD9_Category.7.3.1
+0.200492168565  Labs_Latest_High__MPV
+-0.200252470903     Dia__ICD9_Category.6.3
+0.199286978142  Labs_Latest_Low__PLATELET COUNT
+0.197919482001  Dia__ICD9_Category.10.1.5.1
+0.197533058086  Labs_Latest_High__Calcium
+-0.196878854765     Labs_Counts__Creatinine
+-0.195246768626     Labs_Latest_High__Arterial PCO2
+0.195153666353  Dia__ICD9_Category.2.4
+0.195030870764  Dia__ICD9_Category.9.1
+0.195030870764  Dia__ICD9_Category.9.1.0
+0.195030870764  Dia__ICD9_Category.9.1.0.0
+0.193563300131  Labs_Counts__T4
+0.193021096079  Dia__ICD9_Category.16
+-0.191972816431     Dia__ICD9_Category.9.6
+-0.19167536239  Labs_High_Counts__Uric
+-0.191657239155     Labs_Counts__Plasma Chloride
+-0.19139083665  Dia__ICD9_Category.7.3.4
+-0.19139083665  Dia__ICD9_Category.7.3.4.0
+0.191058461737  Dia__ICD9_Category.10.1.7
+-0.190936007689     Dia__ICD9_Category.16.10.2.1
+0.190207008646  Dia__ICD9_Category.9.4
+0.190058620077  Labs_High_Counts__Transaminase-SGPT
+0.190002099008  Dia__ICD9_Category.12.1.1.7
+0.189902535966  Labs_Low_Counts__RED BLOOD COUNT
+-0.189898311989     Labs_High_Counts__Cholesterol,LL
+-0.189531394826     Dia__ICD9_Category.4.1.3.2
+0.188799077347  Labs_Counts__Potassium
+-0.188678976538     Dia__ICD9_Category.7.2.9.3
+-0.188614837058     Enc__Inpatient_Outpatient_Enc_9
+-0.188309597404     Labs_High_Counts__BUN (Stat Lab)
+-0.188178855877     Labs_Counts__Low Density Lipoprotein
+0.188026821457  Dia__ICD9_Category.6.7.3
+0.188026821457  Dia__ICD9_Category.6.7.3.0
+0.187210711277  Dia__ICD9_Category.17
+0.186980767476  Labs_Counts__Anion GAP
+0.185745741504  Dia__ICD9_Category.10.1.8.1
+0.1855612863    Labs_High_Counts__Troponin-T
+-0.184893746295     Dia__ICD9_Category.6.4
+-0.184862660095     Dia__ICD9_Category.9.10.1
+-0.184862660095     Dia__ICD9_Category.9.10.1.0
+0.184057755009  Dia__ICD9_Category.1.5
+0.184057755009  Dia__ICD9_Category.1.5.0
+0.184057755009  Dia__ICD9_Category.1.5.0.0
+0.183962541561  Labs_Latest_High__Urine Total Protein
+0.183916368038  Labs_Counts__UA-Albumin
+-0.18380167521  Dia__ICD9_Category.4.1
+0.183482441417  Labs_Latest_Low__ANION GAP
+0.183216990149  Labs_Counts__25OH Vitamin D
+-0.182388704332     Labs_Latest_Low__HDL CHOLESTEROL
+-0.181706322977     Dia__ICD9_Category.13.9
+-0.181706322977     Dia__ICD9_Category.13.9.0
+-0.181706322977     Dia__ICD9_Category.13.9.0.0
+-0.18166870522  Labs_Counts__Hematocrit
+-0.179343233733     Enc__Num_Extra_Diagnoses_Enc_9
+0.178714497655  Dia__ICD9_Category.10.2
+0.178611322048  Labs_Counts__O2SAT MEASURED ARTERIAL
+0.178570985737  Dia__ICD9_Category.5.10
+0.178570985737  Dia__ICD9_Category.5.10.0
+0.178570985737  Dia__ICD9_Category.5.10.0.0
+0.178521679854  Labs_Counts__Creatine Kinase Isoenzymes
+-0.178459139817     Labs_Counts__CRP
+-0.178267975576     Labs_Counts__Ceruloplasmin
+0.177609298455  Labs_Latest_Low__MCH
+-0.177073701336     Labs_Counts__ALT (SGPT)
+-0.176886947616     Dia__ICD9_Category.14.1
+-0.17650686885  Labs_Low_Counts__MCHC
+-0.176234909591     Labs_Latest_High__Iron
+0.175649965114  Dia__ICD9_Category.8.5.3
+0.175649965114  Dia__ICD9_Category.8.5.3.0
+-0.175512743935     Dia__ICD9_Category.13.3.3.2
+-0.175250134277     Labs_High_Counts__AST/SGOT
+-0.174911990592     Labs_High_Counts__Plasma Chloride
+0.174882815306  Labs_High_Counts__Total Bilirubin
+0.174306825419  Dia__ICD9_Category.14.1.6
+0.174306825419  Dia__ICD9_Category.14.1.6.0
+0.173442011062  Dia__ICD9_Category.10.1.4
+0.173108340177  Dia__ICD9_Category.8.6.1
+0.173108340177  Dia__ICD9_Category.8.6.1.0
+0.172620739859  Labs_Latest_High__Alkaline Phosphatase
+-0.172381685637     Labs_High_Counts__SGPT/ALT
+0.172191222133  Labs_Counts__.VD TOTAL
+-0.172118235447     Labs_Low_Counts__CHLORIDE
+-0.171727564537     Labs_Latest_Low__Sodium (Stat Lab)
+-0.170207414622     Labs_Counts__Plasma Lactic Acid
+0.169679731483  Labs_Latest_High__Albumin
+-0.16955823029  Dia__ICD9_Category.7.2.9.5
+0.169202317575  Dia__ICD9_Category.9.4.3.3
+0.1692004336    Labs_High_Counts__Osmolality
+-0.168826860011     Labs_Latest_Low__Arterial pH
+-0.168433174295     Labs_Low_Counts__Arterial pH
+0.167794689359  Labs_Latest_Low__Urea Nitrogen
+0.167788170519  Dia__ICD9_Category.3.10
+0.167788170519  Dia__ICD9_Category.3.10.0
+0.167788170519  Dia__ICD9_Category.3.10.0.0
+0.167278096875  Labs_High_Counts__Globulin
+-0.167143182402     Dia__ICD9_Category.13.3.3.6
+0.167079527608  Dia__ICD9_Category.5
+0.166597856137  Dia__ICD9_Category.13.4
+0.166597856137  Dia__ICD9_Category.13.4.0
+0.166597856137  Dia__ICD9_Category.13.4.0.0
+-0.166510407386     Labs_Low_Counts__Sodium
+0.166447627894  Dia__ICD9_Category.10.1.4.2
+0.166270084827  Dia__ICD9_Category.9.10.5
+0.166270084827  Dia__ICD9_Category.9.10.5.0
+-0.164223764447     Labs_Latest_High__Creatine Kinase Isoenzymes
+0.1640385346    Labs_Latest_High__Potassium (Stat Lab)
+0.163565500949  Labs_Counts__BILIRUBIN,TOTAL
+0.163325836997  Dia__ICD9_Category.13.6.2
+0.163325836997  Dia__ICD9_Category.13.6.2.0
+-0.162664387721     Dia__ICD9_Category.10.1.2
+0.162575382967  Dia__ICD9_Category.10.1.5
+-0.162076463439     Dia__ICD9_Category.3.3.3
+-0.162076463439     Dia__ICD9_Category.3.3.3.0
+0.161737400276  Labs_Counts__.MICROALBUMIN, URINE
+-0.161620052327     Dia__ICD9_Category.7.5.4
+-0.161620052327     Dia__ICD9_Category.7.5.4.0
+-0.161028646345     Dia__ICD9_Category.13.6.1
+-0.161028646345     Dia__ICD9_Category.13.6.1.0
+-0.160874902594     Labs_Latest_High__Ionic Calcium
+-0.160816648889     Labs_Latest_High__Cholesterol,LL
+0.160576944793  Labs_Counts__TRANSFERRIN
+-0.160329881878     Labs_Counts__FREE T4
+-0.160184119105     Labs_Counts__PLATELET
+-0.159734487378     Labs_Counts__Alkaline Phosphatase
+-0.159372821307     Dia__ICD9_Category.10.3.7
+-0.159372821307     Dia__ICD9_Category.10.3.7.0
+-0.159361183916     Labs_Counts__Urine Urea Nitrogen
+0.159314832009  Dia__ICD9_Category.9.7.6
+0.159314832009  Dia__ICD9_Category.9.7.6.0
+-0.159018968833     Dia__ICD9_Category.14.1.22
+-0.159018968833     Dia__ICD9_Category.14.1.22.0
+0.158562086665  Dia__ICD9_Category.8.3.1
+0.158266012825  Dia__ICD9_Category.12.1.1.5
+0.158229646553  Dia__ICD9_Category.14.1.4
+0.158229646553  Dia__ICD9_Category.14.1.4.0
+0.158204042778  Labs_Counts__Free T4
+-0.158137573574     Labs_High_Counts__TRIG
+-0.158111896063     Dia__ICD9_Category.10.3.5
+-0.158111896063     Dia__ICD9_Category.10.3.5.0
+-0.157537137342     Labs_Latest_High__Phosphorus
+0.157523475332  Labs_Counts__UA-Color
+-0.157512045357     Labs_Low_Counts__eGFR
+-0.157492164014     Labs_Counts__URIC ACID
+-0.157395575987     Dia__ICD9_Category.7.2.8.4
+0.157277964737  Labs_High_Counts__NT-proBNP
+0.15720047432   Labs_Counts__Uric
+-0.156537235515     Labs_Latest_Low__HEMOGLOBIN
+-0.15644668467  Dia__ICD9_Category.7.3.2
+-0.15644668467  Dia__ICD9_Category.7.3.2.0
+0.155674937593  Dia__ICD9_Category.1.2.2
+0.155674937593  Dia__ICD9_Category.1.2.2.0
+-0.155347838484     Dia__ICD9_Category.16.8
+-0.155347838484     Dia__ICD9_Category.16.8.0
+-0.155347838484     Dia__ICD9_Category.16.8.0.0
+0.155270994539  Labs_Latest_High__Folic Acid
+-0.155129255635     Labs_Low_Counts__Arterial PCO2
+0.15420194923   Labs_Counts__Plasma Carbon Dioxide
+0.153860602576  Dia__ICD9_Category.7.2.2.1
+-0.15361311842  Labs_Low_Counts__MHCT
+0.153473112426  Labs_High_Counts__Potassium
+0.153084420716  Labs_Low_Counts__CARBON DIOXIDE
+0.152514649217  Labs_High_Counts__ALK PHOS
+0.152491694683  Labs_Counts__HGB A1C
+0.152334170757  Labs_Counts__Plasma Potassium
+-0.151839166595     Dia__ICD9_Category.12.4
+-0.151839166595     Dia__ICD9_Category.12.4.0
+-0.151839166595     Dia__ICD9_Category.12.4.0.0
+-0.151538360175     Labs_Low_Counts__Potassium
+-0.15153769797  Dia__ICD9_Category.14.3
+-0.151044181717     Labs_Counts__POTASSIUM
+-0.15089274783  Labs_High_Counts__Iron
+0.150873893692  Labs_Low_Counts__Carbon Dioxide
+0.150501012628  Dia__ICD9_Category.10.3.9.2
+0.149954694956  Labs_Counts__Schistocytes
+-0.149940014355     Dia__ICD9_Category.7.4.1.3
+-0.149733048104     Dia__ICD9_Category.6.5
+-0.149620856428     Labs_Low_Counts__HEMOGLOBIN
+0.149246230619  Labs_Counts__BLOOD UA
+0.149246230619  Labs_Counts__COLOR UA
+0.149246230619  Labs_Counts__GLUCOSE UA
+0.149246230619  Labs_Counts__KETONES UA
+0.149246230619  Labs_Counts__NITRITE UA
+0.149246230619  Labs_Counts__PROTEIN UA
+0.149246230619  Labs_Counts__SPECIFIC GRAVITY UA
+0.149246230619  Labs_Counts__UROBILINOGEN UA
+0.148941034145  Dia__ICD9_Category.7.4.2.1
+0.148713358162  Dia__ICD9_Category.1.3.3.3
+0.148573348508  Labs_High_Counts__AST (SGOT)
+0.148064626744  Labs_Counts__UA-Urobilinogen
+0.147936332707  Labs_Latest_Low__Creatinine
+-0.147814738293     Labs_Latest_High__B-TYPE NATRIURETIC PEPTIDE
+0.147748022343  Dia__ICD9_Category.7.2.7
+0.147748022343  Dia__ICD9_Category.7.2.7.0
+-0.147726656625     Labs_Latest_High__PLATELET COUNT
+-0.147464572926     Dia__ICD9_Category.2.16.2.5
+0.146873908402  Dia__ICD9_Category.13.8
+0.146873908402  Dia__ICD9_Category.13.8.0
+0.146873908402  Dia__ICD9_Category.13.8.0.0
+-0.146128517769     Labs_Latest_High__Venous PO2
+-0.146022877636     Labs_Counts__CALCIUM
+-0.145930714246     Labs_Counts__B-TYPE NATRIURETIC PEPTIDE
+-0.14592259842  Labs_Counts__HDL
+-0.145895283211     Labs_Low_Counts__Plasma Urea Nitrogen
+0.145817761587  Labs_Counts__IRON
+-0.145775789943     Dia__ICD9_Category.5.12
+-0.145775789943     Dia__ICD9_Category.5.12.0
+-0.145775789943     Dia__ICD9_Category.5.12.0.0
+-0.14563348568  Labs_Counts__Chol
+0.145424353237  Enc__Enc_Inpatient_Ratio
+-0.145024948029     Dia__ICD9_Category.9.6.4.1
+0.144817620641  Dia__ICD9_Category.14.1.2
+0.144817620641  Dia__ICD9_Category.14.1.2.0
+-0.144674560907     Dia__ICD9_Category.4
+0.144557022921  Dia__ICD9_Category.17.1.2
+0.144557022921  Dia__ICD9_Category.17.1.2.0
+-0.144493324462     Labs_Counts__TROPONIN I, PLASMA
+0.143946629876  Dia__ICD9_Category.3.8.1
+0.143946629876  Dia__ICD9_Category.3.8.1.0
+-0.1438066305   Dia__ICD9_Category.10.3
+0.143709386781  Dia__ICD9_Category.2.9
+-0.143284898861     Labs_Latest_High__TRIG
+0.142767596318  Labs_High_Counts__Free T4 Index
+0.142132007925  Dia__ICD9_Category.6.2
+0.141854282466  Labs_Latest_Low__MCV
+-0.141846091393     Labs_Low_Counts__WBC
+-0.141624794587     Labs_Counts__GLU
+0.141485722963  Labs_Counts__GLUCOSE FASTING
+-0.140941018368     Dia__ICD9_Category.2.4.1
+-0.140941018368     Dia__ICD9_Category.2.4.1.0
+0.140653896206  Labs_Low_Counts__IRON
+-0.140140571163     Dia__ICD9_Category.1.2.1
+-0.140140571163     Dia__ICD9_Category.1.2.1.0
+0.140048080699  Dia__ICD9_Category.1.1
+0.139525291947  Labs_Counts__HGB
+0.13888615729   Dia__ICD9_Category.13.2.2.1
+0.138860577119  Labs_Counts__Transaminase-SGOT
+-0.138810227395     Dia__ICD9_Category.5.3
+-0.138810227395     Dia__ICD9_Category.5.3.3
+-0.138810227395     Dia__ICD9_Category.5.3.3.0
+0.138372749254  Labs_Low_Counts__PHOSPHOROUS
+0.1382636736    Dia__ICD9_Category.3.3.4
+0.1382636736    Dia__ICD9_Category.3.3.4.0
+0.138220114346  Dia__ICD9_Category.1.4
+0.138220114346  Dia__ICD9_Category.1.4.0
+0.138220114346  Dia__ICD9_Category.1.4.0.0
+-0.138054090387     Labs_Latest_High__Venous PCO2
+-0.137684932413     Dia__ICD9_Category.3.1.2
+-0.137684932413     Dia__ICD9_Category.3.1.2.0
+-0.137678417925     Dia__ICD9_Category.4.4
+-0.137678417925     Dia__ICD9_Category.4.4.0
+-0.137678417925     Dia__ICD9_Category.4.4.0.0
+0.13754094216   Labs_High_Counts__Magnesium
+-0.137388763734     Labs_Counts__TRIG
+-0.137067369834     Labs_Counts__Magnesium
+-0.137057504975     Labs_High_Counts__Ceruloplasmin
+-0.137057504975     Labs_Latest_High__Ceruloplasmin
+-0.136859826523     Labs_Counts__Lipoprotein (a),MP
+-0.136827178781     Enc__Num_Extra_Diagnoses_Enc_4
+0.136297322002  Dia__ICD9_Category.9.4.2.3
+-0.135853434043     Dia__ICD9_Category.9.12.3
+-0.135853434043     Dia__ICD9_Category.9.12.3.0
+-0.135694199403     Dia__ICD9_Category.13.3.3.3
+0.135285887772  Enc__LOS_Enc_3
+0.134061015003  Labs_Counts__Free T4 Index
+0.133195252974  Dia__ICD9_Category.16.2.3.0
+0.132943451292  Labs_High_Counts__Urine Total Protein
+0.132777274885  Enc__Num_Extra_Diagnoses_Enc_0
+-0.132664846405     Dia__ICD9_Category.12
+-0.132471763997     Labs_Counts__Platelets
+0.132467489332  Dia__ICD9_Category.7.4.4.2
+0.132343491296  Dia__ICD9_Category.5.1
+0.132343491296  Dia__ICD9_Category.5.1.0
+0.132343491296  Dia__ICD9_Category.5.1.0.0
+0.130964832735  Labs_Low_Counts__Ionic Calcium
+0.13091212203   Labs_Latest_High__Ferritin
+-0.13085269897  Labs_Latest_High__Urea Nitrogen
+-0.130764949868     Labs_High_Counts__GLUCOSE, PLASMA
+0.130373623972  Labs_Latest_Low__Plasma Carbon Dioxide
+-0.13033181365  Dia__ICD9_Category.9.4.4
+-0.13033181365  Dia__ICD9_Category.9.4.4.0
+0.130049428589  Labs_Counts__D BILIRUBIN
+-0.130041389951     Labs_High_Counts__Uric Acid
+0.130004385382  Labs_High_Counts__T BILIRUBIN
+0.129948608033  Dia__ICD9_Category.5.8.1
+0.129948608033  Dia__ICD9_Category.5.8.1.0
+0.129905539093  Labs_High_Counts__MPV
+0.129508161344  Dia__ICD9_Category.2.16.2
+-0.129437962274     Labs_Counts__RDW
+-0.129406348224     Labs_Counts__TROPONIN I
+0.12936184257   Labs_High_Counts__Alkaline Phosphatase
+0.12922943755   Dia__ICD9_Category.3.3.5
+0.12922943755   Dia__ICD9_Category.3.3.5.0
+0.129100746633  Dia__ICD9_Category.16.10.2
+0.129039809478  Dia__ICD9_Category.13.2.2
+-0.128427264527     Labs_High_
