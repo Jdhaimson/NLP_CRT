@@ -131,28 +131,28 @@ def get_labs_before_date(empi, date):
     if 'Lab' in p.keys():
         for lab in p['Lab']:
             if lab['Seq_Date_Time'] and extract_data.parse_date(lab['Seq_Date_Time']) < date: 
-                if lab['Test_Description'] in lab_counts:
-                    lab_counts[lab['Test_Description']] += 1
+                if lab['Group_Id'] in lab_counts:
+                    lab_counts[lab['Group_Id']] += 1
                 else:
-                    lab_counts[lab['Test_Description']] = 1
+                    lab_counts[lab['Group_Id']] = 1
                 lab_date = extract_data.parse_date(lab['Seq_Date_Time'])
-                if lab['Test_Description'] in lab_latest:
-                    recorded_test_date = lab_latest[lab['Test_Description']][0]
+                if lab['Group_Id'] in lab_latest:
+                    recorded_test_date = lab_latest[lab['Group_Id']][0]
                     if lab_date > recorded_test_date: # keep most recent test value
-                        lab_latest[lab['Test_Description']] = (lab_date, lab['Abnormal_Flag'])
+                        lab_latest[lab['Group_Id']] = (lab_date, lab['Abnormal_Flag'])
                 else:
-                    lab_latest[lab['Test_Description']] = (lab_date, lab['Abnormal_Flag'])
+                    lab_latest[lab['Group_Id']] = (lab_date, lab['Abnormal_Flag'])
                 if lab['Abnormal_Flag']:
                     if lab['Abnormal_Flag'] == 'L':
-                        if lab['Test_Description'] in lab_lows:
-                            lab_lows[lab['Test_Description']] += 1
+                        if lab['Group_Id'] in lab_lows:
+                            lab_lows[lab['Group_Id']] += 1
                         else:
-                            lab_lows[lab['Test_Description']] = 1
+                            lab_lows[lab['Group_Id']] = 1
                     elif lab['Abnormal_Flag'] == 'H':
-                        if lab['Test_Description'] in lab_highs:
-                            lab_highs[lab['Test_Description']] += 1
+                        if lab['Group_Id'] in lab_highs:
+                            lab_highs[lab['Group_Id']] += 1
                         else:
-                            lab_highs[lab['Test_Description']] = 1
+                            lab_highs[lab['Group_Id']] = 1
     return lab_counts, lab_lows, lab_highs, lab_latest
 
 # def get_special_labs_before_date(empi, date):
