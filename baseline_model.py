@@ -112,7 +112,6 @@ def main():
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
     features = FeatureUnion([
-<<<<<<< HEAD
            # ('Dia', icd9 ),
             ('EF', EFTransformer('all', 5, None)),
             ('LBBB', LBBBTransformer())
