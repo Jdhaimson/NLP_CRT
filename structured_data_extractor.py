@@ -1,6 +1,8 @@
 import sys
 import loader
 import extract_data
+import numpy as np
+import build_graphs
 
 def get_supplemental_details(field_name):
     """Takes in the name of a field and prints how many of the patients have that field.
@@ -120,7 +122,7 @@ def get_encounters(empi):
 
 def get_labs_before_date(empi, date):
     """Given an empi and a date, will return the labs for that patient before that date.
-    Specifically, will return four dictionaries where the key is always the lab test code
+    Specifically, will return four dictionaries where the key is always the lab group id
     and the values are the total counts, low counts, high counts, and latest (date, low/high) tuple for 
     that test respectively. Note that low and high mean the test value was below or above the norm respectively."""
     p = loader.get_patient_by_EMPI(empi)
@@ -155,8 +157,42 @@ def get_labs_before_date(empi, date):
                             lab_highs[lab['Group_Id']] = 1
     return lab_counts, lab_lows, lab_highs, lab_latest
 
-# def get_special_labs_before_date(empi, date):
-                
+def get_lab_history_before_date(empi, date, time_thresholds_months):
+    """Given an empi and a date, will return a summarized history of the labs for that patient
+    before the date.  Specifically, will return a dictionary where the key is a lab group id and
+    the value is a list of size len(time_threshold_months) where each index represents whether the lab was mostly high or low
+    in the threshold times set it time_thresholds_months.  For example, if we have 'BUN' => ['H', None, 'L'],
+    then this indicates a transition from low (L) to high (H) leading up to the indicated date."""
+    p = loader.get_patient_by_EMPI(empi)
+    lab_history_counts = {}
+    """
+    lab_history_counts is 2-D array
+    first dimension = time period
+    second dimension = counts of 'H', 'L', and None
+    example = [[15, 1, 2], ...] means in the past 1 month, 'H' was most (15 times)
+    """
+    seconds_in_month = 365 * 24 * 60 * 60 / 12
+    values = ['H', 'L', None]
+    if 'Lab' in p.keys():
+        for lab in p['Lab']:
+            if lab['Seq_Date_Time'] and extract_data.parse_date(lab['Seq_Date_Time']) < date:
+                lab_date = extract_data.parse_date(lab['Seq_Date_Time'])
+                value = lab['Abnormal_Flag'] if lab['Abnormal_Flag'] in ['H', 'L'] else None
+                value_index = values.index(value)
+                time_index = 0
+                while time_index < len(time_thresholds_months) and (date - lab_date).total_seconds() > (time_thresholds_months[time_index] * seconds_in_month):
+                    time_index += 1
+                if time_index >= len(time_thresholds_months):
+                    continue
+                if lab['Group_Id'] not in lab_history_counts:
+                    lab_history_counts[lab['Group_Id']] = np.zeros([len(time_thresholds_months), len(values)])
+                lab_history_counts[lab['Group_Id']][time_index][value_index] += 1
+    lab_history = {}
+    for lab_name in lab_history_counts:
+        lab_history[lab_name] = [None] * len(time_thresholds_months)
+        for i in range(len(time_thresholds_months)):
+            lab_history[lab_name][i] = values[lab_history_counts[lab_name][i].argmax()]
+    return lab_history                  
 
 if __name__ == "__main__":
     # get_supplemental_details('Supplemental')
@@ -182,6 +218,7 @@ if __name__ == "__main__":
             print(enc)
         #get_encounters_details(empi)
     elif command == 'labs':
+        """
         lab_counts, lab_lows, lab_highs, lab_latest = get_labs_before_date(empi, extract_data.parse_date('11/16/2015'))
         for lab in lab_counts:
             print(lab)
@@ -190,3 +227,8 @@ if __name__ == "__main__":
             print('HIGHS: ' + str(lab_highs[lab]) if lab in lab_highs else 'HIGHS: 0')
             print('LATEST: ' + str(lab_latest[lab]))
             print('')
+        """
+        operation_date = build_graphs.get_operation_date(loader.get_patient_by_EMPI(empi))
+        lab_history = get_lab_history_before_date(empi, operation_date)
+        for lab in lab_history:
+            print(str(lab) + str(lab_history[lab]))

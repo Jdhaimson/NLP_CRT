@@ -10,7 +10,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
 
-from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer  
+from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
@@ -114,40 +114,41 @@ def main():
     features = FeatureUnion([
            # ('Dia', icd9 ),
             ('EF', EFTransformer('all', 5, None)),
-            ('LBBB', LBBBTransformer())
+            ('LBBB', LBBBTransformer()),
+            #('Car', FeaturePipeline([
+            #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+            #    ('tfidf', car_tfidf)
+            #])),
+            #('Lno', FeaturePipeline([
+            #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
+            #    ('tfidf', lno_tfidf)
+            #])),
+            #('Enc', enc),
+            #('Labs_Counts',FeaturePipeline([
+            #    ('labs_counts_transformer', GetLabsCountsDictTransformer()),
+            #    ('dict_vectorizer', DictVectorizer())
+            #])),
+            #('Labs_Low_Counts',FeaturePipeline([
+            #    ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
+            #    ('dict_vectorizer', DictVectorizer())
+            #])),
+            #('Labs_High_Counts', FeaturePipeline([
+            #    ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
+            #    ('dict_vectorizer', DictVectorizer())
+            #])),
+            #('Labs_Latest_Low', FeaturePipeline([
+            #    ('labs_latest_low_transformer', GetLabsLatestLowDictTransformer()),
+            #    ('dict_vectorizer', DictVectorizer())
+            #])),
+            #('Labs_Latest_High',FeaturePipeline([
+            #    ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
+            #    ('dict_vectorizer', DictVectorizer())
+            #])),
+            ('Labs_History', FeaturePipeline([
+                ('labs_history_transformer', GetLabsHistoryDictTransformer([1])),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
         ])
-    """
-            ('Car', FeaturePipeline([
-                ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-                ('tfidf', car_tfidf)
-            ])),
-            ('Lno', FeaturePipeline([
-                ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-                ('tfidf', lno_tfidf)
-            ])),
-            ('Enc', enc),
-            ('Labs_Counts',FeaturePipeline([
-                ('labs_counts_transformer', GetLabsCountsDictTransformer()),
-                ('dict_vectorizer', DictVectorizer())
-            ])),
-            ('Labs_Low_Counts',FeaturePipeline([
-                ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
-                ('dict_vectorizer', DictVectorizer())
-            ])),
-            ('Labs_High_Counts', FeaturePipeline([
-                ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
-                ('dict_vectorizer', DictVectorizer())
-            ])),
-            ('Labs_Latest_Low', FeaturePipeline([
-                ('labs_latest_low_transformer', GetLabsLatestLowDictTransformer()),
-                ('dict_vectorizer', DictVectorizer())
-            ])),
-            ('Labs_Latest_High',FeaturePipeline([
-                ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
-                ('dict_vectorizer', DictVectorizer())
-            ])),
-    """
-        
 
     logr = LogisticRegression()
     pipeline =  Pipeline([

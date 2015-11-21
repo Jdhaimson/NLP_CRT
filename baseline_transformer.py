@@ -261,6 +261,33 @@ class GetLabsLatestLowDictTransformer(TransformerMixin):
                 labs_latest_low[lab] = 0
         return labs_latest_low
 
+class GetLabsHistoryDictTransformer(TransformerMixin):
+    """For each empi, will return a dictionary of lab test names to a boolean
+    indicating if the test value was low the last time the patient received
+    that test (before the procedue). Output should then be fed into DictVectorizer.""" 
+    def __init__(self, time_thresholds_months):
+        self.time_thresholds_months = time_thresholds_months
+
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_labs_history, X)
+        return transformed_X
+    
+    def get_labs_history(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        lab_history = structured_data_extractor.get_lab_history_before_date(empi, operation_date, self.time_thresholds_months)
+        lab_history_transformed = {}
+        for lab in lab_history:
+            for i in range(len(self.time_thresholds_months)):
+                lab_history_transformed[lab + '_H_' + str(self.time_thresholds_months[i])] = 1 if lab_history[lab][i] == 'H' else 0
+                lab_history_transformed[lab + '_L_' + str(self.time_thresholds_months[i])] = 1 if lab_history[lab][i] == 'L' else 0
+        return lab_history_transformed
+
+
+
 if __name__ == '__main__':
     t = GetEncountersFeaturesTransformer(10)
     test_empi = 'FAKE_EMPI_739'
