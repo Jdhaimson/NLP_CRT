@@ -4,13 +4,20 @@ import numpy as np
 import cProfile
 from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
+from sklearn.decomposition import PCA, IncrementalPCA
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
+from sklearn.svm import SVC
 
-from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
+from baseline_transformer import (GetConcatenatedNotesTransformer, 
+    GetLatestNotesTransformer, GetEncountersFeaturesTransformer, 
+    GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, 
+    GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, 
+    GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer,
+    MultiDocTfidfTransformer)
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
@@ -21,7 +28,7 @@ from loader import get_data
 
 def get_preprocessed_patients():
     patient_nums = range(906)
-   # patient_nums = range(25)
+    patient_nums = range(15)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
@@ -35,8 +42,8 @@ def get_preprocessed_patients():
                 delta_efs_out.append(ef_delta)
     return patients_out, delta_efs_out
 
-# 6 month followup is best, change above code
 
+# 6 month followup is best, change above code
 def change_ef_values_to_categories(ef_values):
     output = []
 
@@ -83,9 +90,16 @@ class PrintTransformer(TransformerMixin):
     def fit(self, X, y=None, **fit_params):
         return self
     def transform(self, X, **transform_params):
-        print X.shape
+        print len(X)
         print X[0].shape
         return X
+
+class DenseArrayTransformer(TransformerMixin):
+    def fit(self, X, y=None, **fit_params):
+        return self
+    def transform(self, X, **transform_params):
+        return X.toarray()
+
 
 class FeaturePipeline(Pipeline):
 
@@ -111,51 +125,64 @@ def main():
         
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
 
+    n_notes = 10
     features = FeatureUnion([
-           # ('Dia', icd9 ),
+            ('Dia', ICD9_Transformer()),
             ('EF', EFTransformer('all', 5, None)),
             ('LBBB', LBBBTransformer()),
-            #('Car', FeaturePipeline([
-            #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-            #    ('tfidf', car_tfidf)
-            #])),
-            #('Lno', FeaturePipeline([
-            #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
-            #    ('tfidf', lno_tfidf)
-            #])),
-            #('Enc', enc),
-            #('Labs_Counts',FeaturePipeline([
-            #    ('labs_counts_transformer', GetLabsCountsDictTransformer()),
-            #    ('dict_vectorizer', DictVectorizer())
-            #])),
-            #('Labs_Low_Counts',FeaturePipeline([
-            #    ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
-            #    ('dict_vectorizer', DictVectorizer())
-            #])),
-            #('Labs_High_Counts', FeaturePipeline([
-            #    ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
-            #    ('dict_vectorizer', DictVectorizer())
-            #])),
-            #('Labs_Latest_Low', FeaturePipeline([
-            #    ('labs_latest_low_transformer', GetLabsLatestLowDictTransformer()),
-            #    ('dict_vectorizer', DictVectorizer())
-            #])),
-            #('Labs_Latest_High',FeaturePipeline([
-            #    ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
-            #    ('dict_vectorizer', DictVectorizer())
-            #])),
+            ('Enc', GetEncountersFeaturesTransformer(10)),
+            ('Car', FeaturePipeline([
+                #('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+                #('tfidf', TfidfVectorizer())
+                ('notes_transformer_car', GetLatestNotesTransformer('Car', n_notes)),
+                ('tfidf', MultiDocTfidfTransformer()),
+            ])),
+            ('Lno', FeaturePipeline([
+                #('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
+                #('tfidf', TfidfVectorizer())
+                ('notes_transformer_lno', GetLatestNotesTransformer('Lno', n_notes)),
+                ('tfidf', MultiDocTfidfTransformer())
+            ])),
             ('Labs_History', FeaturePipeline([
                 ('labs_history_transformer', GetLabsHistoryDictTransformer([1])),
                 ('dict_vectorizer', DictVectorizer())
             ])),
         ])
 
+    '''
+            # Old labs features
+            ('Labs_Counts',FeaturePipeline([
+                ('labs_counts_transformer', GetLabsCountsDictTransformer()),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
+            ('Labs_Low_Counts',FeaturePipeline([
+                ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
+            ('Labs_High_Counts', FeaturePipeline([
+                ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
+            ('Labs_Latest_Low', FeaturePipeline([
+                ('labs_latest_low_transformer', GetLabsLatestLowDictTransformer()),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
+            ('Labs_Latest_High',FeaturePipeline([
+                ('labs_latest_high_transformer', GetLabsLatestHighDictTransformer()),
+                ('dict_vectorizer', DictVectorizer())
+            ])),
+    '''
+
+
     logr = LogisticRegression()
     pipeline =  Pipeline([
         ('feature_union', features),
-        #('pca', sklearn.decomposition.PCA(1000)), 
+        #('densify', DenseArrayTransformer()),
+        #('ipca', IncrementalPCA(n_components=1000, batch_size=10)), 
+        #('pca', PCA(1000)), 
         #('print', PrintTransformer()),
         ('logistic_regression', logr)
+        #('svm', SVC(kernel='poly'))
     ])
 
     print "Training..."
