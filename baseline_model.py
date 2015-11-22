@@ -1,4 +1,5 @@
 import re
+import sys
 
 import numpy as np
 import cProfile
@@ -21,14 +22,17 @@ from baseline_transformer import (GetConcatenatedNotesTransformer,
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
-from value_extractor_transformer import EFTransformer, LBBBTransformer
+from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer
 from language_processing import parse_date 
 from loader import get_data
 
 
 def get_preprocessed_patients():
-    patient_nums = range(906)
-    patient_nums = range(15)
+    if len(sys.argv) > 1 and unicode(sys.argv[1]).isnumeric:
+        patient_nums = range(min(906, int(sys.argv[1])))
+    else:
+       # patient_nums = range(906)
+        patient_nums = range(25)
     patients_out = []
     delta_efs_out = []
     for i in patient_nums:
@@ -108,7 +112,6 @@ class FeaturePipeline(Pipeline):
 
 def main():
     is_regression = True
-
     print 'Preprocessing...'
     X, Y = get_preprocessed_patients()
     is_regression = False
@@ -128,8 +131,12 @@ def main():
     n_notes = 10
     features = FeatureUnion([
             ('Dia', ICD9_Transformer()),
-            ('EF', EFTransformer('all', 5, None)),
+            ('EF', EFTransformer('all', 1, None)),
+            ('EF', EFTransformer('mean', 5, None)),
+            ('EF', EFTransformer('max', 5, None)),
             ('LBBB', LBBBTransformer()),
+            ('SR', SinusRhythmTransformer()),
+            #('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
             ('Enc', GetEncountersFeaturesTransformer(10)),
             ('Car', FeaturePipeline([
                 #('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),

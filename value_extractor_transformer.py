@@ -18,7 +18,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
         ouput: value of any type
     """
     
-    def __init__(self, doc_types = None, name = "Value" ,method = 'last', num_horizon = 1, time_horizon = None):
+    def __init__(self, doc_types = None, name = "Value" ,method = 'all', num_horizon = 1, time_horizon = None):
         """
         method: in ['mean', 'max', 'min', 'all', 'found', 'count']
         num_horizon: how many of the last values to consider
@@ -112,7 +112,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
         operation_date = extract_data.get_operation_date(patient)
         values = []
         for doc_type in patient:
-            if self.doc_types == None or doc_type in self.doc_types:
+            if doc_type in self.doc_types or self.doc_types == None:
                 docs = patient[doc_type]
                 if type(docs) != type(list()):
                     docs = [docs]
@@ -160,8 +160,8 @@ class RegexTransformer(ExtractValueTransformerMixin):
 class EFTransformer(RegexTransformer):
 
     def __init__(self, method, num_horizon, time_horizon = None):
-        re_patterns = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
 
+        re_patterns = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
         RegexTransformer.__init__(self, ['Car'], 'EF', re_patterns, method, num_horizon, time_horizon)    
 
     def __select_doc(self, doc, operation_date, doc_type):
@@ -178,4 +178,22 @@ class LBBBTransformer(RegexTransformer):
     def __select_doc(self, doc, operation_date, doc_type):
         is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)
         return is_in_time_range and doc['procedure'] in ['ECG']
+
+
+class SinusRhythmTransformer(RegexTransformer):
+        
+    def __init__(self, time_horizon = None):
+        re_patterns = ['sinus rhythm']
+        RegexTransformer.__init__(self, ['Car'], 'sinus_rhythm', re_patterns, 'found', None, time_horizon)
+
+class QRSTransformer(RegexTransformer):
+
+    def __init__(self, method, num_horizon, time_horizon = None):
+
+        re_patterns = ['qrs {duration}* [{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*ms']
+        RegexTransformer.__init__(self, ['Car'], 'QRS', re_patterns, method, num_horizon, time_horizon)    
+
+    def __select_doc(self, doc, operation_date, doc_type):
+        is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)
+        return is_in_time_range and doc['procedure'] in ['CardiacElectrophysiology', 'ECG']
 
