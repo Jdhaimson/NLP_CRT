@@ -57,7 +57,7 @@ def main():
 
 
     if len(sys.argv) > 1 and unicode(sys.argv[1]).isnumeric():
-        data_size = int(sys.argv[1])
+        data_size = min(int(sys.argv[1]), 906)
     else:
         data_size = 25
 
