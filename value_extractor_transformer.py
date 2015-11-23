@@ -97,7 +97,10 @@ class ExtractValueTransformerMixin(TransformerMixin):
         elif self.method in ['found', 'count']:
             return [0]
         else:
-            return None
+            if self.method == 'all':
+                return [0] * self.num_horizon
+            else:
+                return [0]
 
     def __get_feature(self, empi):
         """
@@ -186,12 +189,40 @@ class SinusRhythmTransformer(RegexTransformer):
         re_patterns = ['sinus rhythm']
         RegexTransformer.__init__(self, ['Car'], 'sinus_rhythm', re_patterns, 'found', None, time_horizon)
 
+class NYHATransformer(ExtractValueTransformerMixin):
+
+    def __init__(self):
+        ExtractValueTransformer.__init__(self, ['Car'], 'NYHA_class', 'other',  None, None)
+
+    def get_feature_names(self):
+        return ["NYHA_class_" + (i + 1) for i in range(4)]
+
+    def parse_value(self, doc, operation_date, doc_type):
+        """
+        description: finds NYHA class from doc
+        input: doc dict, operation date, document type, e.g. Car
+        output: NYHA class as int or none
+        """
+        pass
+
+    def __transform_values(self, values):
+        #returns majority of NYHA class readings
+        
+        count = {1: 0, 2: 0, 3: 0, 4: 0}
+        for val in values:
+            count[val] += 1
+        return [x for x in count if count[x] == max(count.values())][0]
+
 class QRSTransformer(RegexTransformer):
 
     def __init__(self, method, num_horizon, time_horizon = None):
 
-        re_patterns = ['qrs {duration}* [{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*ms']
+        re_patterns = ['qrs duration [{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*ms']
         RegexTransformer.__init__(self, ['Car'], 'QRS', re_patterns, method, num_horizon, time_horizon)    
+
+    def __transform_values(self, values):
+        print values
+        return RegexTransformer.__transform_values(self, values)    
 
     def __select_doc(self, doc, operation_date, doc_type):
         is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)

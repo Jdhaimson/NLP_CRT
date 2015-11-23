@@ -3,6 +3,18 @@ from language_processing import *
 from extract_data import *
 from build_graphs import *
 
+while raw_input("Do you want to perform a search? (y/n) ").lower() == 'y':
+    keywords = []
+    keyword = "a"
+    while len(keyword) > 0:
+        keyword = raw_input("Enter search: ")
+    by_patient = []
+    for i in range(50):
+        data = get_data([i])[0]
+        by_patient += [get_doc_keywords(data, keywords, None, True)]
+    print by_patient
+                    
+
 while raw_input("Do you want to generate plots? (y/n) ").lower() == 'y':
     lower_range = int(raw_input("Lower bound on range (0-912): "))
     upper_range = int(raw_input("Upper bound on range (1-913): "))
