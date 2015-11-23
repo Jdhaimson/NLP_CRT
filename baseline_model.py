@@ -130,7 +130,7 @@ def main():
 
     n_notes = 10
     features = FeatureUnion([
-            ('Dia', ICD9_Transformer()),
+            ('Dia', ICD9_Transformer(depth=2)),
             ('EF', EFTransformer('all', 1, None)),
             ('EF', EFTransformer('mean', 5, None)),
             ('EF', EFTransformer('max', 5, None)),

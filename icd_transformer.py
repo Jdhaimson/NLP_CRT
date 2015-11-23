@@ -13,9 +13,10 @@ class ICD9_Transformer(TransformerMixin):
     """
 
     """
-    def __init__(self):
+    def __init__(self, depth=4):
         self.categories = get_diagnosis_categories()
         self.category_maxes = get_max_diagnosis_info()
+        self.depth = min(depth, len(self.category_maxes))
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -61,18 +62,18 @@ class ICD9_Transformer(TransformerMixin):
         '''
         # Normalize the category array with 0s so they are all the same length
         category_array = map(int, category.split('.'))
-        while len(category_array) < len(self.category_maxes):
+        while len(category_array) < self.depth:
             category_array.append(0)
 
         # Build a shape array specifying dimensionality of each category
         shape = []
-        for i in range(len(self.category_maxes)):
+        for i in range(self.depth):
             # Codes are 1 indexed- zeroth element represents missing
             shape.append(self.category_maxes[i]+1)
         
         # Build an array at each level in the hierarchy
         vectors = []
-        for i in range(1,len(self.category_maxes)+1):
+        for i in range(1,self.depth+1):
             vec = np.zeros(shape[:i])
             subvec = vec
             for j in range(i-1):
@@ -85,13 +86,13 @@ class ICD9_Transformer(TransformerMixin):
     def get_feature_names(self):
         # Build a shape array specifying dimensionality of each category
         shape = []
-        for i in range(len(self.category_maxes)):
+        for i in range(self.depth):
             # Codes are 1 indexed- zeroth element represents missing
             shape.append(self.category_maxes[i]+1)
 
         code_to_description = get_diagnosis_categories(return_descriptions=True)
         vectors = []
-        for i in range(1,len(self.category_maxes)+1):
+        for i in range(1,self.depth+1):
             vec = np.empty(shape[:i], 'U30')
             vectors.append(self.label_vector(code_to_description, vec))
         return reduce(lambda a,b: np.concatenate((a.flatten(), b.flatten())), vectors)
