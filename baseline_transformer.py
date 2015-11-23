@@ -1,11 +1,14 @@
+import datetime
+
+import numpy as np
+from sklearn.base import TransformerMixin
+from sklearn.feature_extraction.text import TfidfVectorizer 
+
+import structured_data_extractor
+import build_graphs
 import loader
 import extract_data
 import language_processing
-import datetime
-import structured_data_extractor
-import build_graphs
-import numpy as np
-from sklearn.base import TransformerMixin
 
 class GetConcatenatedNotesTransformer(TransformerMixin):
     """Takes as input the type of note (i.e. 'Car' or 'Lno').
@@ -59,7 +62,7 @@ class GetLatestNotesTransformer(TransformerMixin):
     def get_latest_concatenated_notes(self, empi):
         person = loader.get_patient_by_EMPI(empi)
         operation_date = build_graphs.get_operation_date(person)
-        date_key = language_processing.get_date_key(self.type)
+        date_key = extract_data.get_date_key(self.type)
         notes = []
         if self.type in person.keys() and date_key != None:
             time_key_pairs = []
@@ -78,6 +81,31 @@ class GetLatestNotesTransformer(TransformerMixin):
             for i in range(delta):
                 notes.append('')  
         return np.array(notes)
+
+
+class MultiDocTfidfTransformer(TransformerMixin):
+    """
+    Returns a vector of TFIDF vectors for each string in a vector. TFIDF
+    weightings are global across all elements of the document.
+    """
+    def __init__(self):#, ngram_range=(1,1)):
+        self.tfidf = TfidfVectorizer()#ngram_range=ngram_range)
+        self.vec_size = 0 
+
+    def fit(self, X, y=None, **fit_params):
+        self.vec_size = len(X[0])
+        self.tfidf.fit(map(lambda x: '\n\n'.join(x), X))
+        return self
+    
+    def transform(self, X, **transform_params):
+        tX = map(lambda x: self.tfidf.transform(x).toarray().flatten(), X)
+        return tX
+
+    def get_feature_names(self):
+        feature_arr = map(lambda i: self.tfidf.get_feature_names(), range(self.vec_size))
+        return np.array(feature_arr).flatten()
+
+
 
 class GetEncountersFeaturesTransformer(TransformerMixin):
     """Returns a feature vector for each empi from the encounters history
