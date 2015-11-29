@@ -7,6 +7,7 @@ from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
 
@@ -96,14 +97,17 @@ def display_summary(name, values):
     print "\tmax:\t", max(values)
 
 
-def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True):
+def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
 
     if method in ['logistic regression', 'lr', 'logitr', 'logistic']:
         is_regression = False
-        clf = LogisticRegression()
+        clf = LogisticRegression(**model_args)
     elif method in ['svm']:
         is_regression = False
-        clf = SVC()
+        clf = SVC(**model_args)
+    elif method in ['boosting', 'adaboost']:
+        is_regression = False
+        clf = AdaBoostClassifier(**model_args)
     else:
         raise ValueError("'" + method + "' is not a supported classification method")
 
@@ -178,12 +182,12 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     try:
         column_names = features.get_feature_names()
         print "Number of column names: " + str( len(column_names))
-        if len(column_names) == clf.coef_.shape[1]:
-            Z = zip(column_names, clf.coef_[0])
+        feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
+        if len(column_names) == len(feature_importances):
+            Z = zip(column_names, feature_importances)
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components of last CV run:"
-            print
-            for z in Z[:100]:
+            for z in Z[:min(100, len(Z))]:
                 print z[1], "\t", z[0]
     except Exception as e:
         print "Feature name extraction failed"

@@ -189,35 +189,39 @@ class SinusRhythmTransformer(RegexTransformer):
         re_patterns = ['sinus rhythm']
         RegexTransformer.__init__(self, ['Car'], 'sinus_rhythm', re_patterns, 'found', None, time_horizon)
 
-class NYHATransformer(ExtractValueTransformerMixin):
+class NYHATransformer(RegexTransformer):
 
     def __init__(self):
+
+        re_patterns = [  ]
+
         ExtractValueTransformer.__init__(self, ['Car'], 'NYHA_class', 'other',  None, None)
 
     def get_feature_names(self):
         return ["NYHA_class_" + (i + 1) for i in range(4)]
 
-    def parse_value(self, doc, operation_date, doc_type):
-        """
-        description: finds NYHA class from doc
-        input: doc dict, operation date, document type, e.g. Car
-        output: NYHA class as int or none
-        """
-        pass
+    def __convert_to_class(string):
+        values = {'i' : 1, 'ii' : 2, 'iii' : 3, 'iv' : 4, '1' : 1, '2' : 2, '3' : 3, '4' : 4, 'one' : 1, 'two' : 2, 'three' : 3, 'four' : 4}
+        l_str = string.lower()
+        if l_str in values:
+            return values[string.lower()]
+        else:
+            return 0
 
     def __transform_values(self, values):
         #returns majority of NYHA class readings
         
-        count = {1: 0, 2: 0, 3: 0, 4: 0}
+        count = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
         for val in values:
-            count[val] += 1
+            count[NYHATransformer.__convert_to_class(val)] += 1
+        count[0] = -1
         return [x for x in count if count[x] == max(count.values())][0]
 
 class QRSTransformer(RegexTransformer):
 
     def __init__(self, method, num_horizon, time_horizon = None):
 
-        re_patterns = ['qrs duration [{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*ms']
+        re_patterns = ['qrs duration [: \t]*([0-9]*\.{0,1}[0-9]*)']
         RegexTransformer.__init__(self, ['Car'], 'QRS', re_patterns, method, num_horizon, time_horizon)    
 
     def __transform_values(self, values):
