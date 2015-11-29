@@ -1,5 +1,5 @@
 from sklearn.base import TransformerMixin, ClassifierMixin
-from value_extractor_transformer import EFTransformer, QRSTransformer, LBBTransformer, SinusRhythmTransformer, NYHATransformer
+from value_extractor_transformer import EFTransformer, QRSTransformer, LBBBTransformer, SinusRhythmTransformer, NYHATransformer
 
 
 class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
@@ -10,19 +10,19 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
     Does not need to be fit and transforms data on its own
     """
 
-    ClinicalDecisionModel.LVEF = 'lvef'
-    ClinicalDecisionModel.QRS = 'qrs'
-    ClinicalDecisionModel.LBBB = 'lbbb'
-    ClinicalDecisionModel.SINUS_RHYTHM = 'sr'
-    ClinicalDecisionModel.NYHA = 'nyha'
+    LVEF = 'lvef'
+    QRS = 'qrs'
+    LBBB = 'lbbb'
+    SINUS_RHYTHM = 'sr'
+    NYHA = 'nyha'
 
     def __init__(self):
         self.transformers = dict()
-        self.transformers[ClinicalDecisionModel.LVEF]= EFTransformer('mean',3)
-        self.transformers[ClinicalDecisionModel.QRS]= QRSTransformer('mean', 3)
-        self.transformers[ClinicalDecisionModel.LBBB]= LBBBTransformer()
-        self.transformers[ClinicalDecisionModel.SINUS_RHYTHM]= SinusRhythmTransformer()
-        self.transformers[ClinicalDecisionModel.NYHA]= NYHATransformer()
+        self.transformers[self.LVEF]= EFTransformer('max',3)
+        self.transformers[self.QRS]= QRSTransformer('mean', 3)
+        self.transformers[self.LBBB]= LBBBTransformer()
+        self.transformers[self.SINUS_RHYTHM]= SinusRhythmTransformer()
+        self.transformers[self.NYHA]= NYHATransformer()
         
     def fit(self, X = None, y = None):
         for trans_key in self.transformers:
@@ -35,7 +35,7 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
     def __find_values(self, empi):
         values = dict()
         for trans_key in self.transformers:
-            values[trans_key] = self.transformers[trans_key].__get_feature(empi)
+            values[trans_key] = self.transformers[trans_key].get_feature(empi)
         return values
 
     def predict(self, X):
@@ -45,13 +45,14 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
         return y_hat
 
     def predict_color(self, values):
-        nyha_class = values[ClinicalDecisionModel.NHYA]
-        ef = values[ClincialDecisionModel.LVEF]
-        qrs = values[ClincalDecisionModel.QRS]
-        lbbb = bool(values[ClincialDecisionModel.LBBB])
-        sr = bool(values[ClinicalDecisionModel.SINUS_RHYTHM])
-        if ef > 35: #EF lower than 35 disqualified
+        nyha_class = values[self.NYHA].index(1) + 1
+        ef = values[self.LVEF][0]
+        qrs = values[self.QRS][0]
+        lbbb = bool(values[self.LBBB][0])
+        sr = bool(values[self.SINUS_RHYTHM][0])
+        if ef > 35: #EF higher than 35 disqualified
             return 'red'
+        #print "NYHA:", nyha_class, "EF:", ef, "QRS:", qrs, "LBBB:", lbbb, "SR:", sr
         if nyha_class == 1:
             if ef < 30 and qrs >= 150 and lbbb:
                 return 'orange'
@@ -85,5 +86,5 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
             return 'red'
 
     def prediction_from_color(self, color):
-        mapping = ['red' : 0, 'orange' : 0, 'yellow': 1, 'green' ; 1]
+        mapping = {'red' : 0, 'orange' : 0, 'yellow': 1, 'green' : 1}
         return mapping[color] 
