@@ -15,7 +15,7 @@ from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from language_processing import parse_date 
 from loader import get_data
-
+from decision_model import ClinicalDecisionModel
 
 def get_preprocessed_patients(sample_size = 25):
     patients_out = []
@@ -108,6 +108,9 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     elif method in ['boosting', 'adaboost']:
         is_regression = False
         clf = AdaBoostClassifier(**model_args)
+    elif method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        is_regression = False
+        clf = ClinicalDecisionModel()
     else:
         raise ValueError("'" + method + "' is not a supported classification method")
 
@@ -132,7 +135,9 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         ('Classifier', clf)
     ])
 
-    print "Train, Predict and Evaluate CV"
+    #If using the ClinicalDecisionModel then no pipeline needed
+    if method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        pipeline = clf
 
     mse = []
     r2 = []
