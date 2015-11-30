@@ -3,6 +3,9 @@ import cProfile
 
 from model_tester import FeaturePipeline, test_model
 from sklearn.pipeline import FeatureUnion
+from sklearn.feature_extraction.text import TfidfVectorizer
+from corenlp_python.stanford_dependencies_transformer import StanfordDependenciesTransformer
+from corenlp_python.corenlp.client import StanfordNLP
 
 from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
@@ -12,18 +15,26 @@ from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhy
 from language_processing import parse_date 
 
 def main():
+
+    snlp = StanfordNLP(8080)
+
     features = FeatureUnion([
                # ('Dia', icd9 ),
-                ('EF', EFTransformer('all', 1, None)),
-                ('EF', EFTransformer('mean', 5, None)),
-                ('EF', EFTransformer('max', 5, None)),
-                ('LBBB', LBBBTransformer()),
-                ('SR', SinusRhythmTransformer()),
+               # ('EF', EFTransformer('all', 1, None)),
+               # ('EF', EFTransformer('mean', 5, None)),
+               # ('EF', EFTransformer('max', 5, None)),
+               # ('LBBB', LBBBTransformer()),
+               # ('SR', SinusRhythmTransformer()),
                # ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
-                #('Car', FeaturePipeline([
-                #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
-                #    ('tfidf', car_tfidf)
-                #])),
+               # ('Car', FeaturePipeline([
+               #     ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+               #     ('tfidf', TfidfVectorizer())
+               # ])),
+                ('Car2', FeaturePipeline([
+                    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
+                    ('notes_dep_transformer', StanfordDependenciesTransformer(snlp)),
+                    ('tfidf', TfidfVectorizer())
+                ])),
                 #('Lno', FeaturePipeline([
                 #    ('notes_transformer_lno', GetConcatenatedNotesTransformer('Lno')),
                 #    ('tfidf', lno_tfidf)
