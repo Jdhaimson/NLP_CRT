@@ -206,6 +206,12 @@ class SinusRhythmTransformer(RegexTransformer):
         re_patterns = ['sinus rhythm']
         RegexTransformer.__init__(self, ['Car'], 'sinus_rhythm', re_patterns, 'found', None, time_horizon)
 
+class NICMTransformer(RegexTransformer):
+        
+    def __init__(self, time_horizon = None):
+        re_patterns = ['non(?:-| )ischemic']
+        RegexTransformer.__init__(self, ['Car'], 'nicm', re_patterns, 'found', None, time_horizon)
+
 class NYHATransformer(RegexTransformer):
 
     def __init__(self):

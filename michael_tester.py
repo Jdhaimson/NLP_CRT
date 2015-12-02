@@ -9,7 +9,7 @@ from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotes
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
-from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer
+from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
 from language_processing import parse_date 
 
 def main():
@@ -26,6 +26,7 @@ def main():
                     ('LBBB', LBBBTransformer()),
                     ('SR', SinusRhythmTransformer()),
                     ('NYHA', NYHATransformer()),
+                    ('NICM', NICMTransformer()),
                     ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
                 ]
     if False:
@@ -84,20 +85,25 @@ def main():
     print "Data size: " + str(data_size)
     print "CV splits: " + str(num_cv_splits)
 
+    if len(sys.argv) > 3:
+        method = sys.argv[3]
+    else:
+        method = 'adaboost'
+
     #method = 'lr'
     #method = 'svm'
     method = 'adaboost'
-    method = 'cdm'
+    #method = 'cdm'
 
     model_args = dict()
     if method in ['lr', 'svm']:
-        if len(sys.argv) > 3 and unicode(sys.argv[3]).isnumeric():
-            model_args['regularization'] = float(sys.argv[3])
+        if len(sys.argv) > 4 and unicode(sys.argv[4]).isnumeric():
+            model_args['regularization'] = float(sys.argv[4])
         else:
             model_args['regularization'] = 0.
     if method == 'adaboost':
-        if len(sys.argv) > 3 and unicode(sys.argv[3]).isnumeric():
-            model_args['n_estimators'] = int(sys.argv[3])
+        if len(sys.argv) > 4 and unicode(sys.argv[4]).isnumeric():
+            model_args['n_estimators'] = int(sys.argv[4])
         else:
             model_args['n_estimators'] = 50
         

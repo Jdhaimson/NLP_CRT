@@ -151,7 +151,6 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
         pipeline.fit(X_train, Y_train)
         Y_predict = pipeline.predict(X_test)
-        print zip(Y_test, Y_predict)
         if is_regression:
             mse += [mean_squared_error(Y_test, Y_predict)]
             r2 += [r2_score(Y_test, Y_predict)]
