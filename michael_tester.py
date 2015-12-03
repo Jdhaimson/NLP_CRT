@@ -13,23 +13,31 @@ from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhy
 from language_processing import parse_date 
 
 def main():
+
     transformer_list = []
-    if False:
-        transformer_list += [
-                    ('Dia', ICD9_Transformer())
-                ]
-    if True:
+
+    regex_features = True
+    icd9_features = False
+    labs_features = False
+    text_features = False
+
+    if regex_features:
         transformer_list += [ 
                     ('EF', EFTransformer('all', 1, None)),
                     ('EF', EFTransformer('mean', 5, None)),
                     ('EF', EFTransformer('max', 5, None)),
-                    ('LBBB', LBBBTransformer()),
-                    ('SR', SinusRhythmTransformer()),
-                    ('NYHA', NYHATransformer()),
-                    ('NICM', NICMTransformer()),
+                    ('LBBB', LBBBTransformer(30*3)),
+                    ('SR', SinusRhythmTransformer(30*3)),
+                    ('NYHA', NYHATransformer(30*3)),
+                    ('NICM', NICMTransformer(30*3)),
                     ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
+                    ('QRS', QRSTransformer('mean', 5, None)),#Bugs with QRS
                 ]
-    if False:
+    if icd9_features:
+        transformer_list += [
+                    ('Dia', ICD9_Transformer())
+                ]
+    if text_features:
         transformer_list += [
                     ('Car', FeaturePipeline([
                         ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
@@ -40,7 +48,7 @@ def main():
                        ('tfidf', TfidfTransformer)
                     ]))
                 ]
-    if False:
+    if labs_features:
         transformer_list += [
                     ('Enc', GetEncountersFeaturesTransformer(5)),
                     ('Labs_Counts',FeaturePipeline([

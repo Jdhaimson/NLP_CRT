@@ -36,6 +36,9 @@ class ExtractValueTransformerMixin(TransformerMixin):
 
     def transform(self, X):
         transformed_X = map(self.get_feature, X)
+        if self.method == 'found':
+           pass# print transformed_X
+           # print sum([sum(x) for x in transformed_X]) *1. / len(transformed_X)
         return np.matrix(transformed_X)
 
     def get_feature_names(self):
@@ -98,6 +101,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
             else:
                 return None
 
+
         elif self.method in ['found', 'count']:
             return [0]
         else:
@@ -137,7 +141,17 @@ class RegexTransformer(ExtractValueTransformerMixin):
     """
     
     def __init__(self, doc_types, name, pattern_strings, method, num_horizon, time_horizon):
+        """
+        doc_types: list of docs to look through , eg. 'Car', 'Lno'
+        name: name of value, e.g. 'EF'
+        pattern_strings: list of regex strings, e.g.  ['(1|2) x']
+        method: how to process, e.g. 'found', 'all'
+        num_horizon: how many of the last values returned to consider, i.e. if you use method 'mean', mean over last 5 values
+        time_horizon: how many days before procedure to consider documents, e.g. only take NYHA from last 6 months is 30*6
+        """
+
         ExtractValueTransformerMixin.__init__(self, doc_types, name,  method, num_horizon, time_horizon)  
+
         self.patterns = [re.compile(pattern) for pattern in pattern_strings]
        
     def parse_value(self, doc, operation_date, doc_type):
@@ -156,6 +170,8 @@ class RegexTransformer(ExtractValueTransformerMixin):
         values = []
         for pattern in self.patterns:
             values += [x for x in re.findall(pattern, note) if len(x) > 0 and not x in [".", " "]]
+        if values != []:
+            pass#            print values
         if len(values) > 0 and not self.method in ['found', 'count', 'other']:
             val_before = values
             values = [float(x) for x in values if unicode(x).isnumeric()]
@@ -214,12 +230,12 @@ class NICMTransformer(RegexTransformer):
 
 class NYHATransformer(RegexTransformer):
 
-    def __init__(self):
+    def __init__(self, time_horizon = None):
 
         re_patterns = ["class (i+v*|[1-4])(?:(?:/|-)(i+v*|[1-4]))? nyha",
                        "nyha(?: class)? (i+v*|[1-4])(?:(?:/|-)(i+v*|[1-4]))?"]
 
-        RegexTransformer.__init__(self, ['Car'], 'NYHA_class', re_patterns, 'other',  None, None)
+        RegexTransformer.__init__(self, ['Car'], 'NYHA_class', re_patterns, 'other',  None, time_horizon)
         
     def get_feature_names(self):
         return ["NYHA_class_" + str(i + 1) for i in range(4)]
@@ -256,7 +272,6 @@ class QRSTransformer(RegexTransformer):
         RegexTransformer.__init__(self, ['Car'], 'QRS', re_patterns, method, num_horizon, time_horizon)    
 
     def transform_values(self, values):
-#        print values
         return RegexTransformer.transform_values(self, values)    
 
     def select_doc(self, doc, operation_date, doc_type):

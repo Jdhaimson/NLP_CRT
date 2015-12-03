@@ -45,6 +45,24 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
         return y_hat
 
     def predict_color(self, values):
+        """
+        Summary of logic (all have ef > 35):
+        NYHA I:
+            Orange - ef < 30, qrs > 150, lbbb
+            Red -    ef > 30 or qrs < 150 or no lbbb
+        NYHA II:
+            Green -  qrs > 150, lbbb, sinus rhythm
+            Yellow - qrs < 150, lbbb, sinus rhythm
+            Orange - qrs > 150, no lbbb
+            Red -    no lbbb and qrs < 150 or lbbb and no SR
+        NYHA III:
+            Green -  qrs > 150, lbbb, sinus rhythm
+            Yellow - qrs > 150, no lbbb, sinus rhythm
+            Orange - qrs < 150, no lbbb, sinus rhythm
+            Red -    qrs < 120 or no sinus rhythm
+        NYHA IV:
+            Red -    for all cases
+        """
         nyha_class = values[self.NYHA].index(1) + 1
         ef = values[self.LVEF][0]
         qrs = values[self.QRS][0]
@@ -61,11 +79,11 @@ class ClinicalDecisionModel(TransformerMixin, ClassifierMixin):
         elif nyha_class == 2:
             if lbbb:
                 if sr:
-                    if qrs > 150:
+                    if qrs > 150: 
                         return 'green'
-                    else:
+                    else: 
                         return 'yellow'
-                else:
+                else: 
                     return 'red'
             else:
                 if qrs > 150:
