@@ -8,6 +8,7 @@ from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotes
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from icd_transformer import ICD9_Transformer
+from doc2vec_transformer import Doc2Vec_Note_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer
 from language_processing import parse_date 
 
@@ -19,6 +20,7 @@ def main():
                 ('EF', EFTransformer('max', 5, None)),
                 ('LBBB', LBBBTransformer()),
                 ('SR', SinusRhythmTransformer()),
+                ('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10))
                # ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
                 #('Car', FeaturePipeline([
                 #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
