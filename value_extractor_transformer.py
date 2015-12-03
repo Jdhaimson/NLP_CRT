@@ -35,7 +35,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
         return self
 
     def transform(self, X):
-        transformed_X = map(self.__get_feature, X)
+        transformed_X = map(self.get_feature, X)
         return np.matrix(transformed_X)
 
     def get_feature_names(self):
@@ -54,7 +54,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
         else:
             return None
 
-    def __select_doc(self, doc, operation_date, doc_type):
+    def select_doc(self, doc, operation_date, doc_type):
         """
         description: function that returns is specific doc should be used
         inputs: dict of the doc, datetime of the procedure, string of doc type
@@ -69,7 +69,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
         else:
             return time_diff <= 0
 
-    def __transform_values(self, values):
+    def transform_values(self, values):
         """
         description: function that returns the columns representing sample
         inputs: list of outputs of parse_function for selected docs
@@ -80,7 +80,11 @@ class ExtractValueTransformerMixin(TransformerMixin):
             if self.method == 'found':
                 return [1]
 
-            most_recent = [float(values[i][1]) for i in range(min(len(values),self.num_horizon))]
+            try:    
+                most_recent = [float(values[i][1]) for i in range(min(len(values),self.num_horizon))]
+            except:
+                print type(self)
+                raise
             if self.method == 'mean':
                 return [sum(most_recent) * 1. / len(most_recent)]
             elif self.method == 'max':
@@ -88,7 +92,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
             elif self.method == 'min':
                 return [min(most_recent)]
             elif self.method == 'all':
-                return most_recent + [sum(most_recent) / len(most_recent)]*(self.num_horizon - len(most_recent))
+                return most_recent + [0]*(self.num_horizon - len(most_recent))
             elif self.method == 'count':
                 return [sum(most_recent)]
             else:
@@ -102,7 +106,7 @@ class ExtractValueTransformerMixin(TransformerMixin):
             else:
                 return [0]
 
-    def __get_feature(self, empi):
+    def get_feature(self, empi):
         """
         description: performs the loops and conditionals to get at the
             desired documents and then returns the feature associated
@@ -120,11 +124,11 @@ class ExtractValueTransformerMixin(TransformerMixin):
                 if type(docs) != type(list()):
                     docs = [docs]
                 for doc in docs:
-                    if self.__select_doc(doc, operation_date, doc_type):
+                    if self.select_doc(doc, operation_date, doc_type):
                         value = self.parse_value(doc, operation_date, doc_type)
                         if not value in [None, []]:
                             values += value if type(value) == type(list()) else [value]
-        return self.__transform_values(values)
+        return self.transform_values(values)
 
 class RegexTransformer(ExtractValueTransformerMixin):    
     """
@@ -151,14 +155,27 @@ class RegexTransformer(ExtractValueTransformerMixin):
         
         values = []
         for pattern in self.patterns:
-            values += [x for x in re.findall(pattern, note) if len(x) > 0 and x != "."]
-        if len(values) > 0 and not self.method in ['found', 'count']:
-            return (delta_days, sum([float(x) for x in values])/len(values))
+            values += [x for x in re.findall(pattern, note) if len(x) > 0 and not x in [".", " "]]
+        if len(values) > 0 and not self.method in ['found', 'count', 'other']:
+            val_before = values
+            values = [float(x) for x in values if unicode(x).isnumeric()]
+            try:
+                if len(values) == 0:
+                    return None
+                else:    
+                    return (delta_days, sum(values)/len(values))
+            except:
+                print "\n"*5
+                print values
+                print "\n"*5
+                raise
+        elif self.method == 'other': #returns entire value list
+            return (delta_days, values )
         elif self.method == 'found':
             return (delta_days, 1)
         elif self.method == 'count':
             return [(delta_days, len(values))]
-            return None
+        return None
 
 class EFTransformer(RegexTransformer):
 
@@ -167,9 +184,9 @@ class EFTransformer(RegexTransformer):
         re_patterns = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
         RegexTransformer.__init__(self, ['Car'], 'EF', re_patterns, method, num_horizon, time_horizon)    
 
-    def __select_doc(self, doc, operation_date, doc_type):
-        is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)
-        return is_in_time_range and doc['procedure'] in ['CardiacElectrophysiology', 'ECG']
+    def select_doc(self, doc, operation_date, doc_type):
+        is_in_time_range = ExtractValueTransformerMixin.select_doc(self, doc, operation_date, doc_type)
+        return is_in_time_range# and doc['procedure'] in ['CardiacElectrophysiology', 'ECG']
 
 
 class LBBBTransformer(RegexTransformer):
@@ -178,8 +195,8 @@ class LBBBTransformer(RegexTransformer):
         re_patterns = ['left bundle branch block', 'lbbb']
         RegexTransformer.__init__(self, ['Car'], 'LBBB', re_patterns, 'found', None, time_horizon)    
 
-    def __select_doc(self, doc, operation_date, doc_type):
-        is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)
+    def select_doc(self, doc, operation_date, doc_type):
+        is_in_time_range = ExtractValueTransformerMixin.select_doc(self, doc, operation_date, doc_type)
         return is_in_time_range and doc['procedure'] in ['ECG']
 
 
@@ -189,42 +206,60 @@ class SinusRhythmTransformer(RegexTransformer):
         re_patterns = ['sinus rhythm']
         RegexTransformer.__init__(self, ['Car'], 'sinus_rhythm', re_patterns, 'found', None, time_horizon)
 
-class NYHATransformer(ExtractValueTransformerMixin):
+class NICMTransformer(RegexTransformer):
+        
+    def __init__(self, time_horizon = None):
+        re_patterns = ['non(?:-| )ischemic']
+        RegexTransformer.__init__(self, ['Car'], 'nicm', re_patterns, 'found', None, time_horizon)
+
+class NYHATransformer(RegexTransformer):
 
     def __init__(self):
-        ExtractValueTransformer.__init__(self, ['Car'], 'NYHA_class', 'other',  None, None)
 
-    def get_feature_names(self):
-        return ["NYHA_class_" + (i + 1) for i in range(4)]
+        re_patterns = ["class (i+v*|[1-4])(?:(?:/|-)(i+v*|[1-4]))? nyha",
+                       "nyha(?: class)? (i+v*|[1-4])(?:(?:/|-)(i+v*|[1-4]))?"]
 
-    def parse_value(self, doc, operation_date, doc_type):
-        """
-        description: finds NYHA class from doc
-        input: doc dict, operation date, document type, e.g. Car
-        output: NYHA class as int or none
-        """
-        pass
-
-    def __transform_values(self, values):
-        #returns majority of NYHA class readings
+        RegexTransformer.__init__(self, ['Car'], 'NYHA_class', re_patterns, 'other',  None, None)
         
-        count = {1: 0, 2: 0, 3: 0, 4: 0}
+    def get_feature_names(self):
+        return ["NYHA_class_" + str(i + 1) for i in range(4)]
+    
+    @staticmethod
+    def __convert_to_class(string):
+        values = {'i' : 1, 'ii' : 2, 'iii' : 3, 'iv' : 4, '1' : 1, '2' : 2, '3' : 3, '4' : 4, 'one' : 1, 'two' : 2, 'three' : 3, 'four' : 4}
+        l_str = string.lower()
+        if l_str in values:
+            return values[string.lower()]
+        else:
+            return 0
+
+    def transform_values(self, values):
+        #returns majority of NYHA class readings
+        count = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
         for val in values:
-            count[val] += 1
-        return [x for x in count if count[x] == max(count.values())][0]
+            for doc in val[1]:
+                for nyha_class in doc:
+                    count[NYHATransformer.__convert_to_class(nyha_class)] += 1
+        count[0] = -1
+        result = [x for x in count if count[x] == max(count.values())][0]
+        if result == None:
+            result = 1
+        feature = [0, 0, 0, 0]
+        feature[result - 1] = 1
+        return feature
 
 class QRSTransformer(RegexTransformer):
 
     def __init__(self, method, num_horizon, time_horizon = None):
 
-        re_patterns = ['qrs duration [{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*ms']
+        re_patterns = ['qrs(?: duration) ([0-9]*.?[0-9])']
         RegexTransformer.__init__(self, ['Car'], 'QRS', re_patterns, method, num_horizon, time_horizon)    
 
-    def __transform_values(self, values):
-        print values
-        return RegexTransformer.__transform_values(self, values)    
+    def transform_values(self, values):
+#        print values
+        return RegexTransformer.transform_values(self, values)    
 
-    def __select_doc(self, doc, operation_date, doc_type):
-        is_in_time_range = ExtractValueTransformerMixin.__select_doc(self, doc, operation_date, doc_type)
+    def select_doc(self, doc, operation_date, doc_type):
+        is_in_time_range = ExtractValueTransformerMixin.select_doc(self, doc, operation_date, doc_type)
         return is_in_time_range and doc['procedure'] in ['CardiacElectrophysiology', 'ECG']
 

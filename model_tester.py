@@ -7,6 +7,7 @@ from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
 
@@ -14,7 +15,7 @@ from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
 from extract_data import get_operation_date,  is_note_doc, get_date_key
 from language_processing import parse_date 
 from loader import get_data
-
+from decision_model import ClinicalDecisionModel
 
 def get_preprocessed_patients(sample_size = 25):
     patients_out = []
@@ -96,14 +97,20 @@ def display_summary(name, values):
     print "\tmax:\t", max(values)
 
 
-def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True):
+def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
 
     if method in ['logistic regression', 'lr', 'logitr', 'logistic']:
         is_regression = False
-        clf = LogisticRegression()
+        clf = LogisticRegression(**model_args)
     elif method in ['svm']:
         is_regression = False
-        clf = SVC()
+        clf = SVC(**model_args)
+    elif method in ['boosting', 'adaboost']:
+        is_regression = False
+        clf = AdaBoostClassifier(**model_args)
+    elif method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        is_regression = False
+        clf = ClinicalDecisionModel()
     else:
         raise ValueError("'" + method + "' is not a supported classification method")
 
@@ -128,7 +135,9 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         ('Classifier', clf)
     ])
 
-    print "Train, Predict and Evaluate CV"
+    #If using the ClinicalDecisionModel then no pipeline needed
+    if method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        pipeline = clf
 
     mse = []
     r2 = []
@@ -142,7 +151,6 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
         pipeline.fit(X_train, Y_train)
         Y_predict = pipeline.predict(X_test)
-
         if is_regression:
             mse += [mean_squared_error(Y_test, Y_predict)]
             r2 += [r2_score(Y_test, Y_predict)]
@@ -178,12 +186,12 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     try:
         column_names = features.get_feature_names()
         print "Number of column names: " + str( len(column_names))
-        if len(column_names) == clf.coef_.shape[1]:
-            Z = zip(column_names, clf.coef_[0])
+        feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
+        if len(column_names) == len(feature_importances):
+            Z = zip(column_names, feature_importances)
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             print "100 biggest theta components of last CV run:"
-            print
-            for z in Z[:100]:
+            for z in Z[:min(100, len(Z))]:
                 print z[1], "\t", z[0]
     except Exception as e:
         print "Feature name extraction failed"
