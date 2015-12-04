@@ -265,6 +265,7 @@ def execute_test(clf, data_size, num_cv_splits):
         important_features = ""
 
     result = dict()
+    result['mode'] = max([1. * x/ sum(counts.values()) for x in counts.values()])
     result['precision_mean'], result['precision_std'] = get_mu_std(precision)
     result['recall_mean'], result['recall_std'] = get_mu_std(recall)
     result['f1_mean'], result['f1_std'] = get_mu_std(f1)

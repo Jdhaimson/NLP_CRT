@@ -1,7 +1,7 @@
 import logging
 import sys
 import time
-
+import csv
 from daemon import runner
 import pandas as pd
 
@@ -11,8 +11,10 @@ from model_tester import test_model, execute_test
 class ExperimentRunner():
 
     def __init__(self):
+        #base = '../experiments/'
         base = '/home/ubuntu/experiments/'
         self.experiments_file = base + 'experiments.csv'
+        self.results_file = "../experiments/" + 'results.csv'
         self.pidfile_path = base + 'runner.pid'
         self.pidfile_timeout = 5
         self.stdin_path = '/dev/null'
@@ -37,13 +39,26 @@ class ExperimentRunner():
             pipeline = eval(experiment['Model'])
 
             logger.info(str(pipeline))
-            execute_test(pipeline, experiment['Patients'], experiment['CV'])
+            results = execute_test(pipeline, experiment['Patients'], experiment['CV'])
         except Exception as e:
             logger.error(e)
 
         # Mark experiment as run
         experiments.loc[idx, 'Run?'] = 1
         experiments.to_csv(self.experiments_file, index=False)
+
+        #post results
+        try:
+            with open(self.results_file, "r+b") as results_file:
+                writer = csv.writer(results_file)
+                writer.writerow([experiment[key] for key in ['Id', 'Purpose', 'CV', 'Patients', 'Model']] + 
+                                [results[key] for key in ['mode', 'precision_mean', 'precision_std', 'recall_mean',
+                                                          'recall_std', 'f1_mean', 'f1_std', 'accurayc_mean',
+                                                          'accuracy_std', 'important_features']
+                                ])
+
+        except Exception as e:
+            logger.error(e)
 
     def run(self):
         while True:
