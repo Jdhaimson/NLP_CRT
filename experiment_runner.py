@@ -5,7 +5,7 @@ import time
 from daemon import runner
 import pandas as pd
 
-from model_tester import test_model
+from model_tester import test_model, execute_test
 
 
 class ExperimentRunner():
@@ -37,7 +37,7 @@ class ExperimentRunner():
             pipeline = eval(experiment['Model'])
 
             logger.info(str(pipeline))
-            test_model(pipeline, experiment['Patients'], experiment['CV'], 'lr', True)
+            execute_test(pipeline, experiment['Patients'], experiment['CV'])
         except Exception as e:
             logger.error(e)
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("DaemonLog")
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    handler = logging.FileHandler("/home/ubuntu/experiments/runner.log")
+    handler = logging.FileHandler("../experiments/runner.log")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 

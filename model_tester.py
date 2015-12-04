@@ -57,7 +57,7 @@ def change_ef_values_to_categories(ef_values):
     return output
             
 def get_ef_delta(patient_data):
-    after_threshold = 6*30
+    after_threshold = 12*30 #traub: changed to 12mo optimal measurement
     ef_values = get_ef_values(patient_data)
     sorted_ef = sorted(ef_values)
     before = None
@@ -98,6 +98,11 @@ def display_summary(name, values):
     logger.info("\tmin:\t", min(values))
     logger.info("\tmax:\t", max(values))
 
+def get_mu_std(values):
+    mu = 1. * sum(values) / len(values)
+    sq_dev = [(x - mu)**2 for x in values]
+    std = (sum(sq_dev) / len(values))**.5
+    return (mu, std)
 
 def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
 
@@ -132,8 +137,6 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     
     pipeline =  Pipeline([
         ('feature_union', features),
-        #('pca', sklearn.decomposition.PCA(1000)), 
-        #('print', PrintTransformer()),
         ('Classifier', clf)
     ])
 
@@ -195,6 +198,80 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         logger.info("Feature name extraction failed")
         logger.info(e)
  
+
+############################################
+# Josh: use this one
+# Inputs:
+#       clf: some model object with a fit(X,y) and predict(X) function
+#       data_size: num patients
+#       num_cv_splits: number of cv runs
+#       status_file: opened status file (status_file.write("hello") should work)
+# Outputs: a dictionary with the following
+#       precision_mean(_std)
+#       recall_mean(_std)
+#       f1_mean(_std)
+#       accuracy_mean(_std)
+#       important_features: a string of the most 100 important features 
+############################################
+
+def execute_test(clf, data_size, num_cv_splits): 
+    
+    logger.info('Preprocessing...')
+    X, Y = get_preprocessed_patients(data_size)
+    Y = change_ef_values_to_categories(Y)
+    logger.info(str(len(X)) + " patients in dataset")
+    
+    counts = {}
+    for y in Y:
+        if y not in counts:
+            counts[y] = 0
+        counts[y] += 1
+    logger.info("Summary:")
+    logger.info(counts)
+   
+    precision = []
+    recall = []
+    f1 = []
+    accuracy = []    
+
+    for cv_run in range(num_cv_splits):
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
+        clf.fit(X_train, Y_train)
+        Y_predict = clf.predict(X_test)
+
+        precision += [precision_score(Y_test, Y_predict)]
+        recall += [recall_score(Y_test, Y_predict)]
+        f1 += [f1_score(Y_test, Y_predict)]
+        accuracy += [accuracy_score(Y_test, Y_predict)]
+
+        logger.info("CV Split #" + str(cv_run + 1))
+        logger.info("\tPrecision: " + str(precision[-1]))
+        logger.info("\tRecall: " + str(recall[-1]))
+        logger.info("\tF1 Score: " + str(f1[-1]))
+        logger.info("\tAccuracy: " + str(accuracy[-1]))
+
+    try:
+        features, model = (clf.steps[0], clf.steps[1])
+        column_names = features.get_feature_names()
+        feature_importances = clf.coef_[0] if not type(model) == type(AdaBoostClassifier())  else clf.feature_importances_
+        if len(column_names) == len(feature_importances):
+            Z = zip(column_names, feature_importances)
+            Z.sort(key = lambda x: abs(x[1]), reverse = True)
+            important_features = ""
+            for z in  Z[:min(100, len(Z))]:
+                important_features += z[1] + ": " + str(z[0]) + "\n" 
+    except Exception as e:
+        important_features = ""
+
+    result = dict()
+    result['precision_mean'], result['precision_std'] = get_mu_std(precision)
+    result['recall_mean'], result['recall_std'] = get_mu_std(recall)
+    result['f1_mean'], result['f1_std'] = get_mu_std(f1)
+    result['accuracy_mean'], result['accuracy_std'] = get_mu_std(accuracy)
+    result['important_features'] = important_features
+     
+    return result    
 
 if __name__ == "__main__":
     main()
