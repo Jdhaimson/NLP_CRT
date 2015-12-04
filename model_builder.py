@@ -9,7 +9,9 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
 from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
+import logging
 
+logger = logging.getLogger("DaemonLog")
 
 #This should make adding transformers easier. You could add a transformer like
 # features_add = [baseline_features[x] for x in ['Labs_Latest_High', 'Car_tfidf']
@@ -164,7 +166,7 @@ def build_model(control, method = None, model_args = None, features = None, feat
 
 def build_transformer(transformer_name, transformer_values):
     if issubclass(transformer_values[0], Pipeline):
-        steps = [build_transformer(step[0], (step[1], step[2])) for step in transformer_values]
+        steps = [build_transformer(step[0], (step[1], step[2])) for step in transformer_values[1]]
         transformer = transformer_values[0](steps)
     else:
         transformer = transformer_values[0](**transformer_values[1])

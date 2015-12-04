@@ -49,7 +49,7 @@ class ExperimentRunner():
 
         #post results
         try:
-            with open(self.results_file, "r+b") as results_file:
+            with open(self.results_file, "a") as results_file:
                 writer = csv.writer(results_file)
                 writer.writerow([experiment[key] for key in ['Id', 'Purpose', 'CV', 'Patients', 'Model']] + 
                                 [results[key] for key in ['mode', 'precision_mean', 'precision_std', 'recall_mean',

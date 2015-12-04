@@ -234,10 +234,14 @@ def execute_test(clf, data_size, num_cv_splits):
     f1 = []
     accuracy = []    
 
+    logger.info("Beginning runs")
+    
     for cv_run in range(num_cv_splits):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
+        logger.info("fitting...")
         clf.fit(X_train, Y_train)
+        logger.info("predicting")
         Y_predict = clf.predict(X_test)
 
         precision += [precision_score(Y_test, Y_predict)]
@@ -252,17 +256,18 @@ def execute_test(clf, data_size, num_cv_splits):
         logger.info("\tAccuracy: " + str(accuracy[-1]))
 
     try:
-        features, model = (clf.steps[0], clf.steps[1])
+        features, model = (clf.steps[0][1], clf.steps[-1][1])
         column_names = features.get_feature_names()
-        feature_importances = clf.coef_[0] if not type(model) == type(AdaBoostClassifier())  else clf.feature_importances_
+        feature_importances = model.coef_[0] if not type(model) == type(AdaBoostClassifier())  else model.feature_importances_
         if len(column_names) == len(feature_importances):
             Z = zip(column_names, feature_importances)
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
             important_features = ""
             for z in  Z[:min(100, len(Z))]:
-                important_features += z[1] + ": " + str(z[0]) + "\n" 
+                important_features += str(z[1]) + ": " + str(z[0]) + "\\n" 
     except Exception as e:
-        important_features = ""
+        logger.error(e)
+        important_features = "error"
 
     result = dict()
     result['mode'] = max([1. * x/ sum(counts.values()) for x in counts.values()])
