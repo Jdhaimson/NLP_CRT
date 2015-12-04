@@ -23,7 +23,23 @@ regex_baseline = {  'method' : 'adaboost',
                                  }
                  }
 
-    
+##################
+#
+# method : this is a string that is interpreted as a switch statement below
+# model_args : the **kwargs dict that are passed to your model, e.g. AdaBoostClassifier(**model_args)    
+# features: this ia a dictionary of transformer name : (transformer class, transformer args)
+#           eventually this will become a tuple (name, class(**args)) to go into a FeatureUnion
+#           However, I have included functionality to handle FeaturePipelines. In this one case, 
+#           the transformer args are a list of (name, class, args) triples. For example:
+#           'Car' : (FeaturePipeline, [('car_notes', CarNotesTransformer, {'horizon' :3}), ('tfidf', TfidfTransformer, {})])
+#
+#           Besides making features, you can also change them. I thought this was an inutitive option. The simplest change
+#           just calls the transformer by name and assigns a new value to one of the args. For example:
+#               features_change = {'ef_all' : {'num_horizon' : 10, 'time_horizon' : 30*4}}
+#           But you can also change thing inside feature pipelines. For example, to change the feature above:
+#               features_change = {['Car', 0] : {'horizon' : 10}}
+#
+################
 
 def build_model(control, method = None, model_args = None, features = None, features_add = None, features_change = None, features_remove = None):
 
