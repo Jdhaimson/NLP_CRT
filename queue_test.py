@@ -1,26 +1,30 @@
 import sys
 import csv
+import itertools
 
 ################################
 #
 # Description: adds a test to the queue
 #
-# example:
+# example of queue:
 #   python -m 'This is a test' -n 500 -cv 3 -d 'from model_builder import build_model, regex_baseline' -r "build_model(regex_baseline, method = 'SVM', features_remove = ['NYHA'], features_add = {'min_ef' : (EFTransformer, {'method' = 'min', 'num_horizon' = 2})})"
 #
-# Keys:
-#   -m      message/description
-#   -n      number of patients
-#   -cv     number of CV splits
-#   -d      dependency string to be executed
-#   -r      model string to be executed
+#  Keys    Description                                 Default                    
+#   -mes    message/description                         ""
+#   -n      number of patients                          25
+#   -cv     number of CV splits                         3
+#   -d      dependency string to be executed            "from model_builder import build_model, regex_baseline"
+#   -met    method to override control                  adaboost
+#   -arg*   arguments to override control model params  None
+#   -a*     features to add                             None
+#   -c*     features to change                          None
+#   -r*     features to remove                          None
+#   -g      the grid of features                        None
 #
-# Defaults:
-#   -m      ""
-#   -n      25
-#   -cv     3
-#   -d      "from model_builder import build_model, regex_baseline"
-#   -r      "build_model(regex_baseline)"
+# The keys with the * indicate that the string can be formatted according to the grid. 
+# For example, I could pass the following:
+#   -arg "{'n_estimators' : <<N>>}" -g "{'N' : [5, 50, 500]}"
+# which would mean that the model would be ran 3 times, with n_estimators replaced each time. 
 #
 ################################
 
@@ -34,27 +38,83 @@ def queue_test(message = "", num_patients = 25, cv_splits = 3, build_model_strin
         writer = csv.writer(queue_file)
         writer.writerow([test_id, message, cv_splits, num_patients, dependencies, build_model_string, '0'])
 
+def queue_grid_search(grid = None, message = "", num_patients = 25, cv_splits = 3, dependencies = "from model_builder import build_model, regex_baseline", control_string = 'regex_baseline', method_string = 'None', model_args = 'None', features_add_string = 'None', features_change_string = 'None', features_remove_string = 'None'):
+
+    if not grid == None: 
+        args_options = build_options(grid, model_args)
+        add_options = build_options(grid, features_add_string)
+        change_options = build_options(grid, features_change_string)
+        remove_options = build_options(grid, features_remove_string)
+    else:
+        args_options = [model_args]
+        add_options = [features_add_string]
+        change_options = [features_change_string]
+        remove_options = [features_remove_string]
+    results = []  
+    for args in args_options:
+        for add in add_options:
+            for change in change_options:
+                for remove in remove_options:
+                    results += [make_model_string(control_string, method_string, args, add, change, remove)] 
+
+    for model_string in results:
+        queue_test(message, num_patients, cv_splits, model_string, dependencies)
+
+def make_model_string(control, method, args, add, change, remove):
+    result = "build_model("
+    result += "control = " + control + ", "
+    if not method == 'None':
+        result += "method = " + method + ", "
+    if not args == 'None':
+        result += "model_args = " + args + ", "
+    if not add == 'None':
+        result += "features_add = " + add + ", "
+    if not change == 'None':
+        result += "features_change = " + change + ", "
+    if not remove == 'None':
+        result += "features_remove = " + remove
+    result += ")"
+    return result
+
+def update_string(mapping, string):
+    replace_pairs = [('{', '{{'), ('}', '}}'), ('<<', '{'), ('>>', '}')]
+    for replace_pair in replace_pairs:
+        string = string.replace(replace_pair[0], replace_pair[1])
+    return string.format(**mapping)
+
+def build_options(mapping, string):
+    result = []
+    keys = list(mapping.keys())
+    relevant_keys = [key for key in keys if "<<" + key + ">>" in string]
+    if len(relevant_keys) > 0:
+        values = [mapping[key] for key in relevant_keys]
+        combo_iterator = itertools.product(*values)
+        for combo in combo_iterator:
+            single_map = dict(zip(relevant_keys, combo))
+            result += [update_string(single_map, string)]
+        return list(set(result)) 
+    else:
+        return [string]
+
 def main():
     inputs = sys.argv[1:]
     if len(inputs) % 2 == 1:
         raise ValueError("Uninterpretable input: " + str(inputs))
 
     queue_args = dict()
-    args_converter = {"-m" : "message", "-n" : "num_patients", "-cv" : "cv_splits", "-r" : "build_model_string", "-d" : "dependencies"}
+    args_converter = {"-con" : "control_string", "-a" : "features_add_string", "-met" : 'method_string', '-arg' : 'model_args', '-c' : 'features_change_string', "-g" : "grid", "-mes" : "message", "-n" : "num_patients", "-r" : "features_remove_string", "-cv" : "cv_splits", "-d" : "dependencies"}
 
     for i in range(len(inputs) / 2):
         key = inputs[2*i]
         value = inputs[2*i + 1]
         if key in args_converter:
-            if key in ['-n', '-cv']:
-                value = int(value)
+            if key in ['-g', '-n', '-cv' ]:
+                value = eval(value)
             queue_args[args_converter[key]] = value
         else:
             raise ValueError("Unkown key: " + key)       
 
-    queue_test(**queue_args)
-
-
+    queue_grid_search(**queue_args)
 
 if __name__ == '__main__':
     main()
