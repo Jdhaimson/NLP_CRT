@@ -5,6 +5,8 @@ import time
 from daemon import runner
 import pandas as pd
 
+from model_tester import test_model
+
 
 class ExperimentRunner():
 
@@ -29,10 +31,15 @@ class ExperimentRunner():
             return False
         
     def run_experiment(self, experiment, experiments, idx):
-        exec(experiment['Dependencies'])
-        pipeline = eval(experiment['Model'])
+        logger.info("Running experiment: " + str(experiment['Id']))
+        try:
+            exec(experiment['Dependencies'])
+            pipeline = eval(experiment['Model'])
 
-        logger.info(str(pipeline))
+            logger.info(str(pipeline))
+            test_model(pipeline, experiment['Patients'], experiment['CV'], 'lr', True)
+        except Exception as e:
+            logger.error(e)
 
         # Mark experiment as run
         experiments.loc[idx, 'Run?'] = 1
@@ -41,10 +48,14 @@ class ExperimentRunner():
     def run(self):
         while True:
             success = self.do_next_experiment()
+            waiting = False
             if not success:
-                logger.info("No experiments to run, waiting for more")
+                if not waiting:
+                    logger.info("No experiments to run, waiting for more")
+                waiting = True
                 time.sleep(5)
-
+            else:
+                waiting = False
 
 if __name__ == "__main__":
     # Configure Logger

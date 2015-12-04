@@ -1,3 +1,4 @@
+import logging
 import re
 import sys
 
@@ -17,13 +18,15 @@ from language_processing import parse_date
 from loader import get_data
 from decision_model import ClinicalDecisionModel
 
+logger = logging.getLogger("DaemonLog")
+
 def get_preprocessed_patients(sample_size = 25):
     patients_out = []
     delta_efs_out = []
     patient_nums = range(sample_size)
     for i in patient_nums:
         if i%100 == 0:
-            print str(i) + '/' + str(patient_nums[-1])
+            logger.info(str(i) + '/' + str(patient_nums[-1]))
         patient_data = get_data([i])[0]
         if patient_data is not None:
             ef_delta = get_ef_delta(patient_data)
@@ -32,7 +35,6 @@ def get_preprocessed_patients(sample_size = 25):
                 delta_efs_out.append(ef_delta)
     return patients_out, delta_efs_out
 
-# 6 month followup is best, change above code
 
 def change_ef_values_to_categories(ef_values):
     output = []
@@ -80,7 +82,7 @@ class PrintTransformer(TransformerMixin):
     def fit(self, X, y=None, **fit_params):
         return self
     def transform(self, X, **transform_params):
-        print X.shape
+        logger.info(X.shape)
         print X[0].shape
         return X
 
@@ -91,10 +93,10 @@ class FeaturePipeline(Pipeline):
 
 
 def display_summary(name, values):
-    print name 
-    print "\tmean:\t", 1.* sum(values) / len(values)
-    print "\tmin:\t", min(values)
-    print "\tmax:\t", max(values)
+    logger.info(name)
+    logger.info("\tmean:\t", 1.* sum(values) / len(values))
+    logger.info("\tmin:\t", min(values))
+    logger.info("\tmax:\t", max(values))
 
 
 def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
@@ -114,10 +116,10 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     else:
         raise ValueError("'" + method + "' is not a supported classification method")
 
-    print 'Preprocessing...'
+    logger.info('Preprocessing...')
     X, Y = get_preprocessed_patients(data_size)
     Y = change_ef_values_to_categories(Y)
-    print str(len(X)) + " patients in dataset"
+    logger.info(str(len(X)) + " patients in dataset")
     
     if not is_regression:
         counts = {}
@@ -125,8 +127,8 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
             if y not in counts:
                 counts[y] = 0
             counts[y] += 1
-        print "Summary:"
-        print counts
+        logger.info("Summary:")
+        logger.info(counts)
     
     pipeline =  Pipeline([
         ('feature_union', features),
@@ -155,24 +157,22 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
             mse += [mean_squared_error(Y_test, Y_predict)]
             r2 += [r2_score(Y_test, Y_predict)]
             if show_progress:
-                print "CV Split #" + str(cv_run + 1)
-                print "\tMean Squared Error: ", mse[-1]
-                print "\tR2 Score: ", r2[-1]
+                logger.info("CV Split #" + str(cv_run + 1))
+                logger.info("\tMean Squared Error: ", mse[-1])
+                logger.info("\tR2 Score: ", r2[-1])
         else:
             precision += [precision_score(Y_test, Y_predict)]
             recall += [recall_score(Y_test, Y_predict)]
             f1 += [f1_score(Y_test, Y_predict)]
             accuracy += [accuracy_score(Y_test, Y_predict)]
             if show_progress:
-                print "CV Split #" + str(cv_run + 1)
-                print "\tPrecision: " + str(precision[-1])
-                print "\tRecall: " + str(recall[-1])
-                print "\tF1 Score: " + str(f1[-1])
-                print "\tAccuracy: " + str(accuracy[-1])
-    print "\n---------------------------------------"
-    print
-    print "Overall (" + str(num_cv_splits) +  " cv cuts)"
-    print
+                logger.info("CV Split #" + str(cv_run + 1))
+                logger.info("\tPrecision: " + str(precision[-1]))
+                logger.info("\tRecall: " + str(recall[-1]))
+                logger.info("\tF1 Score: " + str(f1[-1]))
+                logger.info("\tAccuracy: " + str(accuracy[-1]))
+    logger.info("\n---------------------------------------")
+    logger.info("Overall (" + str(num_cv_splits) +  " cv cuts)")
     if is_regression:
         display_summary("Mean Squared Error", mse)
         display_summary("R2 Score", r2)
@@ -182,20 +182,18 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         display_summary("F1 Score", f1)
         display_summary("Accuracy", accuracy)
 
-    print 
     try:
         column_names = features.get_feature_names()
-        print "Number of column names: " + str( len(column_names))
+        logger.info("Number of column names: " + str( len(column_names)))
         feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
-        if len(column_names) == len(feature_importances):
-            Z = zip(column_names, feature_importances)
-            Z.sort(key = lambda x: abs(x[1]), reverse = True)
-            print "100 biggest theta components of last CV run:"
-            for z in Z[:min(100, len(Z))]:
-                print z[1], "\t", z[0]
+        Z = zip(column_names, feature_importances)
+        Z.sort(key = lambda x: abs(x[1]), reverse = True)
+        logger.info("100 biggest theta components of last CV run:")
+        for z in Z[:min(100, len(Z))]:
+            logger.info(str(z[1]) + "\t" + z[0])
     except Exception as e:
-        print "Feature name extraction failed"
-        print e
+        logger.info("Feature name extraction failed")
+        logger.info(e)
  
 
 if __name__ == "__main__":
