@@ -14,7 +14,7 @@ class ExperimentRunner():
         #base = '../experiments/'
         base = '/home/ubuntu/experiments/'
         self.experiments_file = base + 'experiments.csv'
-        self.results_file = "../experiments/" + 'results.csv'
+        self.results_file = base + 'results.csv'
         self.pidfile_path = base + 'runner.pid'
         self.pidfile_timeout = 5
         self.stdin_path = '/dev/null'
@@ -53,7 +53,7 @@ class ExperimentRunner():
                 writer = csv.writer(results_file)
                 writer.writerow([experiment[key] for key in ['Id', 'Purpose', 'CV', 'Patients', 'Model']] + 
                                 [results[key] for key in ['mode', 'precision_mean', 'precision_std', 'recall_mean',
-                                                          'recall_std', 'f1_mean', 'f1_std', 'accurayc_mean',
+                                                          'recall_std', 'f1_mean', 'f1_std', 'accuracy_mean',
                                                           'accuracy_std', 'important_features']
                                 ])
 
@@ -61,9 +61,9 @@ class ExperimentRunner():
             logger.error(e)
 
     def run(self):
+        waiting = False
         while True:
             success = self.do_next_experiment()
-            waiting = False
             if not success:
                 if not waiting:
                     logger.info("No experiments to run, waiting for more")
