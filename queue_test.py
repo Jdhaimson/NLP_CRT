@@ -140,6 +140,16 @@ def show_help():
     print '   For example, I could pass the following:'
     print '         -arg "{\'n_estimators\' : <<N>>}" -g "{\'N\' : [5, 50, 500]}"'
     print '   which would mean that the model would be ran 3 times, with n_estimators replaced each time.\033[0m' 
-
+    print '\033[96m   You also have the following variables availible to use (they are in model_builder.py):\033[0m'
+    print '   control_features      a dict of all features and their (name, class, args) tuple'
+    print '   control_groups        a dict of some groups of names, which are "regex", "structured_only", "notes_tfidf", and "labs" for now'
+    print '   adaboost_baseline     (for -con) baseline with no features but has adaboost with 500 weak learners'
+    print '   lr_baseline           (for -con) baseline with no features but has logisitic regression'
+    print '   regex_baseline        (for -con) adaboost_baseline with control_groups["regex"] loaded'
+    print '\033[96m   Use these in combintion with grid to easily gain control over our experiments:\033[96m'
+    print '   Run control, without regex features, without notes: -r "<<G>>" -g "{\'G\' : [\'None\', \'control_groups[\\"regex\\"]\', \'control_groups[\\"notes_tfidf\\"]\']}"'
+    print '   Run with regex added in, labs added in: -a "[control_features[x] for x in control_groups[\'<<G>>\']]" -g "{\'G\' : [\'regex\', \'labs\']}"'
+    print '  \033[92m See model_builder.py for more information about these structures and how to handle FeaturePipeline changes'
+    print '\033[0m'
 if __name__ == '__main__':
     main()
