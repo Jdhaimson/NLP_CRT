@@ -135,8 +135,6 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     
     pipeline =  Pipeline([
         ('feature_union', features),
-        #('pca', sklearn.decomposition.PCA(1000)), 
-        #('print', PrintTransformer()),
         ('Classifier', clf)
     ])
 
@@ -209,13 +207,12 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
 #       data_size: num patients
 #       num_cv_splits: number of cv runs
 #       status_file: opened status file (status_file.write("hello") should work)
-# Outputs: a tuple with the following
-#       precision_mu_std: a (mu, std) tuple of the precision
-#       recall_mu_std:          ``                 recall
-#       f1_mu_std:              ``                 f1
-#       accuracy_mu_std:        ``                 accuracy
-#       important_features: a list of (value, name) tuples of 100 most relevant
-#           features. None if there was an error
+# Outputs: a dictionary with the following
+#       precision_mean(_std)
+#       recall_mean(_std)
+#       f1_mean(_std)
+#       accuracy_mean(_std)
+#       important_features: a string of the most 100 important features 
 ############################################
 
 def execute_test(clf, data_size, num_cv_splits, status_file) 
@@ -225,17 +222,14 @@ def execute_test(clf, data_size, num_cv_splits, status_file)
     Y = change_ef_values_to_categories(Y)
     status_file.write(str(len(X)) + " patients in dataset")
     
-    if not is_regression:
-        counts = {}
-        for y in Y:
-            if y not in counts:
-                counts[y] = 0
-            counts[y] += 1
-        status_file.write("Summary:")
-        status_file.write(counts)
+    counts = {}
+    for y in Y:
+        if y not in counts:
+            counts[y] = 0
+        counts[y] += 1
+    status_file.write("Summary:")
+    status_file.write(counts)
    
-    mse = []
-    r2 = []
     precision = []
     recall = []
     f1 = []
@@ -258,22 +252,26 @@ def execute_test(clf, data_size, num_cv_splits, status_file)
         status_file.write("\tF1 Score: " + str(f1[-1]))
         status_file.write("\tAccuracy: " + str(accuracy[-1]))
 
-    precision_mu_std = get_mu_std(precision)
-    recall_mu_std = get_mu_std(recall)
-    f1_mu_std = get_mu_std(f1)
-    accuracy_mu_std = get_mu_std(accuracy)
-
     try:
         column_names = features.get_feature_names()
         feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
         if len(column_names) == len(feature_importances):
             Z = zip(column_names, feature_importances)
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
-            important_features = Z[:min(100, len(Z))]
+            important_features = ""
+            for z in  Z[:min(100, len(Z))]:
+                important_features += z[1] + ": " + str(z[0]) + "\n" 
     except Exception as e:
-        important_features = None 
- 
-    return (precision_mu_std, recall_mu_std, f1_mu_std, accruacy_mu_std, important_features)
+        important_features = ""
+
+    result = dict()
+    result['precision_mean'], result['precision_std'] = get_mu_std(precision)
+    result['recall_mean'], result['recall_std'] = get_mu_std(recall)
+    result['f1_mean'], result['f1_std'] = get_mu_std(f1)
+    result['accuracy_mean'], result['accuracy_std'] = get_mu_std(accuracy)
+    result['important_features'] = important_features
+     
+    return result    
 
 if __name__ == "__main__":
     main()

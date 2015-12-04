@@ -30,8 +30,8 @@ def main():
                     ('SR', SinusRhythmTransformer(30*3)),
                     ('NYHA', NYHATransformer(30*3)),
                     ('NICM', NICMTransformer(30*3)),
-                    ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
-                    ('QRS', QRSTransformer('mean', 5, None)),#Bugs with QRS
+                    ('QRS', QRSTransformer('all', 1, None)),
+                    ('QRS', QRSTransformer('mean', 5, None)),
                 ]
     if icd9_features:
         transformer_list += [
