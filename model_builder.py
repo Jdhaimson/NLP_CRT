@@ -12,7 +12,7 @@ from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
 import logging
 
-from neural_network import NeuralNetwork
+#from neural_network import NeuralNetwork
 logger = logging.getLogger("DaemonLog")
 
 #This should make adding transformers easier. You could add a transformer like
@@ -31,6 +31,10 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                                                                     ('tfidf_car', TfidfTransformer, {})]),    
                         'lno_tfidf':('lno_tfidf', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
                                                                     ('tfidf_lno', TfidfTransformer, {})]),
+                        'car_ngram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
+                                                                    ('ngram_car', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),    
+                        'lno_ngram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
+                                                                    ('ngram_lno', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),
                         'enc':      ('enc', GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
                         'lab_all' : ('lab_all', FeaturePipeline, [('lab_to_dict', GetLabsCountsDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
                         'lab_low' : ('lab_low', FeaturePipeline, [('lab_to_dict', GetLabsLowCountsDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
@@ -41,7 +45,7 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                      }  
 
 control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha', 'nicm', 'all_qrs'],
-                   'structured_only' : ['idc9', 'enc', 'lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist'],
+                   'structured_only' : ['icd9', 'enc', 'lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist'],
                    'notes_tfidf' : ['car_tfidf', 'lno_tfidf'],
                    'labs':  ['lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist']
                  }
@@ -49,7 +53,7 @@ control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha
 #These are empty, but might be useful
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
 lr_baseline = {  'method' : 'lr', 'model_args' : {'C' : 1}, 'features' : {} } 
-nn_baseline = { 'method' : 'nn': 'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
+#nn_baseline = { 'method' : 'nn',  'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
 
 regex_baseline = {  'method' : 'adaboost',
                     'model_args' : {'n_estimators' : 500},
