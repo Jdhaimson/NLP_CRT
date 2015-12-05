@@ -6,12 +6,25 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.cross_validation import train_test_split
 import math
 
-
+#Contains neural network and NeuralLogistic that implements a multi-class logistic that fits to class probabilities
 
 class NeuralNetwork(BaseEstimator, ClassifierMixin):
 
-	def __init__(self, layers, obj_fun, regularization = 0., init_size = 1e-1, include_offset = True, 
-				 restarts = 10, step_size = 1e-1, learning_schedule = "bold driver", max_iter = 30000, criterion = 1e-6):
+	def __init__(self, layers, obj_fun = 'maxent', regularization = 0., init_size = 1e-1, include_offset = True, 
+				 restarts = 10, step_size = 1e-1, learning_schedule = "bold driver", max_iter = 10000, criterion = 1e-6):
+        """
+        layers:     list of (number of nodes, string of type) tuples; the last one will often be (None, 'softmax')
+        obj_fun:    'maxent' and 'lsq' (least squares) are only ones implemented now
+        regularization:  0 means no regularixation
+        init_size:  range [-init_size / 2, init_size / 2] for initial weights
+        include_offset: always True 
+        restarts:   number of reinitializations (returns best model of these according to obj_fun)
+        step_size:  initial step
+        learning_shcedule: 'fixed' means some determined decay and 'bold driver' implements that algorithm
+        max_iter:   maximum descent steps before termination
+        criterio:   convergence criterion of obj_value
+        """
+        
 		self.layers = layers
 		self.obj_fun = obj_fun
 		self.regularization = regularization

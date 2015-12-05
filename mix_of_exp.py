@@ -8,7 +8,12 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 
 	def __init__(self, experts, gate, max_iter = 50):
-
+        '''
+        experts: list of classifiers with predict_proba implemented and fit has feature_weights
+        gate: function that can perform multiclass regression
+        max_iter: number of EM iterations until termination
+        '''
+        
 		self.experts = experts
 		self.gate = gate
 		self.max_iter = max_iter
