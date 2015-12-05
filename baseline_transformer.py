@@ -14,8 +14,9 @@ class GetConcatenatedNotesTransformer(TransformerMixin):
     """Takes as input the type of note (i.e. 'Car' or 'Lno').
     For each empi x in the input vector X, it returns a concatentation of
     all the pre-procedure notes of the type specified for the patient with that empi."""
-    def __init__(self, note_type):
+    def __init__(self, note_type, look_back_months=None):
         self.type = note_type
+        self.look_back_months = look_back_months
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -29,11 +30,14 @@ class GetConcatenatedNotesTransformer(TransformerMixin):
         operation_date = build_graphs.get_operation_date(person)
         date_key = extract_data.get_date_key(self.type)
         notes = []
+        sec_per_month = 24 * 60 * 60 * (365.0 / 12)
         if self.type in person.keys() and date_key != None:
             for i in range(len(person[self.type])):
                 doc = person[self.type][i]
                 date = extract_data.parse_date(doc[date_key])
                 if date != None and date < operation_date:
+                    if self.look_back_months and (operation_date - date).total_seconds() > (self.look_back_months * sec_per_month):
+                        continue
                     notes.append(doc['free_text'])
         return '\n\n'.join(notes)        
 
@@ -333,6 +337,7 @@ class GetLabsHistoryDictTransformer(TransformerMixin):
 
 
 if __name__ == '__main__':
-    t = GetEncountersFeaturesTransformer(10)
-    test_empi = 'FAKE_EMPI_739'
-    print(t.get_encounters_features(test_empi))
+    for i in range(1, 13):
+        t = GetConcatenatedNotesTransformer('Car', i)
+        test_empi = 'FAKE_EMPI_79'
+        print(len(t.get_concatenated_notes(test_empi)))

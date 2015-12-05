@@ -1,0 +1,150 @@
+Data size: 906
+CV splits: 2
+Preprocessing...
+0/905
+100/905
+200/905
+300/905
+400/905
+500/905
+600/905
+700/905
+800/905
+900/905
+783 patients in dataset
+Summary:
+{0: 385, 1: 398}
+CV Split #1
+	Precision: 0.547445255474
+	Recall: 0.555555555556
+	F1 Score: 0.551470588235
+	Accuracy: 0.528957528958
+CV Split #2
+	Precision: 0.575342465753
+	Recall: 0.6
+	F1 Score: 0.587412587413
+	Accuracy: 0.544401544402
+
+---------------------------------------
+
+Overall (2 cv cuts)
+
+Precision
+	mean:	0.561393860614
+	min:	0.547445255474
+	max:	0.575342465753
+Recall
+	mean:	0.577777777778
+	min:	0.555555555556
+	max:	0.6
+F1 Score
+	mean:	0.569441587824
+	min:	0.551470588235
+	max:	0.587412587413
+Accuracy
+	mean:	0.53667953668
+	min:	0.528957528958
+	max:	0.544401544402
+
+Number of column names: 3000
+100 biggest theta components of last CV run:
+0.796755469243 	Car_Doc2Vec__Car_doc:5_dim:55
+-0.75444958134 	Car_Doc2Vec__Car_doc:0_dim:49
+0.724982065822 	Car_Doc2Vec__Car_doc:6_dim:246
+-0.674779345207 	Car_Doc2Vec__Car_doc:1_dim:164
+0.668800582066 	Car_Doc2Vec__Car_doc:0_dim:245
+0.660038053511 	Car_Doc2Vec__Car_doc:3_dim:39
+0.65857331706 	Car_Doc2Vec__Car_doc:5_dim:256
+-0.64580500588 	Car_Doc2Vec__Car_doc:2_dim:282
+-0.630852657738 	Car_Doc2Vec__Car_doc:0_dim:137
+0.62840980054 	Car_Doc2Vec__Car_doc:0_dim:14
+-0.600572591391 	Car_Doc2Vec__Car_doc:3_dim:154
+-0.59978330497 	Car_Doc2Vec__Car_doc:4_dim:125
+-0.591399367529 	Car_Doc2Vec__Car_doc:3_dim:75
+-0.581339447864 	Car_Doc2Vec__Car_doc:2_dim:238
+0.577417509567 	Car_Doc2Vec__Car_doc:6_dim:221
+0.57177978911 	Car_Doc2Vec__Car_doc:4_dim:6
+0.571668029562 	Car_Doc2Vec__Car_doc:7_dim:298
+-0.571223066615 	Car_Doc2Vec__Car_doc:1_dim:134
+0.570487699651 	Car_Doc2Vec__Car_doc:0_dim:69
+-0.567766952768 	Car_Doc2Vec__Car_doc:7_dim:71
+-0.567605516572 	Car_Doc2Vec__Car_doc:2_dim:159
+0.563331490039 	Car_Doc2Vec__Car_doc:2_dim:279
+0.561477876991 	Car_Doc2Vec__Car_doc:9_dim:180
+0.559604289205 	Car_Doc2Vec__Car_doc:7_dim:91
+0.553351870411 	Car_Doc2Vec__Car_doc:4_dim:264
+0.552646554393 	Car_Doc2Vec__Car_doc:0_dim:39
+-0.552381833936 	Car_Doc2Vec__Car_doc:5_dim:239
+-0.551384913962 	Car_Doc2Vec__Car_doc:4_dim:62
+0.550800774028 	Car_Doc2Vec__Car_doc:2_dim:161
+-0.549998989152 	Car_Doc2Vec__Car_doc:6_dim:168
+0.547102577431 	Car_Doc2Vec__Car_doc:2_dim:12
+-0.546587269915 	Car_Doc2Vec__Car_doc:0_dim:15
+-0.54389632376 	Car_Doc2Vec__Car_doc:0_dim:56
+0.543467502756 	Car_Doc2Vec__Car_doc:5_dim:191
+-0.542768760195 	Car_Doc2Vec__Car_doc:1_dim:243
+0.539895292223 	Car_Doc2Vec__Car_doc:8_dim:184
+-0.539823075267 	Car_Doc2Vec__Car_doc:3_dim:228
+-0.537051167538 	Car_Doc2Vec__Car_doc:8_dim:276
+0.533731312763 	Car_Doc2Vec__Car_doc:9_dim:36
+-0.53164866665 	Car_Doc2Vec__Car_doc:1_dim:91
+0.528213902985 	Car_Doc2Vec__Car_doc:2_dim:292
+-0.526654195276 	Car_Doc2Vec__Car_doc:0_dim:157
+0.525655146322 	Car_Doc2Vec__Car_doc:6_dim:293
+0.524781958282 	Car_Doc2Vec__Car_doc:6_dim:223
+-0.523394036853 	Car_Doc2Vec__Car_doc:3_dim:117
+0.523291778361 	Car_Doc2Vec__Car_doc:0_dim:240
+-0.52014975576 	Car_Doc2Vec__Car_doc:7_dim:206
+0.519551504118 	Car_Doc2Vec__Car_doc:1_dim:154
+0.517346429777 	Car_Doc2Vec__Car_doc:4_dim:148
+0.517332012761 	Car_Doc2Vec__Car_doc:2_dim:152
+-0.512705139989 	Car_Doc2Vec__Car_doc:3_dim:125
+0.509895052023 	Car_Doc2Vec__Car_doc:7_dim:39
+0.50533729258 	Car_Doc2Vec__Car_doc:2_dim:39
+0.50512626597 	Car_Doc2Vec__Car_doc:0_dim:178
+0.504217711142 	Car_Doc2Vec__Car_doc:1_dim:194
+0.501389993035 	Car_Doc2Vec__Car_doc:4_dim:4
+0.501283788448 	Car_Doc2Vec__Car_doc:4_dim:263
+0.500396350395 	Car_Doc2Vec__Car_doc:2_dim:276
+-0.499133325096 	Car_Doc2Vec__Car_doc:9_dim:43
+-0.497053271771 	Car_Doc2Vec__Car_doc:0_dim:209
+-0.493846232046 	Car_Doc2Vec__Car_doc:0_dim:60
+-0.493843848313 	Car_Doc2Vec__Car_doc:0_dim:72
+-0.493480352315 	Car_Doc2Vec__Car_doc:0_dim:156
+0.492695298318 	Car_Doc2Vec__Car_doc:3_dim:156
+0.491580715143 	Car_Doc2Vec__Car_doc:2_dim:225
+0.488724519965 	Car_Doc2Vec__Car_doc:8_dim:79
+-0.487227450561 	Car_Doc2Vec__Car_doc:2_dim:81
+-0.486065843352 	Car_Doc2Vec__Car_doc:4_dim:215
+-0.484536016955 	Car_Doc2Vec__Car_doc:1_dim:122
+0.482682269292 	Car_Doc2Vec__Car_doc:4_dim:39
+-0.480042431294 	Car_Doc2Vec__Car_doc:3_dim:64
+-0.478775761746 	Car_Doc2Vec__Car_doc:4_dim:86
+-0.475935880094 	Car_Doc2Vec__Car_doc:3_dim:256
+0.474566595554 	Car_Doc2Vec__Car_doc:8_dim:129
+-0.474250849093 	Car_Doc2Vec__Car_doc:3_dim:279
+0.474071913163 	Car_Doc2Vec__Car_doc:7_dim:16
+-0.474020140846 	Car_Doc2Vec__Car_doc:0_dim:191
+-0.469453977225 	Car_Doc2Vec__Car_doc:3_dim:204
+-0.469304815568 	Car_Doc2Vec__Car_doc:2_dim:124
+0.468591462302 	Car_Doc2Vec__Car_doc:4_dim:209
+-0.465689471746 	Car_Doc2Vec__Car_doc:9_dim:133
+0.464002965445 	Car_Doc2Vec__Car_doc:8_dim:198
+-0.463325284703 	Car_Doc2Vec__Car_doc:8_dim:187
+-0.462970139658 	Car_Doc2Vec__Car_doc:7_dim:289
+0.459947003852 	Car_Doc2Vec__Car_doc:1_dim:135
+-0.458885526652 	Car_Doc2Vec__Car_doc:6_dim:104
+0.458193023441 	Car_Doc2Vec__Car_doc:3_dim:61
+-0.457577287691 	Car_Doc2Vec__Car_doc:1_dim:189
+-0.454794165962 	Car_Doc2Vec__Car_doc:3_dim:21
+0.452833423647 	Car_Doc2Vec__Car_doc:4_dim:93
+0.452662750948 	Car_Doc2Vec__Car_doc:6_dim:105
+-0.449186078811 	Car_Doc2Vec__Car_doc:7_dim:236
+-0.448964226218 	Car_Doc2Vec__Car_doc:0_dim:54
+-0.448599148334 	Car_Doc2Vec__Car_doc:7_dim:262
+0.448199849335 	Car_Doc2Vec__Car_doc:4_dim:180
+0.446684506192 	Car_Doc2Vec__Car_doc:1_dim:219
+0.446648336558 	Car_Doc2Vec__Car_doc:1_dim:260
+-0.445674352341 	Car_Doc2Vec__Car_doc:1_dim:132
+-0.444483178357 	Car_Doc2Vec__Car_doc:3_dim:243
+0.444102667615 	Car_Doc2Vec__Car_doc:3_dim:126

@@ -68,14 +68,14 @@ def main():
                         ('labs_counts_transformer', GetLabsCountsDictTransformer()),
                         ('dict_vectorizer', DictVectorizer())
                     ])),
-                    #('Labs_Low_Counts',FeaturePipeline([
-                    #    ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
-                    #   ('dict_vectorizer', DictVectorizer())
-                    #])),
-                    #('Labs_High_Counts', FeaturePipeline([
-                    #    ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
-                    #    ('dict_vectorizer', DictVectorizer())
-                    #])),
+                    ('Labs_Low_Counts',FeaturePipeline([
+                        ('labs_low_counts_transformer', GetLabsLowCountsDictTransformer()),
+                       ('dict_vectorizer', DictVectorizer())
+                    ])),
+                    ('Labs_High_Counts', FeaturePipeline([
+                        ('labs_high_counts_transformer', GetLabsHighCountsDictTransformer()),
+                        ('dict_vectorizer', DictVectorizer())
+                    ])),
                     #('Labs_Latest_Low', FeaturePipeline([
                     #    ('labs_latest_low_transformer', GetLabsLatestLowDictTransformer()),
                     #    ('dict_vectorizer', DictVectorizer())
