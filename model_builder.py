@@ -1,5 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.pipeline import FeatureUnion, Pipeline
 from decision_model import ClinicalDecisionModel
@@ -149,6 +150,9 @@ def build_model(control, method = None, model_args = None, features = None, feat
         elif method in ['boosting', 'adaboost']:
             is_regression = False
             clf = AdaBoostClassifier(**model_args)
+        elif method in ['decision tree', 'dtree']:
+            is_regression = False
+            clf = DecisionTreeClassifier(**model_args)
         else:
             raise ValueError("'" + method + "' is not a supported classification method")
 

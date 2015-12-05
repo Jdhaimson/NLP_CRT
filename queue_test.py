@@ -116,7 +116,7 @@ def main():
             value = inputs[2*i + 1]
             if key in args_converter:
                 if key in ['-g', '-n', '-cv' ]:
-                    value = eval(value)
+                    value = eval(value) if key != '-n' else min(906, eval(value))
                 queue_args[args_converter[key]] = value
             else:
                 raise ValueError("Unkown key: " + key)       

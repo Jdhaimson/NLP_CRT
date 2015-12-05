@@ -8,6 +8,7 @@ from sklearn.base import TransformerMixin
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
@@ -258,7 +259,7 @@ def execute_test(clf, data_size, num_cv_splits):
     try:
         features, model = (clf.steps[0][1], clf.steps[-1][1])
         column_names = features.get_feature_names()
-        feature_importances = model.coef_[0] if not type(model) == type(AdaBoostClassifier())  else model.feature_importances_
+        feature_importances = model.coef_[0] if not type(model) in [type(AdaBoostClassifier()), type(DecisionTreeClassifier)]  else model.feature_importances_
         if len(column_names) == len(feature_importances):
             Z = zip(column_names, feature_importances)
             Z.sort(key = lambda x: abs(x[1]), reverse = True)
