@@ -40,7 +40,7 @@ def queue_test(message = "", num_patients = 25, cv_splits = 3, build_model_strin
     with open(queue_file_path, 'r+b') as queue_file:
         test_id = sum(1 for line in queue_file)
         writer = csv.writer(queue_file)
-        writer.writerow([test_id, message, cv_splits, num_patients, dependencies, build_model_string, '0'])
+        writer.writerow([test_id, message, cv_splits, min(num_patients, 906), dependencies, build_model_string, '0'])
 
 def queue_grid_search(grid = None, message = "", num_patients = 25, cv_splits = 3, dependencies = "", control_string = 'regex_baseline', method_string = 'None', model_args = 'None', features_add_string = 'None', features_change_string = 'None', features_remove_string = 'None'):
 
@@ -116,7 +116,7 @@ def main():
             value = inputs[2*i + 1]
             if key in args_converter:
                 if key in ['-g', '-n', '-cv' ]:
-                    value = eval(value)
+                    value = eval(value) if key != '-n' else min(906, eval(value))
                 queue_args[args_converter[key]] = value
             else:
                 raise ValueError("Unkown key: " + key)       

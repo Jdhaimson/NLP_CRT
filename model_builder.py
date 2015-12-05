@@ -1,5 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.pipeline import FeatureUnion, Pipeline
 from decision_model import ClinicalDecisionModel
@@ -11,6 +12,7 @@ from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
 import logging
 
+from neural_network import NeuralNetwork
 logger = logging.getLogger("DaemonLog")
 
 #This should make adding transformers easier. You could add a transformer like
@@ -47,7 +49,7 @@ control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha
 #These are empty, but might be useful
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
 lr_baseline = {  'method' : 'lr', 'model_args' : {'C' : 1}, 'features' : {} } 
-
+nn_baseline = { 'method' : 'nn': 'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
 
 regex_baseline = {  'method' : 'adaboost',
                     'model_args' : {'n_estimators' : 500},
@@ -149,6 +151,12 @@ def build_model(control, method = None, model_args = None, features = None, feat
         elif method in ['boosting', 'adaboost']:
             is_regression = False
             clf = AdaBoostClassifier(**model_args)
+        elif method in ['decision tree', 'dtree']:
+            is_regression = False
+            clf = DecisionTreeClassifier(**model_args)
+        elif method in ['nn', 'neural', 'net', 'neuralnet', 'network']:
+            is_regression = False
+            clf = NeuralNetwork(**model_args)
         else:
             raise ValueError("'" + method + "' is not a supported classification method")
 
