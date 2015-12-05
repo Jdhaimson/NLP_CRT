@@ -41,7 +41,8 @@ class ExperimentRunner():
             logger.info(str(pipeline))
             results = execute_test(pipeline, experiment['Patients'], experiment['CV'])
         except Exception as e:
-            logger.error(e)
+            logger.error("Error on the following experiment:\n" + str(experiment))
+            logger.exception("Here was the stack trace:")
 
         # Mark experiment as run
         experiments.loc[idx, 'Run?'] = 1
