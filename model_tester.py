@@ -1,6 +1,8 @@
 import logging
+import os
 import re
 import sys
+import json
 
 import numpy as np
 import cProfile
@@ -20,20 +22,35 @@ from decision_model import ClinicalDecisionModel
 
 logger = logging.getLogger("DaemonLog")
 
-def get_preprocessed_patients(sample_size = 25):
-    patients_out = []
-    delta_efs_out = []
-    patient_nums = range(sample_size)
-    for i in patient_nums:
-        if i%100 == 0:
-            logger.info(str(i) + '/' + str(patient_nums[-1]))
-        patient_data = get_data([i])[0]
-        if patient_data is not None:
-            ef_delta = get_ef_delta(patient_data)
-            if ef_delta is not None:
-                patients_out.append(patient_data['NEW_EMPI'])
-                delta_efs_out.append(ef_delta)
-    return patients_out, delta_efs_out
+def get_preprocessed_patients(sample_size = 25, rebuild_cache=False):
+    cache_file = '/home/ubuntu/project/data/patient_cache.json'
+    
+    # Build cache
+    if not os.path.isfile(cache_file) or rebuild_cache:
+        patients_out = []
+        delta_efs_out = []
+        patient_nums = range(906)
+        for i in patient_nums:
+            if i%100 == 0:
+                logger.info(str(i) + '/' + str(patient_nums[-1]))
+            patient_data = get_data([i])[0]
+            if patient_data is not None:
+                ef_delta = get_ef_delta(patient_data)
+                if ef_delta is not None:
+                    patients_out.append(patient_data['NEW_EMPI'])
+                    delta_efs_out.append(ef_delta)
+        with open(cache_file, 'w') as cache:
+            cache_obj = {
+                'patients': patients_out,
+                'delta_efs': delta_efs_out
+            }
+            json.dump(cache_obj, cache)
+
+    # Load from cache
+    with open(cache_file, 'r') as f:
+        cached = json.load(f)
+    n = min(sample_size, len(cached['patients']))
+    return cached['patients'][:n], cached['delta_efs'][:n]
 
 
 def change_ef_values_to_categories(ef_values):
