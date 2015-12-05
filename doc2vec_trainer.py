@@ -1,5 +1,7 @@
 import argparse
+import lockfile
 
+from daemon import DaemonContext
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import LabeledSentence
 
@@ -52,5 +54,14 @@ if __name__ == "__main__":
     status_file = args.output_file + '.status'
     categories = args.categories.split(',')
 
-    train_doc2vec_model(categories, int(args.n_patients), 
+
+    base = '/home/ubuntu/josh_project'
+    context = DaemonContext(
+        working_directory=base,
+        umask=0o002,
+        pidfile=lockfile.FileLock(base + 'doc2vec_trainer.pid'),
+    )
+
+    with context:
+        train_doc2vec_model(categories, int(args.n_patients), 
                         args.output_file, status_file)
