@@ -137,7 +137,8 @@ class RegexTransformer(ExtractValueTransformerMixin):
     """
     
     def __init__(self, doc_types, name, pattern_strings, method, num_horizon, time_horizon):
-        ExtractValueTransformerMixin.__init__(self, doc_types, name,  method, num_horizon, time_horizon)  
+        ExtractValueTransformerMixin.__init__(self, doc_types, name,  method, num_horizon, time_horizon)
+        self.patterns = []
         self.patterns = [re.compile(pattern) for pattern in pattern_strings]
        
     def parse_value(self, doc, operation_date, doc_type):

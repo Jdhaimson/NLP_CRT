@@ -82,6 +82,16 @@ class GetLatestNotesTransformer(TransformerMixin):
                 notes.append('')  
         return np.array(notes)
 
+class DocumentConcatenatorTransformer(TransformerMixin):
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.concatenate_notes, X)
+        return transformed_X 
+
+    def concatenate_notes(self, docs):
+        return '\n\n'.join(docs)
 
 class MultiDocTfidfTransformer(TransformerMixin):
     """
@@ -113,9 +123,11 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
     the feature vector will have two parts: (a) small feature vector for each
     of the encounters before the operation (with max_encounters as the max);
     (b) a series of features derived from the overall encounter history for the
-    given patient (such as averages, sums, counts, maximums, etc.)."""
-    def __init__(self, max_encounters):
+    given patient (such as averages, sums, counts, maximums, etc.).
+    Setting only_general flag to True returns only features in (b)."""
+    def __init__(self, max_encounters, only_general=False):
         self.max_encounters = max_encounters
+        self.only_general = only_general
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -193,6 +205,8 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
             features.append(total_extra_diagnoses / len(tracked_encounters))
         else:
             features.append(0)
+        if self.only_general:
+            features = features[-3:]
         return np.array(features) 
 
 class GetLabsCountsDictTransformer(TransformerMixin):
@@ -290,9 +304,11 @@ class GetLabsLatestLowDictTransformer(TransformerMixin):
         return labs_latest_low
 
 class GetLabsHistoryDictTransformer(TransformerMixin):
-    """For each empi, will return a dictionary of lab test names to a boolean
-    indicating if the test value was low the last time the patient received
-    that test (before the procedue). Output should then be fed into DictVectorizer.""" 
+    """For each empi, will return a dictionary where keys are a concatenation of
+    the lab test name, H(igh) or L(ow), and the time threshold looking back (i.e. "NA_H_6"
+    would be testing for High results on the NA test around 6 months before prcedure).  
+    The value is just a boolean indicating if this result was high (for H) or low (for L).
+    Output should then be fed into DictVectorizer.""" 
     def __init__(self, time_thresholds_months):
         self.time_thresholds_months = time_thresholds_months
 
