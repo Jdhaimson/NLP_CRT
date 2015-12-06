@@ -49,7 +49,7 @@ control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha
 #These are empty, but might be useful
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
 lr_baseline = {  'method' : 'lr', 'model_args' : {'C' : 1}, 'features' : {} } 
-nn_baseline = { 'method' : 'nn': 'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
+nn_baseline = { 'method' : 'nn', 'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
 
 regex_baseline = {  'method' : 'adaboost',
                     'model_args' : {'n_estimators' : 500},
