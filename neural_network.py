@@ -35,7 +35,6 @@ class NeuralNetwork(BaseEstimator, ClassifierMixin):
 		self.learning_schedule = learning_schedule
 		self.max_iter = max_iter
 		self.criterion = criterion
-		#layers: list of (size, transform_function_1, transform_function_2...) tuples 
 
 	def fit(self, X_all, y_all, sample_weight = None, test_split = 1., val_split = .8):
 		show_plots = False
