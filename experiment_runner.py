@@ -27,12 +27,12 @@ class ExperimentRunner():
         if len(idx) > 0:
             idx = idx[0]
             next_experiment = experiments.iloc[idx]
-            self.run_experiment(next_experiment, experiments, idx)
+            self.run_experiment(next_experiment, idx)
             return True
         else:
             return False
         
-    def run_experiment(self, experiment, experiments, idx):
+    def run_experiment(self, experiment, idx):
         logger.info("Running experiment: " + str(experiment['Id']))
         try:
             exec(experiment['Dependencies'])
@@ -45,6 +45,7 @@ class ExperimentRunner():
             logger.exception("Here was the stack trace:")
 
         # Mark experiment as run
+        experiments = pd.read_csv(self.experiments_file)
         experiments.loc[idx, 'Run?'] = 1
         experiments.to_csv(self.experiments_file, index=False)
 

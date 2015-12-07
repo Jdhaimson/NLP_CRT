@@ -14,8 +14,9 @@ class GetConcatenatedNotesTransformer(TransformerMixin):
     """Takes as input the type of note (i.e. 'Car' or 'Lno').
     For each empi x in the input vector X, it returns a concatentation of
     all the pre-procedure notes of the type specified for the patient with that empi."""
-    def __init__(self, note_type):
+    def __init__(self, note_type, look_back_months=None):
         self.type = note_type
+        self.look_back_months = look_back_months
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -29,11 +30,14 @@ class GetConcatenatedNotesTransformer(TransformerMixin):
         operation_date = build_graphs.get_operation_date(person)
         date_key = extract_data.get_date_key(self.type)
         notes = []
+        sec_per_month = 24 * 60 * 60 * (365.0 / 12)
         if self.type in person.keys() and date_key != None:
             for i in range(len(person[self.type])):
                 doc = person[self.type][i]
                 date = extract_data.parse_date(doc[date_key])
                 if date != None and date < operation_date:
+                    if self.look_back_months and (operation_date - date).total_seconds() > (self.look_back_months * sec_per_month):
+                        continue
                     notes.append(doc['free_text'])
         return '\n\n'.join(notes)        
 
@@ -82,6 +86,16 @@ class GetLatestNotesTransformer(TransformerMixin):
                 notes.append('')  
         return np.array(notes)
 
+class DocumentConcatenatorTransformer(TransformerMixin):
+    def fit(self, X, y=None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.concatenate_notes, X)
+        return transformed_X 
+
+    def concatenate_notes(self, docs):
+        return '\n\n'.join(docs)
 
 class MultiDocTfidfTransformer(TransformerMixin):
     """
@@ -113,9 +127,11 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
     the feature vector will have two parts: (a) small feature vector for each
     of the encounters before the operation (with max_encounters as the max);
     (b) a series of features derived from the overall encounter history for the
-    given patient (such as averages, sums, counts, maximums, etc.)."""
-    def __init__(self, max_encounters):
+    given patient (such as averages, sums, counts, maximums, etc.).
+    Setting only_general flag to True returns only features in (b)."""
+    def __init__(self, max_encounters, only_general=False):
         self.max_encounters = max_encounters
+        self.only_general = only_general
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -193,6 +209,8 @@ class GetEncountersFeaturesTransformer(TransformerMixin):
             features.append(total_extra_diagnoses / len(tracked_encounters))
         else:
             features.append(0)
+        if self.only_general:
+            features = features[-3:]
         return np.array(features) 
 
 class GetLabsCountsDictTransformer(TransformerMixin):
@@ -290,9 +308,11 @@ class GetLabsLatestLowDictTransformer(TransformerMixin):
         return labs_latest_low
 
 class GetLabsHistoryDictTransformer(TransformerMixin):
-    """For each empi, will return a dictionary of lab test names to a boolean
-    indicating if the test value was low the last time the patient received
-    that test (before the procedue). Output should then be fed into DictVectorizer.""" 
+    """For each empi, will return a dictionary where keys are a concatenation of
+    the lab test name, H(igh) or L(ow), and the time threshold looking back (i.e. "NA_H_6"
+    would be testing for High results on the NA test around 6 months before prcedure).  
+    The value is just a boolean indicating if this result was high (for H) or low (for L).
+    Output should then be fed into DictVectorizer.""" 
     def __init__(self, time_thresholds_months):
         self.time_thresholds_months = time_thresholds_months
 
@@ -314,9 +334,29 @@ class GetLabsHistoryDictTransformer(TransformerMixin):
                 lab_history_transformed[lab + '_L_' + str(self.time_thresholds_months[i])] = 1 if lab_history[lab][i] == 'L' else 0
         return lab_history_transformed
 
+class GetLatestLabValuesTransformer(TransformerMixin):
+    def fit(self, X, y=None, **fit_params):
+        return self
 
-
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_latest_lab_values, X)
+        return transformed_X
+    
+    def get_latest_lab_values(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        latest_labs = structured_data_extractor.get_recent_lab_values(empi, operation_date) 
+        latest_lab_values = {}
+        for lab in latest_labs:
+            if latest_labs[lab][1]:
+                try:
+                    latest_lab_values[lab] = float(latest_labs[lab][1])
+                except:
+                    latest_lab_values[lab] = latest_labs[lab][1]
+        return latest_lab_values           
+ 
 if __name__ == '__main__':
-    t = GetEncountersFeaturesTransformer(10)
-    test_empi = 'FAKE_EMPI_739'
-    print(t.get_encounters_features(test_empi))
+    labsTransformer = GetLatestLabValuesTransformer()
+    labs = labsTransformer.get_latest_lab_values("FAKE_EMPI_648")
+    for lab in labs:
+        print(lab + ": " + str(labs[lab]))

@@ -10,8 +10,8 @@ import math
 
 class NeuralNetwork(BaseEstimator, ClassifierMixin):
 
-	def __init__(self, layers, obj_fun = 'maxent', regularization = 0., init_size = 1e-1, include_offset = True, 
-				 restarts = 10, step_size = 1e-1, learning_schedule = "bold driver", max_iter = 10000, criterion = 1e-6):
+    def __init__(self, layers, obj_fun = 'maxent', regularization = 0., init_size = 1e-1, include_offset = True, 
+                 restarts = 10, step_size = 1e-1, learning_schedule = "bold driver", max_iter = 10000, criterion = 1e-6):
         """
         layers:     list of (number of nodes, string of type) tuples; the last one will often be (None, 'softmax')
         obj_fun:    'maxent' and 'lsq' (least squares) are only ones implemented now
@@ -24,6 +24,110 @@ class NeuralNetwork(BaseEstimator, ClassifierMixin):
         max_iter:   maximum descent steps before termination
         criterio:   convergence criterion of obj_value
         """
+        self.layers = layers
+        self.obj_fun = obj_fun
+        self.regularization = regularization
+        self.init_size = init_size
+        self.include_offset = include_offset
+        self.restarts = restarts
+        self.step_size = step_size
+        self.learning_schedule = learning_schedule
+        self.max_iter = max_iter
+        self.criterion = criterion
+        #layers: list of (size, transform_function_1, transform_function_2...) tuples 
+
+    def fit(self, X_all, y_all, sample_weight = None, test_split = 1., val_split = .8):
+        show_plots = False
+        if test_split < 1:
+            if type(sample_weight) == type(None):
+                X, X_test, y, y_test = train_test_split(X_all, y_all, train_size = test_split)#, stratify = np.argmax(y_all, axis = 1))
+                sample_weight_test = None
+            else:
+                X, X_test, y, y_test, sample_weight, sample_weight_test = train_test_split(X_all, y_all, sample_weight, train_size = test_split)#, stratify = np.argmax(y_all, axis = 1))
+        else:
+            X, y, sample_weight = (X_all, y_all, sample_weight)
+        self.input_dim_ = X.shape[1]
+        self.output_dim_ = y.shape[1]
+        self.num_layers_ = len(self.layers)
+        self.layers[-1] = tuple([self.output_dim_] + list(self.layers[-1][1:]))
+
+        opt_weights = None
+        opt_value = -10e10
+        if show_plots:
+            plt.figure()
+        while opt_weights == None:
+
+            for i in range(self.restarts):
+
+                self.__init_weights()
+                obj_vals = []
+                val_scores = []
+                if val_split < 1:
+                    if type(sample_weight) == type(None):
+                        X_train, X_val, y_train, y_val = train_test_split(X, y, train_size = val_split)#, stratify = np.argmax(y, axis = 1))
+                        sample_weight_train = None
+                        sample_weight_val = None
+                    else:
+                        X_train, X_val, y_train, y_val, sample_weight_train, sample_weight_val = train_test_split(X, y, sample_weight, train_size = val_split)#, stratify = np.argmax(y, axis = 1))
+                else:
+                    X_train, y_train, sample_weight_train = (X, y, sample_weight)
+
+                best_val_value = -1e100
+                best_val_weights = None
+                #print "Weights: ", [x.shape for x in self.weights_]
+                step_size = self.step_size
+                while len(obj_vals) <= 1 or (abs(obj_vals[-1] - obj_vals[-2]) > self.criterion and len(obj_vals) <= self.max_iter):
+                    
+                    #forward prop
+                    inputs, weighted_inputs, activations = self.__forward(X_train)
+                    obj_val = self.__eval_obj_fun(y_train, activations[-1], regularization = self.regularization)
+                    obj_vals += [obj_val]
+
+                    #backward prop
+                    gradients = self.__backward(inputs, weighted_inputs, activations, y_train, sample_weight_train)
+
+                    if len(obj_vals) == 1:
+                        step_size = self.__get_step_size(len(obj_vals), step_size, -1e100, obj_vals[-1])
+                    else:
+                        step_size = self.__get_step_size(len(obj_vals), step_size, obj_vals[-2], obj_vals[-1])
+                    
+                    self.update_weights(gradients, step_size)
+                
+                    if val_split < 1: #early termination with validation holdout
+                        val_score = self.score(X_val, y_val, sample_weight_val)
+                        val_scores += [val_score]
+                        if val_score > best_val_value:
+                            best_val_weights = [w.copy() for w in self.weights_]
+                            best_val_value = val_score
+                    else:
+                        best_val_value = obj_vals[-1]
+
+                if len(obj_vals) >= self.max_iter:
+                    print "OVERFLOW"
+                #print i, "Obj val: ", obj_vals[-1]
+                if val_split < 1:
+                    self.weights_ = best_val_weights
+
+                if test_split < 1:
+                    test_score = self.score(X_test, y_test, sample_weight_test)
+                else:
+                    test_score = best_val_value
+                
+                if opt_value < test_score:
+                    opt_value = test_score
+                    opt_weights = self.weights_
+
+                if show_plots:
+                    #print test_score
+                    
+                    plt.plot([math.log10(-1.*x) for x in obj_vals], color = 'green', label = "log Train")
+                    plt.plot([math.log10(-1.*x) for x in val_scores], color = 'red', label = "log Val")
+                    
+                #print opt_weights
+        if show_plots:
+            #plt.legend()
+            plt.show()
+        self.weights_ = opt_weights
         
 		self.layers = layers
 		self.obj_fun = obj_fun
@@ -328,12 +432,11 @@ class NeuralNetwork(BaseEstimator, ClassifierMixin):
 	        self.setattr(parameter, value)
 	    return self
 
-
 class NeuralLogistic(NeuralNetwork):
 
-	def __init__(self, **kwargs):
-		layers = [(None, 'softmax')]
-		obj_fun = 'maxent'
-		NeuralNetwork.__init__(self, layers, obj_fun, restarts = 10, step_size = 1e-1)
+    def __init__(self, **kwargs):
+        layers = [(None, 'softmax')]
+        obj_fun = 'maxent'
+        NeuralNetwork.__init__(self, layers, obj_fun, restarts = 10, step_size = 1e-1)
 
 
