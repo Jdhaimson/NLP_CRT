@@ -157,6 +157,23 @@ def get_labs_before_date(empi, date):
                             lab_highs[lab['Group_Id']] = 1
     return lab_counts, lab_lows, lab_highs, lab_latest
 
+def get_recent_lab_values(empi, date):
+    p = loader.get_patient_by_EMPI(empi)
+    lab_latest = {}
+    if 'Lab' in p.keys():
+        for lab in p['Lab']:
+            if lab['Seq_Date_Time'] and extract_data.parse_date(lab['Seq_Date_Time']) < date: 
+                lab_date = extract_data.parse_date(lab['Seq_Date_Time'])
+                if lab['Group_Id'] in lab_latest:
+                    recorded_test_date = lab_latest[lab['Group_Id']][0]
+                    if lab_date > recorded_test_date: # keep most recent test value
+                        lab_latest[lab['Group_Id']] = (lab_date, lab['Result'])
+                else:
+                    lab_latest[lab['Group_Id']] = (lab_date, lab['Result'])
+    return lab_latest
+
+
+
 def get_lab_history_before_date(empi, date, time_thresholds_months):
     """Given an empi and a date, will return a summarized history of the labs for that patient
     before the date.  Specifically, will return a dictionary where the key is a lab group id and
@@ -229,6 +246,6 @@ if __name__ == "__main__":
             print('')
         """
         operation_date = build_graphs.get_operation_date(loader.get_patient_by_EMPI(empi))
-        lab_history = get_lab_history_before_date(empi, operation_date)
-        for lab in lab_history:
-            print(str(lab) + str(lab_history[lab]))
+        lab_values = get_recent_lab_values(empi, operation_date)
+        for lab in lab_values:
+            print(str(lab) + ": " + str(lab_values[lab]))

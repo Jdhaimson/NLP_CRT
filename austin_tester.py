@@ -21,7 +21,7 @@ def main():
         transformer_list += [
                     ('Dia', ICD9_Transformer())
                 ]
-    if True:
+    if False:
         transformer_list += [ 
                     ('EF', EFTransformer('all', 1, None)),
                     ('EF', EFTransformer('mean', 5, None)),
@@ -43,7 +43,7 @@ def main():
                     ]))
                 ]
 
-    if True:
+    if False:
         transformer_list += [
                     #('Car', FeaturePipeline([
                     #    ('notes_transformer_car', GetLatestNotesTransformer('Car', 100)),
@@ -61,7 +61,7 @@ def main():
                 ]
 
 
-    if False:
+    if True:
         transformer_list += [
                     #('Enc', GetEncountersFeaturesTransformer(100, True)),
                     ('Labs_Counts',FeaturePipeline([
