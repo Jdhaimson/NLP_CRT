@@ -334,10 +334,29 @@ class GetLabsHistoryDictTransformer(TransformerMixin):
                 lab_history_transformed[lab + '_L_' + str(self.time_thresholds_months[i])] = 1 if lab_history[lab][i] == 'L' else 0
         return lab_history_transformed
 
+class GetLatestLabValuesTransformer(TransformerMixin):
+    def fit(self, X, y=None, **fit_params):
+        return self
 
-
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_latest_lab_values, X)
+        return transformed_X
+    
+    def get_latest_lab_values(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        operation_date = build_graphs.get_operation_date(person)
+        latest_labs = structured_data_extractor.get_recent_lab_values(empi, operation_date) 
+        latest_lab_values = {}
+        for lab in latest_labs:
+            if latest_labs[lab][1]:
+                try:
+                    latest_lab_values[lab] = float(latest_labs[lab][1])
+                except:
+                    latest_lab_values[lab] = latest_labs[lab][1]
+        return latest_lab_values           
+ 
 if __name__ == '__main__':
-    for i in range(1, 13):
-        t = GetConcatenatedNotesTransformer('Car', i)
-        test_empi = 'FAKE_EMPI_79'
-        print(len(t.get_concatenated_notes(test_empi)))
+    labsTransformer = GetLatestLabValuesTransformer()
+    labs = labsTransformer.get_latest_lab_values("FAKE_EMPI_648")
+    for lab in labs:
+        print(lab + ": " + str(labs[lab]))
