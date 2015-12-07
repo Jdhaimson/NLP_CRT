@@ -25,11 +25,11 @@ class LabeledDocIterator(object):
                         yield LabeledSentence(words=doc['free_text'].split(), tags=[tag])
 
 
-def train_doc2vec_model(categories, n_patients, output_file, status_file):
+def train_doc2vec_model(categories, n_patients, output_file, status_file, dm):
     with open(status_file, 'w') as status:
         it = LabeledDocIterator(range(n_patients), categories, status)
 
-        model = Doc2Vec(size=300, window=10, min_count=5, workers=11,alpha=0.025, min_alpha=0.025) # use fixed learning rate
+        model = Doc2Vec(size=300, window=10, dm=dm, min_count=5, workers=11,alpha=0.025, min_alpha=0.025) # use fixed learning rate
         model.build_vocab(it)
         for epoch in range(10):
             message = ("***********Training Epoch: " + str(epoch)
@@ -50,6 +50,8 @@ if __name__ == "__main__":
     parser.add_argument("output_file")
     parser.add_argument("n_patients")
     parser.add_argument("categories")
+    # Switches between Distributed Memory and Distributed Bag of Words Model
+    parser.add_argument("dm")
     args = parser.parse_args()
     status_file = args.output_file + '.status'
     categories = args.categories.split(',')
@@ -64,4 +66,4 @@ if __name__ == "__main__":
 
     with context:
         train_doc2vec_model(categories, int(args.n_patients), 
-                        args.output_file, status_file)
+                        args.output_file, status_file, int(args.dm))

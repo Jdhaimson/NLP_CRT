@@ -20,7 +20,7 @@ def main():
                 #('EF', EFTransformer('max', 5, None)),
                 #('LBBB', LBBBTransformer()),
                 #('SR', SinusRhythmTransformer()),
-                ('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10))
+                ('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10, dbow_file='doc2vec_models/car_dbow.model'))
                # ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
                 #('Car', FeaturePipeline([
                 #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),

@@ -13,10 +13,12 @@ class Doc2Vec_Note_Transformer(TransformerMixin):
     """
 
     """ 
-    def __init__(self, note_type, model_file, max_notes):
+    def __init__(self, note_type, model_file, max_notes, dbow_file=None):
         self.note_type = note_type
         self.max_notes = max_notes
         self.model = Doc2Vec.load(model_file)
+        if dbow_file:
+            self.dbow = Doc2Vec.load(dbow_file)
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -57,7 +59,11 @@ class Doc2Vec_Note_Transformer(TransformerMixin):
         return np.array(vectors).flatten()
 
     def get_sent_vector_from_doc(self, doc):
-        return self.model.infer_vector(doc.split())
+        split_doc = doc.split()
+        vec = self.model.infer_vector(split_doc)
+        if self.dbow:
+            vec = np.concatenate((vec, self.dbow.infer_vector(split_doc)))
+        return vec
 
     def get_feature_names(self):
         feature_names = []
