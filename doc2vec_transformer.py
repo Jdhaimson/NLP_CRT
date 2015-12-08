@@ -19,6 +19,8 @@ class Doc2Vec_Note_Transformer(TransformerMixin):
         self.model = Doc2Vec.load(model_file)
         if dbow_file:
             self.dbow = Doc2Vec.load(dbow_file)
+        else:
+            self.dbow = None
 
     def fit(self, X, y=None, **fit_params):
         return self
@@ -71,4 +73,8 @@ class Doc2Vec_Note_Transformer(TransformerMixin):
             for j in range(self.model.vector_size):
                 feature_names.append(self.note_type 
                                      + '_doc:' + str(i) + '_dim:' + str(j))
+            if self.dbow:
+                for j in range(self.model.vector_size):
+                    feature_names.append(self.note_type 
+                                         + '_doc:' + str(i) + 'dbow_dim:' + str(j))
         return feature_names
