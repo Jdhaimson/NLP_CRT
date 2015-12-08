@@ -6,7 +6,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline
 from decision_model import ClinicalDecisionModel
 from model_tester import FeaturePipeline
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
 from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
@@ -31,9 +31,13 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                                                                     ('tfidf_car', TfidfTransformer, {})]),    
                         'lno_tfidf':('lno_tfidf', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
                                                                     ('tfidf_lno', TfidfTransformer, {})]),
-                        'car_ngram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
+                        'car_trigram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
+                                                                    ('ngram_car', CountVectorizer, {'ngram_range' : (3, 3), 'min_df' : .05})]),    
+                        'lno_trigram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
+                                                                    ('ngram_lno', CountVectorizer, {'ngram_range' : (3, 3), 'min_df' : .05})]),
+                        'car_bigram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
                                                                     ('ngram_car', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),    
-                        'lno_ngram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
+                        'lno_bigram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
                                                                     ('ngram_lno', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),
                         'enc':      ('enc', GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
                         'lab_all' : ('lab_all', FeaturePipeline, [('lab_to_dict', GetLabsCountsDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
@@ -88,7 +92,7 @@ regex_baseline = {  'method' : 'adaboost',
 #           just calls the transformer by name and assigns a new value to one of the args. For example:
 #               features_change = {'ef_all' : {'num_horizon' : 10, 'time_horizon' : 30*4}}
 #           But you can also change thing inside feature pipelines. For example, to change the feature above:
-#               features_change = {['Car', 0] : {'horizon' : 10}}
+#               features_change = {('Car', 0) : {'horizon' : 10}}
 #   
 #   REMOVE  Lastly, you can remove features. This is easy. No error will be thrown if you remove a feature not included.
 #               features_remove = ['icd9', 'max_ef', 'lab_high']
@@ -102,6 +106,7 @@ def build_model(control, method = None, model_args = None, features = None, feat
         method = control['method']
         method_diff = False
     else: 
+        model_args = {}
         method_diff = not method == control['method']
 
     #Modify model args
