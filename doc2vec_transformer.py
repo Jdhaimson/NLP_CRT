@@ -19,6 +19,8 @@ class Doc2Vec_Note_Transformer(TransformerMixin):
         self.model = Doc2Vec.load(model_file)
         if dbow_file:
             self.dbow = Doc2Vec.load(dbow_file)
+        else:
+            self.dbow = False
 
     def fit(self, X, y=None, **fit_params):
         return self
