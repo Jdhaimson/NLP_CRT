@@ -29,8 +29,8 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                         'all_qrs':  ('all_qrs', QRSTransformer, {'method' : 'all', 'num_horizon' : 1}),
                         'icd9':     ('icd9', ICD9_Transformer, {'depth' : 2}),
                         'sex':      ('sex', SexTransformer, {}),
-                        'car_d2v':  ('car_d2v', Doc2Vec_Note_Transformer, {'note_type':'Car', 'model_file':'/home/ubuntu/josh_project/doc2vec_models/car_1.model', 'dbow_file':'/home/ubuntu/jos    h_project/doc2vec_models/car_dbow.model', 'max_notes':5}),
-                        'lno_d2v':  ('lno_d2v',Doc2Vec_Note_Transformer, {'note_type':'Lno', 'model_file':'/home/ubuntu/josh_project    /doc2vec_models/lno_1.model', 'dbow_file':'/home/ubuntu/josh_project/doc2vec_models/lno_dbow.model', 'max_notes':5}),
+                        'car_d2v':  ('car_d2v', Doc2Vec_Note_Transformer, {'note_type':'Car', 'model_file':'/home/ubuntu/josh_project/doc2vec_models/car_1.model', 'dbow_file':'/home/ubuntu/josh_project/doc2vec_models/car_dbow.model', 'max_notes':5}),
+                        'lno_d2v':  ('lno_d2v',Doc2Vec_Note_Transformer, {'note_type':'Lno', 'model_file':'/home/ubuntu/josh_project/doc2vec_models/lno_1.model', 'dbow_file':'/home/ubuntu/josh_project/doc2vec_models/lno_dbow.model', 'max_notes':5}),
                         'car_tfidf':('car_tfidf', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
                                                                     ('tfidf_car', TfidfTransformer, {})]),    
                         'lno_tfidf':('lno_tfidf', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
@@ -82,10 +82,10 @@ struct_baseline = {
                                'method' : 'adaboost',
                                'model_args' : {'n_estimators' : 200},
                                'features' : {
-                                                'lab_values': ('lab_values', FeaturePipeline, [('lab_to_dict', GetLatestLabValuesTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),
-                                                'enc':      ('enc', GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
-                                                'icd9':     ('icd9', ICD9_Transformer, {'depth' : 2}),
-                                                'sex':      ('sex', SexTransformer, {}),
+                                                'lab_values': (FeaturePipeline, [('lab_to_dict', GetLatestLabValuesTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),
+                                                'enc':      (GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
+                                                'icd9':     (ICD9_Transformer, {'depth' : 2}),
+                                                'sex':      (SexTransformer, {}),
                                             }
                             }
 
@@ -198,7 +198,7 @@ def build_model(control, method = None, model_args = None, features = None, feat
 
         #assemble pipeline
         model =  Pipeline([
-                ('feature_union', FeatureUnion(transformer_list)),
+                ('feature_union', FeatureUnion(transformer_list, n_jobs = len(transformer_list))),
                 ('Classifier', clf)
             ])
     return model

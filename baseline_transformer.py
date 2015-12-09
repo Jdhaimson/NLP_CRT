@@ -19,12 +19,15 @@ class SexTransformer(TransformerMixin):
 
     def transform(self, X, **transform_params):
         transformed_X = map(self.get_sex, X)
-        return transformed_X
+        return np.matrix(transformed_X).transpose()
 
     def get_sex(self, empi):
         person = loader.get_patient_by_EMPI(empi)
-        sex = person['Sex']
-        return int(sex.lower() == 'female')
+        if 'Sex' in person:
+            sex = person['Sex']
+            return int(sex == 'Female\r\n')
+        else:
+            return 0
 
     def get_feature_names(self):
         return ["sex_female"] 

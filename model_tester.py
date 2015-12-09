@@ -257,7 +257,7 @@ def execute_test(clf, data_size, num_cv_splits):
     for cv_run in range(num_cv_splits):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
-        logger.info("fitting...")
+        logger.info("fitting " + str(len(X_train)) + " patients...")
         clf.fit(X_train, Y_train)
         logger.info("predicting")
         Y_predict = clf.predict(X_test)
