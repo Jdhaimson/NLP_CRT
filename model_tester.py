@@ -254,7 +254,7 @@ def execute_test(clf, data_size, num_cv_splits):
 
     logger.info("Beginning runs")
     
-    for cv_run in range(num_cv_splits):
+    for cv_run in range(int(num_cv_splits)):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
         logger.info("fitting " + str(len(X_train)) + " patients...")
