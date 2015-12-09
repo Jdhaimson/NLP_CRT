@@ -5,9 +5,10 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.pipeline import FeatureUnion, Pipeline
 from decision_model import ClinicalDecisionModel
 from model_tester import FeaturePipeline
+from doc2vec_transformer import Doc2Vec_Note_Transformer
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
-from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
+from baseline_transformer import SexTransformer, GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer, GetLatestLabValuesTransformer
 from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
 import logging
@@ -26,7 +27,10 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                         'nyha':     ('nyha', NYHATransformer, {'time_horizon' : 30*3}),
                         'nicm':     ('nicm', NICMTransformer, {'time_horizon' : 30*3}),
                         'all_qrs':  ('all_qrs', QRSTransformer, {'method' : 'all', 'num_horizon' : 1}),
-                        'icd9':     ('icd9', ICD9_Transformer, {}),
+                        'icd9':     ('icd9', ICD9_Transformer, {'depth' : 2}),
+                        'sex':      ('sex', SexTransformer, {}),
+                        'car_d2v':  ('car_d2v', Doc2Vec_Note_Transformer, {'note_type':'Car', 'model_file':'/home/ubuntu/josh_project/doc2vec_models/car_1.model', 'dbow_file':'/home/ubuntu/jos    h_project/doc2vec_models/car_dbow.model', 'max_notes':5}),
+                        'lno_d2v':  ('lno_d2v',Doc2Vec_Note_Transformer, {'note_type':'Lno', 'model_file':'/home/ubuntu/josh_project    /doc2vec_models/lno_1.model', 'dbow_file':'/home/ubuntu/josh_project/doc2vec_models/lno_dbow.model', 'max_notes':5}),
                         'car_tfidf':('car_tfidf', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
                                                                     ('tfidf_car', TfidfTransformer, {})]),    
                         'lno_tfidf':('lno_tfidf', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
@@ -45,14 +49,16 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                         'lab_high' : ('lab_high', FeaturePipeline, [('lab_to_dict', GetLabsHighCountsDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
                         'lab_low_recent' : ('lab_low_recent', FeaturePipeline, [('lab_to_dict', GetLabsLatestLowDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
                         'lab_high_recent' : ('lab_high_recent', FeaturePipeline, [('lab_to_dict', GetLabsLatestHighDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
+                        'lab_values': ('lab_values', FeaturePipeline, [('lab_to_dict', GetLatestLabValuesTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),
                         'lab_hist' : ('lab_hist', FeaturePipeline, [('lab_to_dict', GetLabsHistoryDictTransformer, {'time_thresholds_months' : [1]}), ('dict_to_vect', DictVectorizer, {})]),                         
                      }  
 
 control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha', 'nicm', 'all_qrs'],
-                   'structured_only' : ['icd9', 'enc', 'lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist'],
+                   'structured_only' : ['sex', 'icd9', 'enc', 'lab_values'],
                    'notes_tfidf' : ['car_tfidf', 'lno_tfidf'],
-                   'labs':  ['lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist']
-                 }
+                   'labs':  ['lab_all', 'lab_low', 'lab_high', 'lab_low_recent', 'lab_high_recent', 'lab_hist'],
+                   'd2v' : ['car_d2v', 'lno_d2v'] 
+                }
 
 #These are empty, but might be useful
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
@@ -72,6 +78,22 @@ regex_baseline = {  'method' : 'adaboost',
                                  }
                  }
 
+struct_baseline = {
+                               'method' : 'adaboost',
+                               'model_args' : {'n_estimators' : 200},
+                               'features' : {
+                                                'lab_values': ('lab_values', FeaturePipeline, [('lab_to_dict', GetLatestLabValuesTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),
+                                                'enc':      ('enc', GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
+                                                'icd9':     ('icd9', ICD9_Transformer, {'depth' : 2}),
+                                                'sex':      ('sex', SexTransformer, {}),
+                                            }
+                            }
+
+def __add_to_baseline(base, feature_names):
+    for name in feature_names:
+        feature_triple = control_features[name] 
+        base['features'][name] = (feature_triple[1], feature_triple[2])
+    return base 
 
 
 ##################

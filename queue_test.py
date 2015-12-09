@@ -12,8 +12,8 @@ import itertools
 #  Keys    Description                                 Default                    
 #   -h      displays help message                       
 #   -mes    message/description                         ""
-#   -n      number of patients                          25
-#   -cv     number of CV splits                         3
+#   -n      number of patients                          900
+#   -cv     number of CV splits                         5
 #   -d      dependency string to be executed            "" (this dependency is only added on to default)
 #   -con    control                                     regex_baseline
 #   -met    method to override control                  adaboost
@@ -34,15 +34,15 @@ import itertools
 
 queue_file_path =  "../experiments/experiments.csv"
 
-base_dependency = "from model_builder import build_model, regex_baseline, control_features, control_groups, adaboost_baseline, lr_baseline" 
+base_dependency = "from model_builder import build_model, regex_baseline, control_features, control_groups, struct_baseline, adaboost_baseline, lr_baseline" 
 
-def queue_test(message = "", num_patients = 25, cv_splits = 3, build_model_string = "build_model(regex_baseline)", dependencies = "from model_builder import build_model, regex_baseline"):
+def queue_test(message = "", num_patients = 900, cv_splits = 5, build_model_string = "build_model(regex_baseline)", dependencies = "from model_builder import build_model, regex_baseline"):
     with open(queue_file_path, 'r+b') as queue_file:
         test_id = sum(1 for line in queue_file)
         writer = csv.writer(queue_file)
         writer.writerow([test_id, message, cv_splits, min(num_patients, 906), dependencies, build_model_string, '0'])
 
-def queue_grid_search(grid = None, message = "", num_patients = 25, cv_splits = 3, dependencies = "", control_string = 'regex_baseline', method_string = 'None', model_args = 'None', features_add_string = 'None', features_change_string = 'None', features_remove_string = 'None'):
+def queue_grid_search(grid = None, message = "", num_patients = 900, cv_splits = 5, dependencies = "", control_string = 'regex_baseline', method_string = 'None', model_args = 'None', features_add_string = 'None', features_change_string = 'None', features_remove_string = 'None'):
 
     if not grid == None: 
         args_options = build_options(grid, model_args)
@@ -126,8 +126,8 @@ def show_help():
 
     print "\033[95m   Keys    Description                                 Default\033[0m"                    
     print '   -mes    message/description                         ""'
-    print '   -n      number of patients                          25'
-    print '   -cv     number of CV splits                         3'
+    print '   -n      number of patients                          900'
+    print '   -cv     number of CV splits                         5'
     print '   -d      dependency string to be executed            "" (this dependency is only added on to default)'
     print '   -con    control                                     regex_baseline'
     print '   -met    method to override control                  adaboost'
@@ -144,6 +144,7 @@ def show_help():
     print '   control_features      a dict of all features and their (name, class, args) tuple'
     print '   control_groups        a dict of some groups of names, which are "regex", "structured_only", "notes_tfidf", and "labs" for now'
     print '   adaboost_baseline     (for -con) baseline with no features but has adaboost with 500 weak learners'
+    print '   struct_baseline       (for -con) baseline with Enc, Sex, lab_values, ICD9, has adaboost with 200 weak learners'
     print '   lr_baseline           (for -con) baseline with no features but has logisitic regression'
     print '   regex_baseline        (for -con) adaboost_baseline with control_groups["regex"] loaded'
     print '\033[96m   Use these in combintion with grid to easily gain control over our experiments:\033[96m'

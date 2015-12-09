@@ -10,6 +10,25 @@ import loader
 import extract_data
 import language_processing
 
+class SexTransformer(TransformerMixin):
+    """
+    transforms EMPI into 'male', 'female' column
+    """
+    def fit(self, X, y = None, **fit_params):
+        return self
+
+    def transform(self, X, **transform_params):
+        transformed_X = map(self.get_sex, X)
+        return transformed_X
+
+    def get_sex(self, empi):
+        person = loader.get_patient_by_EMPI(empi)
+        sex = person['Sex']
+        return int(sex.lower() == 'female')
+
+    def get_feature_names(self):
+        return ["sex_female"] 
+
 class GetConcatenatedNotesTransformer(TransformerMixin):
     """Takes as input the type of note (i.e. 'Car' or 'Lno').
     For each empi x in the input vector X, it returns a concatentation of
