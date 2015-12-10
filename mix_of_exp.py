@@ -3,17 +3,13 @@ import numpy as np
 import random
 from utils import plot_predictions
 from sklearn.base import BaseEstimator, ClassifierMixin
+from multiprocessing import Pool, Process
 #from main import plot_predictions
 
 class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 
 	def __init__(self, experts, gate, max_iter = 50):
-        '''
-        experts: list of classifiers with predict_proba implemented and fit has feature_weights
-        gate: function that can perform multiclass regression
-        max_iter: number of EM iterations until termination
-        '''
-        
+
 		self.experts = experts
 		self.gate = gate
 		self.max_iter = max_iter
@@ -36,7 +32,7 @@ class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 				for i in range(self.num_experts_):
 					plot_predictions(X, y, self.experts[i], "Expert #" + str(i) + " predictions")
 				plot_predictions(X, y, self)
-		print obj_vals
+		# print obj_vals
 		return self
 
 	def predict(self, X):
@@ -53,18 +49,18 @@ class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 		output: log-likelihood of data
 		"""
 
-		# weighted_expert_accuracy = self.__weighted_expert_accuracy(X, y)
-		# log_prob = np.log(np.clip(np.sum(weighted_expert_accuracy, axis = 1), 1e-1000, 1e100))
-		
-		# if sample_weight != None:
-		# 	log_prob = np.multiply(log_prob, sample_weight)
+		weighted_expert_accuracy = self.__weighted_expert_accuracy(X, y)
+		expert_weights = self.__get_expert_weights(weighted_expert_accuracy)
+		log_prob = np.multiply(np.log(np.clip(weighted_expert_accuracy, 1e-18, 100)), expert_weights)
+		if sample_weight != None:
+			log_prob = np.multiply(log_prob, sample_weight)
 
-		# return np.sum(log_prob)
+		return np.sum(log_prob)
 
-		predictions = self.predict_proba(X)
-		log_prob = np.log(predictions)
-		entropy = np.multiply(y, predictions)
-		return np.sum(entropy)
+		# predictions = self.predict_proba(X)
+		# log_prob = np.log(predictions)
+		# entropy = np.multiply(y, predictions)
+		# return np.sum(entropy)
 
 
 	def predict_proba(self, X):
@@ -130,15 +126,22 @@ class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 		expert_predictions = self.__predict_experts(X)
 		expert_accuracy = np.multiply(expert_predictions, y[:, :, np.newaxis]) 
 		#expert_accuracy = expert_predictions
-		gap = 0
-		gate_proba = np.clip(self.gate.predict_proba(X), gap, 1.-gap)
+		#gap = 0
+		gate_proba = self.gate.predict_proba(X)
 		gate_proba_big = np.empty((X.shape[0], self.num_classes_, self.num_experts_))
 		for k in range(self.num_classes_):
 			gate_proba_big[:, k, :] = gate_proba
 
 		gated_expert_accruacy = np.multiply(expert_accuracy, gate_proba_big)
+		norm_weights = gated_expert_accruacy.reshape(X.shape[0], self.num_classes_, self.num_experts_)
+		
+
 		#gated_expert_accruacy = expert_accuracy
-		return np.sum(gated_expert_accruacy.reshape(X.shape[0], self.num_classes_, self.num_experts_), axis = 1)
+		return np.sum(norm_weights, axis = 1)
+
+
+	def __get_expert_weights(self, weighted_expert_accuracy):
+		return np.divide(weighted_expert_accuracy, np.sum(weighted_expert_accuracy, axis = 1)[:, np.newaxis])
 
 	def __E_step(self, X, y):
 
@@ -150,7 +153,7 @@ class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 		"""
 
 		weighted_expert_accuracy = self.__weighted_expert_accuracy(X, y)
-		feature_weights = np.divide(weighted_expert_accuracy, np.sum(weighted_expert_accuracy, axis = 1)[:, np.newaxis])
+		feature_weights = self.__get_expert_weights(weighted_expert_accuracy)
 		
 		return feature_weights
 
@@ -166,14 +169,25 @@ class MixtureOfExperts(BaseEstimator, ClassifierMixin):
 		"""
 
 
+		#processes = [Process(target = self.gate.fit, args = (X, expert_weights))]
 		self.gate.fit(X, expert_weights)
-
-		#expert_weights = self.__E_step(X, y)
-
+		#for num in range(10):
+        #Process(target=f, args=(lock, num)).start()
+        
+        #expert_weights = self.__E_step(X, y)
+        
 		for expert_index in range(self.num_experts_):
+			y_expert = np.empty(X.shape[0], )
 			fw = expert_weights[:, expert_index]
 			#fw = np.array(feature_weights[:, expert_index].transpose().tolist()[0])
-			self.experts[expert_index].fit(X, y, sample_weight = fw)
+			#processes += [Process(target = self.experts[expert_index].fit, args = (X, y, fw))]
+			self.experts[expert_index].fit(X, y, fw)
+
+		# for p in processes:
+		# 	p.start()
+		# for p in processes:
+		# 	p.join()
+		# print processes
 
 		return self.score(X, y)		
 

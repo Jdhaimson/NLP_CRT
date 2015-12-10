@@ -12,8 +12,8 @@ from baseline_transformer import SexTransformer, GetConcatenatedNotesTransformer
 from icd_transformer import ICD9_Transformer
 from value_extractor_transformer import EFTransformer, LBBBTransformer, SinusRhythmTransformer, QRSTransformer, NYHATransformer, NICMTransformer
 import logging
-
-#from neural_network import NeuralNetwork
+from mix_of_exp import MixtureOfExperts
+from neural_network import NeuralNetwork, NeuralLogistic
 logger = logging.getLogger("DaemonLog")
 
 #This should make adding transformers easier. You could add a transformer like
@@ -128,7 +128,6 @@ def build_model(control, method = None, model_args = None, features = None, feat
         method = control['method']
         method_diff = False
     else: 
-        model_args = {}
         method_diff = not method == control['method']
 
     #Modify model args
@@ -188,6 +187,10 @@ def build_model(control, method = None, model_args = None, features = None, feat
         elif method in ['nn', 'neural', 'net', 'neuralnet', 'network']:
             is_regression = False
             clf = NeuralNetwork(**model_args)
+        elif method in ['me', 'mixexp', 'mixture of experts']:
+            is_regression = False
+            print model_args
+            clf = MixtureOfExperts(**model_args)
         else:
             raise ValueError("'" + method + "' is not a supported classification method")
 
@@ -198,7 +201,7 @@ def build_model(control, method = None, model_args = None, features = None, feat
 
         #assemble pipeline
         model =  Pipeline([
-                ('feature_union', FeatureUnion(transformer_list)),#, n_jobs = min(3, len(transformer_list)))),
+                ('feature_union', FeatureUnion(transformer_list, n_jobs = min(8, len(transformer_list)))),
                 ('Classifier', clf)
             ])
     return model

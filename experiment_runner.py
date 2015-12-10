@@ -79,7 +79,7 @@ if __name__ == "__main__":
     logger = logging.getLogger("DaemonLog")
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    handler = logging.FileHandler("../experiments/runner.log")
+    handler = logging.FileHandler("/home/ubuntu/experiments/runner.log")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 

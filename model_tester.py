@@ -20,7 +20,7 @@ from extract_data import get_operation_date,  is_note_doc, get_date_key
 from language_processing import parse_date 
 from loader import get_data
 from decision_model import ClinicalDecisionModel
-
+from mix_of_exp import MixtureOfExperts
 logger = logging.getLogger("DaemonLog")
 
 def get_preprocessed_patients(sample_size = 25, rebuild_cache=False):
@@ -237,6 +237,7 @@ def execute_test(clf, data_size, num_cv_splits):
     logger.info('Preprocessing...')
     X, Y = get_preprocessed_patients(data_size)
     Y = change_ef_values_to_categories(Y)
+
     logger.info(str(len(X)) + " patients in dataset")
     
     counts = {}
@@ -246,7 +247,7 @@ def execute_test(clf, data_size, num_cv_splits):
         counts[y] += 1
     logger.info("Summary:")
     logger.info(counts)
-   
+
     precision = []
     recall = []
     f1 = []
@@ -258,10 +259,18 @@ def execute_test(clf, data_size, num_cv_splits):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
         logger.info("fitting " + str(len(X_train)) + " patients...")
+        if type(clf.steps[-1][1]) == MixtureOfExperts:
+            print "I'm an expert!"
+            Y_real = np.zeros((len(Y_train), 2))
+            for i in range(len(Y_train)):    
+                Y_real[i, Y_train[i]] = 1
+            Y_train = Y_real
+        print Y_train
         clf.fit(X_train, Y_train)
         logger.info("predicting")
         Y_predict = clf.predict(X_test)
-
+        print Y_test
+        print Y_predict
         precision += [precision_score(Y_test, Y_predict)]
         recall += [recall_score(Y_test, Y_predict)]
         f1 += [f1_score(Y_test, Y_predict)]
