@@ -2,3 +2,4 @@ data/*
 *.pyc
 *.sw*
 doc2vec_models/
+doc2vec_models/
