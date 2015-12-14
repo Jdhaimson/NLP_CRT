@@ -3,3 +3,4 @@ data/*
 *.sw*
 doc2vec_models/
 doc2vec_models/
+corenlp_python/corenlp/stanford-corenlp-full-2015-04-20/
