@@ -1,0 +1,284 @@
+rectal pain: rectal pain
+hyperactive: hyperactive
+fevers: (fevers | febrile)
+pain at rest: pain [\d]+\/10 at rest
+cervical spine limitation: cervical spine limitation
+wound: wound
+renal stones: renal stones
+joint swelling: joint (swelling|edema)
+hand pain: hand (pain|hurt[a-z]*)
+motivational problems: (motivational problems|little motivation)
+urgency: urgency
+tearful: tearful
+feeling dependent: feeling dependent on (husband|wife|family|spouse)
+shakes: "Shakes all over" when stands up
+buttock pain: buttock pain
+morning stiffness: morning stiffness
+flank pain: flank pain
+auditory hallucinat: (auditory hallucinat[a-z]*|AH)
+guilt: guilt[a-z]*
+neck pain: neck (pain|hurt[a-z]*|spasm)
+claudication: claudication
+socially withdrawn: (socially withdrawn| avoidant tendencies| socially isolated) 
+asthma: asthma
+fatigue: (fatigue[a-z]*|malaise|lack of energy|gets tired with activity|low energy|poor energy|inability to exert [a-z]* self)
+tremors: tremors
+anemia: anemia
+sore muscles: sore muscles
+lower extremity: ((lower extremity|LE|leg|pedal|ankle|peripheral) (swelling|edema))
+rash: rash
+SAD: (SAD|seasonal affective disorder)
+black: ((black|tarry) stools|melena)
+loss of consciousness: (loss of consciousness|LOC)
+crying: crying
+decreased: (decreased|poor) concentration
+pain scale: [\d]+\/10 pain scale
+vasomotor instability: vasomotor instability
+mucosal bleeding: mucosal bleeding
+abdominal distention: abdominal= abd. (abdominal|stomach|abd’l) distention
+pre-syncope: pre-syncope
+struggling: (struggling|rough time|feeling stressed|trouble relaxing)
+stridor: stridor
+apnea: apnea
+tinnitus: (tinnitus|ringing in the ears)
+lightheadedness: lightheadedness
+weakness: weakness
+homicid: (homicid[a-z]*|HI)
+insomnia: (insomnia|difficulty sleeping|poor sleep[a-z]*|sleep[a-z]* poorly|sleep problems|sleep disturbance|early awakening)
+memory loss: memory loss
+diaphoresis: (diaphoresis|sweat[a-z]*)
+chest pain: ((chest (pain|pressure|discomfort))|CP)
+palpitations: (palpitations|palps|aware of heartbeat|heart skips a beat|felt irregular beats|sens[a-z]* irregular or fast heart beats,)
+polyphagia: polyphagia
+self-injury: (self-(injury|harm)|thoughts of hurting [a-z]*self|passive thoughts of wanting to die)
+enuresis: enuresis
+tingling: (pins and needle sensation|tingling)
+sore throat: sore throat
+nausea: nausea
+loss of interest in activities: (loss of interest in activities|anhedonia|lack of interest|little interest or pleasure in doing things|inability to enjoy things)
+irritab: irritab[a-z]*
+scrotal swelling: scrotal swelling
+ear discharge: ear discharge
+diplopia: diplopia
+arthralgias: (arthralgias|joint pain)
+neck stiffness: neck stiffness
+angry: angry
+changes in urination habits: changes in urination habits
+environment allerg: environment[a-z]* allerg[a-z]*
+N/V/D: N\/V\/D
+hemoptysis: (hemoptysis|coughing up blood)
+soreness: soreness
+elbow pain: elbow (pain|hurt[a-z]*)
+eye redness: eye redness
+f/c: f\/c
+dizziness: (dizziness|dizzy)
+sleep well: sleep[a-z]* well
+speech difficulty: (speech difficulty|difficulty with speech|aphasia|word finding difficulties)
+gout symptoms: gout symptoms
+hypomani: hypomani[a-z]*
+neck pain: neck pain
+cry: cry
+constipation: constipation
+weight: ((weight|wt) decreas[a-z]*|weight trend[a-z]* down|weight loss|weight is down|wt loss|unintended weight loss|down [a-z]* (lbs |pounds)|weight is below goal|los[a-z]* weight)
+light-headedness: light-headedness
+abdominal pain: (abdominal pain|abd pain|abdominal tenderness|abd tenderness)
+sensitivity: (sensitivity|sensitive to touch)
+confused: confused
+sexual side effects: sexual side effects
+neck swelling: neck swelling
+rhinitis: rhinitis
+loopy: loopy
+frequency: frequency
+sedation: sedation
+angina: angina
+sciatica: sciatica
+migraines: migraines
+snoring: snoring
+regained weight: regained much of (his|her) previous weight loss
+panic attack: panic attack
+burning pain: burning pain
+blood in stool: (blood in stool|hematochezia|BRBPR|bright red blood per rectum|(anal|rectal) bleeding)
+vertigo: vertigo
+photosensitivity: photosensitivity
+changes in strength or sensation: changes in strength or sensation
+tenderness: tenderness
+d/c: d\/c
+syncope: (syncope|faint[a-z]*|syncopal episode|episode of syncope)
+manic behavior: (manic behavior|mania)
+hand swelling: hand swelling
+ocular problem: ocular problem
+dehydrated: dehydrated
+pre/syncope: pre\/syncope
+bipolar: bipolar
+neurovegetative symptoms: (neurovegetative symptoms|decreased psychomotor activity|psychomotor slow[a-z]*)
+musculoskeletal pain: musculoskeletal pain
+peni swelling: peni[a-z]* swelling
+Raynauds symptoms: Raynauds symptoms
+headaches: (headaches|HA|h\/a)
+back pain: back pain
+sick symptoms: (sick symptoms|B sx’s)
+eye pain: eye pain
+incontinence of bowel: (incontinence of bowel|loss of bowel continence)
+arthritis: arthritis
+mucosal ulcerations: mucosal ulcerations
+foot pain: foot (pain|hurt[a-z]*)
+confusion: confusion
+penile discharge: penile discharge
+chest tightness: chest tightness
+pain/10: pain [\d]+\/10
+vomiting: vomiting
+sinusitis: sinusitis
+hopelessness: hopelessness
+paresthesias: (paresthesias|tingling|pins and needles)
+congestion: congestion
+hematemesis: (hematemesis|vomit[a-z]* blood|bloody emesis)
+sexual dysfunction: sexual dysfunction
+sensory or motor deficits: sensory or motor deficits
+cough: cough
+pre-syncop: pre-syncop[a-z]*
+weight gain: (weight gain|wt gain|weight increas[a-z]*|weight is up|up [a-z]* (lbs|pounds)|weight trending up|gained [a-z]* (pounds|lb)|weight is above goal|gain[a-z]* weight)
+ocular inflammation: ocular inflammation
+sputum: sputum
+bruises: (bruises|bleeds) easily
+changes in bowel habits: changes in bowel habits
+paranoia: paranoia
+hearing loss: hearing loss
+hopeless: hopeless
+stiffness: (stiffness|restricted motion)
+nervous: (nervous|anxious)
+falls: falls
+urine decreaseda: (urine decreaseda|decreased urine output)
+chills: chills
+postop pain: postop (pain|hurt[a-z]*|ache)
+urinary symptoms: urinary symptoms
+abdominal bloating: abdominal bloating
+n/v/d/c: n\/v\/d\/c
+eye discharge: eye discharge
+dysphagia: (dysphagia|difficulty swallowing)
+facial swelling: facial (swelling|edema)
+sleep more: (sleep[a-z]* more|increased sleep[a-z]*|hypersomnia)
+shoulder pain: shoulder (pain|hurt[a-z]*)
+wound breakdown: wound breakdown
+nosebleeds: (nosebleeds|epistaxis)
+mood goes up and down: (mood goes up and down|mood swings|emotional lability)
+poor vision: (poor vision|visual disturbance|vis[a-z]* changes|VA issues|changes in visual acuity|visual complaint|blurred vision|poor eyesight)
+dysuria: (dysuria|dyuriaa|urinary burninga|pain with urinati[a-z]*)
+cramp: cramp[a-z]*
+foot drop: foot drop
+anorexia: (anorexia|poor appetite|lack of appetite)
+decline: (decline|poor) [a-z]* quality of life
+worthless: worthless
+exertional lightheadedness: exertional lightheadedness
+discouraged: discouraged
+dry mouth: (dry mouth|Xerostomia)
+drowsiness: (drowsiness |sleepiness |tired[a-z]* | grogg[a-z]* | drowsy)
+polydipsia: polydipsia
+ache: ache
+sneezing: sneezing
+suicid: (suicid[a-z]*|SI)
+facial pain: facial (pain|hurt[a-z]*)
+wheezing: wheezing
+depress: (depress[a-z]*|low mood|dysphoric mood|depression screen: yes|SIGECAPS positive|feel[a-z]* down|sad[a-z]*|low spirits|Mood:  Not good)
+facial asymmetry: facial asymmetry
+headache: headache
+psoriasis: psoriasis
+visual spots: visual spots
+alopecia: alopecia
+ankle pain: ankle (pain|hurt[a-z]*)
+visual hallucinat: (visual hallucinat[a-z]*|VH)
+leg pain: leg (pain|hurt[a-z]*)
+irregular menses: irregular (menses|period[a-z]*)
+leg cramps: leg cramps
+hiccup: hiccup
+withdrawn: withdrawn
+trouble with attention and maintaining focus: (trouble with attention and maintaining focus|poor concentration|trouble concentrating|decrease[a-z]* concentration)
+podagra: podagra
+N/V: N\/V
+hesitancy: hesitancy
+focal weakness: focal weakness
+numbness and tingling: numbness and tingling
+hypotension: (hypotension|low (BP|blood pressure))
+difficulty urinating: (difficulty urinating|trouble voiding)
+genital sore: genital sore
+fearful: fearful
+neuropathy: neuropathy
+eye itching: (eye itching|itchy eye)
+orthopnea: (orthopnea|uses [\d]* pillows|[\d]*-pillow orthopnea|breathing is easier sitting up|sleep[a-z]* in a recliner) (PND|paroxysmal nocturnal dyspnea)
+pneumonia: pneumonia
+poor support system: poor support system
+fluid overload: (fluid overload[a-z]*|volume overload|sense of fluid in chest|fluid retention)
+wound pain: wound pain
+unable to walk: (unable to walk|gait dysfunction|difficulty walking)
+heat intolerance: (heat intolerance|feeling hot)
+s/s of URI: (s\/s of URI|cold symptoms|upper respiratory infection)
+viscosity of thought: viscosity of thought
+back pain: back (pain|hurt[a-z]*|spasm)
+agitation: agitation
+limited activity: (limited activity| activity levels worsen[a-z]*|activity intolerance| inability to walk|decondition[a-z]*|exertional tolerance is poor)
+behavior problem: behavior problem
+photophobia: photophobia
+myalgia: (myalgia[a-z]*|muscle pain)
+knee pain: knee (pain|hurt[a-z]*)
+adrenal insufficiency: adrenal insufficiency
+early satiety: early satiety
+syncop: syncop[a-z]*
+increased urine output: (increased urine output|increase in urine volume),(frequent night-time urinat[a-z]*|nocturia|gets up frequently in the night to urinate|urinate frequently overnight)
+ear pain: ear pain
+thyroid or parathyroid dysfunction: thyroid or parathyroid dysfunction
+laceration: laceration
+cognitive deficits: cognitive deficits
+numb: numb[a-z]*
+tongue biting: tongue biting
+choking: choking
+low self esteem: low self esteem
+postnasal drip: postnasal drip
+diarrhea: (diarrhea|loose stools)
+tendon pain: tendon pain
+demoralize: demoralize[a-z]*
+hoarseness: hoarseness
+good support system: (good support system|good social support)
+erectile dysfunction: (erectile dysfunction|impoten[a-z]*)
+polyuria: polyuria
+rhinorrhea: (rhinorrhea|runny nose)
+hematuria: hematuria
+seizure: (seizure[a-z]*|epileptic activity)
+PTSD: (PTSD|post traumatic stress disorder)
+CHF symptoms: (CHF symptoms|heart failure symptoms|symptoms of congestive heart failure)
+pallor: pallor
+hemoglobin drop: (hemoglobin drop|bleeding|bleeding problem)
+off balance: (off balance|poor balance|unsteady gait)
+frustrat: frustrat[a-z]*
+menorrhagia: (menorrhagia|heavy periods|heavy menses)
+immunocompromise.*: immunocompromise[a-z]*
+urin retention: urin[a-z]* retention
+GERD: (GERD|heartburn|reflux|indigestion)
+lymphadenopathy: (lymphadenopathy|swollen glands)
+platypnea: platypnea
+ICD: ((ICD|defibrillator|LifeVest) shocks)
+night sweats: (night sweats|nightsweats)
+discomfort: discomfort
+phantom limb sensation: phantom limb sensation
+cold intolerance: (cold intolerance|feeling cold)
+delirium: delirium
+jaundice: jaundice
+worried: (worried|worry[a-z]*)
+feeling dry: feeling dry
+funny feeling in his legs like a numbness or tenderness: funny feeling in his legs like a numbness or tenderness
+diabetes: (diabetes|DM)
+feel powerless: feel[a-z]* powerless
+adenopathy: adenopathy
+food allergy: food allergy[a-z]*
+bloating: bloating
+shortness of breath: (shortness of breath| SOB|dyspnea|breathing difficulties|can’t breathe|trouble breathing|dyspni|dyspneic|gasping for air|shortness of breath (on|with) exertion|exertional SOB|DOE|dyspnea on exertion|shortness of breath (with|when) [A-z]+ flight of stairs)
+testicular pain: testicular pain
+gait problem: gait problem
+apathy: apathy
+infections: infections
+blunting of affect: blunting of affect
+foot injury: foot injury
+color change: color change
+incontinence of bladder: (incontinence of bladder|loss of urinary continence)
+amenorrhea: amenorrhea
+peni pain: peni[a-z]* pain
+mouth soreness: mouth soreness
+dry eyes: dry eyes

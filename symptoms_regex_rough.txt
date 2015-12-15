@@ -1,0 +1,41 @@
+>ACTIVITY - (limited activity| activity levels worsen.*|activity intolerance| inability to walk|decondition.*|exertional tolerance is poor), (fatigue.*|malaise|lack of energy|gets tired with activity|low energy|poor energy|inability to exert .* self), (drowsiness |sleepiness |tired.* | grogg.* | drowsy), loopy
+
+>CONSTITUTIONAL - (sick symptoms|B sx’s), (fevers | febrile), chills, f/c, (night sweats|nightsweats), dehydrated, (diaphoresis|sweat.*), vasomotor instability
+
+>APPETITE - (anorexia|poor appetite|lack of appetite)
+
+>WEIGHTLOSS - ((weight|wt) decreas.*|weight trend.* down|weight loss|weight is down|wt loss|unintended weight loss|down .* (lbs |pounds)|weight is below goal|los.* weight)
+
+>WEIGHTGAIN - (weight gain|wt gain|weight increas.*|weight is up|up .* (lbs|pounds)|weight trending up|gained .* (pounds|lb)|weight is above goal|gain.* weight), regained much of (his|her) previous weight loss 
+
+>HENT - facial (swelling|edema), neck pain, neck stiffness, ear discharge, hearing loss, ear pain, (tinnitus|ringing in the ears), (nosebleeds|epistaxis), congestion, (rhinorrhea|runny nose), postnasal drip, sneezing, hoarseness, (dry mouth|Xerostomia), rhinitis,  sinusitis, (dysphagia|difficulty swallowing), sore throat, mouth soreness, (lymphadenopathy|swollen glands) 
+
+>EYES - eye discharge, (eye itching|itchy eye), eye pain, eye redness, photophobia, (poor vision|visual disturbance|vis.* changes|VA issues|changes in visual acuity|visual complaint|blurred vision|poor eyesight), ocular inflammation, dry eyes, ocular problem, diplopia, visual spots
+
+>RESPIRATORY - apnea, chest tightness, choking, cough, stridor, wheezing, sputum, snoring, (orthopnea|uses .* pillows|*-pillow orthopnea|breathing is easier sitting up|sleep.* in a recliner) (PND|paroxysmal nocturnal dyspnea), (shortness of breath| SOB|dyspnea|breathing difficulties|can’t breathe|trouble breathing|dyspni|dyspneic|gasping for air),(shortness of breath (on|with) exertion|exertional SOB|DOE|dyspnea on exertion|shortness of breath (with|when) **insert activity** flight of stairs, etc), (s/s of URI|cold symptoms|upper respiratory infection), (hemoptysis|coughing up blood), platypnea, asthma, pneumonia
+
+>CARDIOVASC - ((chest (pain|pressure|discomfort))|CP), ((lower extremity|LE|leg|pedal|ankle|peripheral) (swelling|edema)),  (palpitations|palps|aware of heartbeat|heart skips a beat|felt irregular beats|sens.* irregular or fast heart beats,), (CHF symptoms|heart failure symptoms|symptoms of congestive heart failure), syncop.*, pre-syncop.*, (fluid overload.*|volume overload|sense of fluid in chest|fluid retention), lightheadedness, (dizziness|dizzy), abdominal bloating, claudication, hypotension, angina, (hypotension|low (BP|blood pressure)), exertional lightheadedness, ((ICD|defibrillator|LifeVest) shocks)
+
+>GI - abdominal= abd. (abdominal|stomach|abd’l) distention, bloating, (abdominal pain|abd pain|abdominal tenderness|abd tenderness), (blood in stool|hematochezia|BRBPR|bright red blood per rectum|(anal|rectal) bleeding), ((black|tarry) stools|melena), rectal pain, nausea, vomiting, (diarrhea|loose stools), constipation, n/v/d/c, d/c, N/V, N/V/D, (GERD|heartburn|reflux|indigestion), (hematemesis|vomit.* blood|bloody emesis), (incontinence of bowel|loss of bowel continence), early satiety, hiccup,  jaundice, changes in bowel habits, cramp.*
+
+>ENDOCRINE - (cold intolerance|feeling cold), (heat intolerance|feeling hot), polydipsia, polyphagia, polyuria, feeling dry, thyroid or parathyroid dysfunction, (diabetes|DM), adrenal insufficiency
+
+>GU - (difficulty urinating|trouble voiding), (dysuria|dyuriaa|urinary burninga|pain with urinati.*), enuresis, flank pain, frequency, genital sore, hematuria, hesitancy, penile discharge, peni.* pain, peni.* swelling, scrotal swelling, testicular pain, (menorrhagia|heavy periods|heavy menses), irregular (menses|period.*), amenorrhea,  urgency, (urine decreaseda|decreased urine output), (increased urine output|increase in urine volume),(frequent night-time urinat.*|nocturia|gets up frequently in the night to urinate|urinate frequently overnight), renal stones, urin.* retention, (incontinence of bladder|loss of urinary continence), changes in urination habits, urinary symptoms, sexual dysfunction, (erectile dysfunction|impoten.*), sexual side effects
+
+>MUSC - (arthralgias|joint pain), back pain, gait problem, joint (swelling|edema), (myalgia.*|muscle pain), neck swelling, foot injury, gout symptoms, podagra, cervical spine limitation, arthritis, leg cramps, (stiffness|restricted motion), hand swelling, morning stiffness
+
+>SKIN - color change, pallor, rash, wound, psoriasis, alopecia, photosensitivity, mucosal ulcerations, Raynauds symptoms, wound breakdown, laceration
+
+>ALLERG_IMMUNO - environment.* allerg.*, food allergy.*, immunocompromise.*, infections
+
+>NEUROLOGICAL - (dizziness|dizzy), facial asymmetry, (headaches|HA|h/a), light-headedness, (loss of consciousness|LOC), (seizure.*|epileptic activity), numb.*, (pins and needle sensation|tingling), (syncope|faint.*|syncopal episode|episode of syncope), pre-syncope, tremors, weakness, sleep.* well, neuropathy, (off balance|poor balance|unsteady gait), (unable to walk|gait dysfunction|difficulty walking), funny feeling in his legs like a numbness or tenderness, "Shakes all over" when stands up, foot drop, focal weakness, falls, sedation, confusion, confused, sensory or motor deficits, tongue biting, numbness and tingling, cognitive deficits, pre/syncope, changes in strength or sensation, migraines, (paresthesias|tingling|pins and needles), vertigo, (speech difficulty|difficulty with speech|aphasia|word finding difficulties), phantom limb sensation, memory loss, delirium, (trouble with attention and maintaining focus|poor concentration|trouble concentrating|decrease.* concentration)
+
+>HEMATOLOGIC - adenopathy, (bruises|bleeds) easily, (hemoglobin drop|bleeding|bleeding problem), anemia, mucosal bleeding
+
+>PSYCHIATRIC - agitation, behavior problem, confusion, (decreased|poor) concentration,  hyperactive, (nervous|anxious), (self-(injury|harm)|thoughts of hurting .*self|passive thoughts of wanting to die), (suicid.*|SI), (homicid.*|HI), (depress.*|low mood|dysphoric mood|depression screen: yes|SIGECAPS positive|feel.* down|sad.*|low spirits|Mood:  Not good), (insomnia|difficulty sleeping|poor sleep.*|sleep.* poorly|sleep problems|sleep disturbance|early awakening), (mood goes up and down|mood swings|emotional lability, irritab.*, bipolar, hypomani.*, (manic behavior|mania), (motivational problems|little motivation), (sleep.* more|increased sleep.*|hypersomnia), tearful, cry, crying, (loss of interest in activities|anhedonia|lack of interest|little interest or pleasure in doing things|inability to enjoy things), guilt.*, (SAD|seasonal affective disorder), fearful, worthless, hopeless, (PTSD|post traumatic stress disorder), hopelessness, (neurovegetative symptoms|decreased psychomotor activity|psychomotor slow.*), (auditory hallucinat.*|AH), (visual hallucinat.*|VH), paranoia, apathy, viscosity of thought, blunting of affect, (worried|worry.*), low self esteem, withdrawn, panic attack
+
+>PAIN - neck (pain|hurt.*|spasm), back (pain|hurt.*|spasm), headache, foot (pain|hurt.*), shoulder (pain|hurt.*), (sensitivity|sensitive to touch), pain .*/10, pain .*/10 at rest, ankle (pain|hurt.*), knee (pain|hurt.*), elbow (pain|hurt.*), hand (pain|hurt.*), facial (pain|hurt.*), leg (pain|hurt.*), soreness, sore muscles, ache, sciatica, .*/10 pain scale, musculoskeletal pain, tenderness, burning pain, discomfort, tendon pain, wound pain, buttock pain, postop (pain|hurt.*|ache) 
+
+>GOOD_SUPPORT - (good support system|good social support) 
+
+>COPING - angry, frustrat.*, (socially withdrawn| avoidant tendencies| socially isolated) , feel.* powerless, demoralize.*, (decline|poor) .* quality of life, poor support system, discouraged, (struggling|rough time|feeling stressed|trouble relaxing), feeling dependent on (husband|wife|family|spouse)
