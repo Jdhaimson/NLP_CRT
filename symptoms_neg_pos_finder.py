@@ -37,11 +37,19 @@ def main():
                     for sym in symptoms_regexes:
                         normal, neg_pre, neg_suff = [bool(x.search(doc['free_text'])) for x in symptoms_regexes[sym]]
                         if neg_pre or neg_suff:
-                            person_neg_history[sym] = delta_days
+                            if sym in person_neg_history:
+                                person_neg_history[sym].append(delta_days)
+                            else:
+                                person_neg_history[sym] = [delta_days]
                             print '\t\tNegative,' + sym + ',' + str(delta_days)
                         elif normal:
-                            person_pos_history[sym] = delta_days
+                            if sym in person_pos_history:
+                                person_pos_history[sym].append(delta_days)
+                            else:
+                                person_pos_history[sym] = [delta_days]
                             print '\t\tPositive,' + sym + ',' + str(delta_days)
+    return person_pos_history, person_neg_history
                         
 if __name__ == '__main__':
-    main()
+    pos, neg = main()
+    print pos
