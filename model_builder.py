@@ -64,6 +64,17 @@ control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
 lr_baseline = {  'method' : 'lr', 'model_args' : {'C' : 1}, 'features' : {} } 
 #nn_baseline = { 'method' : 'nn',  'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
+alex_baseline = {   'method':'adaboost',
+                    'model_args': {'n_estimators': 200},
+                    'features':{}
+                }
+def build_alex_baseline():
+    for n in control_groups['notes_tfidf']:
+        alex_baseline['features'][n] = (control_features[n][1], control_features[n][2])
+    for r in control_groups['regex']:
+        alex_baseline['features'][r] = (control_features[r][1], control_features[r][2])
+build_alex_baseline()
+
 
 regex_baseline = {  'method' : 'adaboost',
                     'model_args' : {'n_estimators' : 500},

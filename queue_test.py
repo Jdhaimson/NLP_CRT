@@ -7,7 +7,7 @@ import itertools
 # Description: adds a test to the queue
 #
 # example of queue:
-#   python -m 'This is a test' -n 500 -cv 3 -d 'from model_builder import build_model, regex_baseline' -r "build_model(regex_baseline, method = 'SVM', features_remove = ['NYHA'], features_add = {'min_ef' : (EFTransformer, {'method' = 'min', 'num_horizon' = 2})})"
+#   python queue_test.py -mes 'This is a test' -n 500 -cv 3 -d 'from model_builder import build_model, regex_baseline' -r "build_model(regex_baseline, method = 'SVM', features_remove = ['NYHA'], features_add = {'min_ef' : (EFTransformer, {'method':'min', 'num_horizon': 2})})"
 #
 #  Keys    Description                                 Default                    
 #   -h      displays help message                       
