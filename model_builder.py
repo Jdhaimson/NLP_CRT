@@ -201,7 +201,7 @@ def build_model(control, method = None, model_args = None, features = None, feat
 
         #assemble pipeline
         model =  Pipeline([
-                ('feature_union', FeatureUnion(transformer_list, n_jobs = min(8, len(transformer_list)))),
+                ('feature_union', FeatureUnion(transformer_list, n_jobs = min(2, len(transformer_list)))),
                 ('Classifier', clf)
             ])
     return model
