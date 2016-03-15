@@ -34,6 +34,10 @@ class ExperimentRunner():
         
     def run_experiment(self, experiment, idx):
         logger.info("Running experiment: " + str(experiment['Id']))
+        experiments = pd.read_csv(self.experiments_file)
+        experiments.loc[idx, 'Run?'] = 1 
+        # Mark experiment as run
+        experiments.to_csv(self.experiments_file, index=False)
         try:
             exec(experiment['Dependencies'])
             pipeline = eval(experiment['Model'])
@@ -44,10 +48,6 @@ class ExperimentRunner():
             logger.error("Error on the following experiment:\n" + str(experiment))
             logger.exception("Here was the stack trace:")
 
-        # Mark experiment as run
-        experiments = pd.read_csv(self.experiments_file)
-        experiments.loc[idx, 'Run?'] = 1
-        experiments.to_csv(self.experiments_file, index=False)
 
         #post results
         try:
