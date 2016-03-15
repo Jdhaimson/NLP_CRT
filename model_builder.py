@@ -39,9 +39,9 @@ control_features = {   'all_ef' :  ('all_ef', EFTransformer, {'method' : 'all', 
                                                                     ('ngram_car', CountVectorizer, {'ngram_range' : (3, 3), 'min_df' : .05})]),    
                         'lno_trigram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
                                                                     ('ngram_lno', CountVectorizer, {'ngram_range' : (3, 3), 'min_df' : .05})]),
-                        'car_bigram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car'}),
+                        'car_bigram':('car_ngram', FeaturePipeline, [('notes_car', GetConcatenatedNotesTransformer, {'note_type' : 'Car', 'look_back_months': 12}),
                                                                     ('ngram_car', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),    
-                        'lno_bigram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno'}),
+                        'lno_bigram':('lno_ngram', FeaturePipeline, [('notes_lno', GetConcatenatedNotesTransformer, {'note_type' : 'Lno', 'look_back_months': 12}),
                                                                     ('ngram_lno', CountVectorizer, {'ngram_range' : (2, 2), 'min_df' : .05})]),
                         'enc':      ('enc', GetEncountersFeaturesTransformer, {'max_encounters' : 5}),
                         'lab_all' : ('lab_all', FeaturePipeline, [('lab_to_dict', GetLabsCountsDictTransformer, {}), ('dict_to_vect', DictVectorizer, {})]),                         
@@ -63,18 +63,40 @@ control_groups = { 'regex' : ['all_ef', 'mean_ef', 'max_ef', 'lbbb', 'sr', 'nyha
 #These are empty, but might be useful
 adaboost_baseline = {  'method' : 'adaboost', 'model_args' : {'n_estimators' : 500}, 'features' : {} } 
 lr_baseline = {  'method' : 'lr', 'model_args' : {'C' : 1}, 'features' : {} } 
-#nn_baseline = { 'method' : 'nn',  'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
-alex_baseline = {   'method':'adaboost',
-                    'model_args': {'n_estimators': 200},
+
+nn_baseline2 = { 'method' : 'nn',  'model_args' : {'layers' : [(10, 'logistic'), (None, 'softmax')], 'obj_fun' : 'maxent'}, 'features' : {}}
+
+alex_baseline = {   'method':'svm',
+                    'model_args': {},
                     'features':{}
                 }
 def build_alex_baseline():
-    for n in control_groups['notes_tfidf']:
+    #for n in control_groups['notes_tfidf']:
+    for n in ['lno_bigram', 'car_bigram']:
         alex_baseline['features'][n] = (control_features[n][1], control_features[n][2])
+        nn_baseline2['features'][n] = (control_features[n][1], control_features[n][2])
     for r in control_groups['regex']:
         alex_baseline['features'][r] = (control_features[r][1], control_features[r][2])
+        nn_baseline2['features'][n] = (control_features[n][1], control_features[n][2])
+
 build_alex_baseline()
 
+alex_ada = {    'method':'adaboost',
+                'model_args': {'n_estimators':500},
+                'features': alex_baseline['features']
+           }
+
+alex_baseline_10 = {'method':'svm', 'model_args':{'class_weight':{1:10}}, 'features':alex_baseline['features']}
+
+alex_baseline_100 = {'method':'svm', 'model_args':{'class_weight':{1:100}}, 'features':alex_baseline['features']}
+
+alex_baseline_1000 = {'method':'svm', 'model_args':{'class_weight':{1:1000}}, 'features':alex_baseline['features']}
+
+alex_baseline_01 = {'method':'svm', 'model_args':{'class_weight':{2:10}}, 'features':alex_baseline['features']}
+
+alex_baseline_001 = {'method':'svm', 'model_args':{'class_weight':{1:.01}}, 'features':alex_baseline['features']}
+
+alex_baseline_0001 = {'method':'svm', 'model_args':{'class_weight':{1:.001}}, 'features':alex_baseline['features']}
 
 regex_baseline = {  'method' : 'adaboost',
                     'model_args' : {'n_estimators' : 500},

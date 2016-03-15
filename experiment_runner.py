@@ -39,7 +39,7 @@ class ExperimentRunner():
             pipeline = eval(experiment['Model'])
 
             logger.info(str(pipeline))
-            results = execute_test(pipeline, experiment['Patients'], experiment['CV'])
+            results = execute_test(pipeline, int(experiment['Patients']), experiment['CV'])
         except Exception as e:
             logger.error("Error on the following experiment:\n" + str(experiment))
             logger.exception("Here was the stack trace:")

@@ -12,7 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, mean_squared_error, r2_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.pipeline import FeatureUnion, Pipeline
 
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
@@ -22,6 +22,10 @@ from loader import get_data
 from decision_model import ClinicalDecisionModel
 from mix_of_exp import MixtureOfExperts
 logger = logging.getLogger("DaemonLog")
+
+def _specificity_score(y,y_hat):
+    mc = confusion_matrix(y,y_hat)
+    return float(mc[0,0])/np.sum(mc[0,:])
 
 def get_preprocessed_patients(sample_size = 25, rebuild_cache=False):
     cache_file = '/home/ubuntu/project/data/patient_cache.json'
@@ -167,7 +171,8 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
     precision = []
     recall = []
     f1 = []
-    accuracy = []    
+    accuracy = []
+    specificity = []    
 
     for cv_run in range(num_cv_splits):
 
@@ -186,12 +191,14 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
             recall += [recall_score(Y_test, Y_predict)]
             f1 += [f1_score(Y_test, Y_predict)]
             accuracy += [accuracy_score(Y_test, Y_predict)]
+            specificity += [_specificity_score(Y_test, Y_predict)]
             if show_progress:
                 logger.info("CV Split #" + str(cv_run + 1))
                 logger.info("\tPrecision: " + str(precision[-1]))
                 logger.info("\tRecall: " + str(recall[-1]))
                 logger.info("\tF1 Score: " + str(f1[-1]))
                 logger.info("\tAccuracy: " + str(accuracy[-1]))
+                logger.info("\tSpecificity: " +  str(specificity[-1]))
     logger.info("\n---------------------------------------")
     logger.info("Overall (" + str(num_cv_splits) +  " cv cuts)")
     if is_regression:
@@ -202,6 +209,7 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         display_summary("Recall", recall)
         display_summary("F1 Score", f1)
         display_summary("Accuracy", accuracy)
+        display_summary("Specificity", specificity)
 
     try:
         column_names = features.get_feature_names()
@@ -251,7 +259,8 @@ def execute_test(clf, data_size, num_cv_splits):
     precision = []
     recall = []
     f1 = []
-    accuracy = []    
+    accuracy = []
+    specificity = []
 
     logger.info("Beginning runs")
     
@@ -260,27 +269,32 @@ def execute_test(clf, data_size, num_cv_splits):
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
         logger.info("fitting " + str(len(X_train)) + " patients...")
         if type(clf.steps[-1][1]) == MixtureOfExperts:
+            logger.info("alex debug, mixture of experts")
             print "I'm an expert!"
             Y_real = np.zeros((len(Y_train), 2))
             for i in range(len(Y_train)):    
                 Y_real[i, Y_train[i]] = 1
             Y_train = Y_real
         print Y_train
+        logger.info("alex debug, fitting")
         clf.fit(X_train, Y_train)
         logger.info("predicting")
         Y_predict = clf.predict(X_test)
+        logger.info("alex debug, done predicting")
         print Y_test
         print Y_predict
         precision += [precision_score(Y_test, Y_predict)]
         recall += [recall_score(Y_test, Y_predict)]
         f1 += [f1_score(Y_test, Y_predict)]
         accuracy += [accuracy_score(Y_test, Y_predict)]
+        specificity += [_specificity_score(Y_test, Y_predict)]
 
         logger.info("CV Split #" + str(cv_run + 1))
         logger.info("\tPrecision: " + str(precision[-1]))
         logger.info("\tRecall: " + str(recall[-1]))
         logger.info("\tF1 Score: " + str(f1[-1]))
         logger.info("\tAccuracy: " + str(accuracy[-1]))
+        logger.info("\tSpecificity: " + str(specificity[-1]))
 
     try:
         features, model = (clf.steps[0][1], clf.steps[-1][1])
