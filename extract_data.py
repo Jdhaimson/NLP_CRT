@@ -69,6 +69,7 @@ def get_doc_rel_dates(patient_data, dates = None, count_elements = True):
                                 dates[doc_type] = [date - procedure_date]*multiplier
     return dates
 
+
 '''
 description
     returns a list of (date, EF_value) tuples generated from the notes of a patient from get_data([i])
@@ -81,6 +82,7 @@ output
 ''' 
 def get_ef_values(patient_data, car_only = True): 
     keywords = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
+    keywords = ['(?:ef|ejection fraction)\s*(?:of|is)?[:\s]*([0-9]*\.?[0-9]*)\s*%']
     results = []
     procedure_date = get_operation_date(patient_data)
     if procedure_date == None: #throw out patient if no procedure date
@@ -104,6 +106,39 @@ def get_ef_values(patient_data, car_only = True):
                                     pattern = re.compile(key)
                                     results += [ (delta_days, float(x)) for x in re.findall(pattern, note) if len(x) > 0 and x != "."]
     return results
+
+'''
+ADDED BY JOSH TO VALIDATE
+'''
+def get_ef_value_notes(patient_data, car_only = True):
+
+    keywords = ['(?:ef|ejection fraction)\s*(?:of|is)?[:\s]*([0-9]*\.?[0-9]*)\s*%']
+    keywords = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
+    results = []
+    procedure_date = get_operation_date(patient_data)
+    if procedure_date == None: #throw out patient if no procedure date
+        return results
+    else: 
+        for doc_type in patient_data: #loop over each doc type, eg Enc, Lno
+            if is_note_doc(doc_type) and (not car_only or doc_type == 'Car'): #only look at note docs, eg Car, Lno
+                date_key = get_date_key(doc_type)
+                if date_key != None: #only look at notes with a date key provided (should be all of them)
+                    docs = patient_data[doc_type]
+                    if type(docs) != type(list()): #just in case the value is not a list, make it one so we can iterate over it
+                        docs = [docs]
+                    for doc in docs: #for each document of that type for a given patient
+                        if doc != None: #assuming the list is not empty
+                            date = parse_date(doc[date_key]) #this stores the date of the note
+                            if date != None: #if there is a date value
+                                note = doc['free_text'].lower() #get the note raw_text
+                                delta_days = (date - procedure_date).days
+                                ##### MODIFY THIS PART ###### -- Has been modified by mtraub
+                                for key in keywords: #for each keyword, search over the document and get matched MODIFY THIS
+                                    pattern = re.compile(key)
+                                    results += [ (delta_days, float(x), note) for x in re.findall(pattern, note) if len(x) > 0 and x != "."]
+    return results
+
+
 
 def get_doc_keywords(patient_data, keywords, counts = None, by_doc_type = False):
     if counts == None:
