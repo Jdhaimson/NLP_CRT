@@ -59,9 +59,9 @@ def change_ef_values_to_categories(ef_values):
 
     for value in ef_values:
         if value < 5:
-            output.append(0)
-        else:
             output.append(1)
+        else:
+            output.append(0)
         '''
         if value <-2:
             output.append("reduction")
