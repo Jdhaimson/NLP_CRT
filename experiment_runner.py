@@ -56,7 +56,10 @@ class ExperimentRunner():
                 writer.writerow([experiment[key] for key in ['Id', 'Purpose', 'CV', 'Patients', 'Model']] + 
                                 [results[key] for key in ['mode', 'precision_mean', 'precision_std', 'recall_mean',
                                                           'recall_std', 'f1_mean', 'f1_std', 'accuracy_mean',
-                                                          'accuracy_std', 'important_features']
+                                                          'accuracy_std', 'train_precision_mean', 'train_precision_std', 
+                                                          'train_recall_mean', 'train_recall_std', 'train_f1_mean', 
+                                                          'train_f1_std', 'train_accuracy_mean', 'train_accuracy_std', 
+                                                          'important_features']
                                 ])
 
         except Exception as e:
