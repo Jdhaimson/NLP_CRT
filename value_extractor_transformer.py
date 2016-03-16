@@ -66,6 +66,8 @@ class ExtractValueTransformerMixin(TransformerMixin):
 
         doc_date_text = doc[extract_data.get_date_key(doc_type)]
         doc_date = extract_data.parse_date(doc_date_text)
+        if doc_date is None:
+            return False
         time_diff = (doc_date - operation_date).days
         if self.time_horizon != None:    
             return time_diff <= 0 and abs(time_diff) <= abs(self.time_horizon)
@@ -198,6 +200,8 @@ class EFTransformer(RegexTransformer):
     def __init__(self, method, num_horizon, time_horizon = None):
 
         re_patterns = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
+
+        re_patterns = ['(?:ef|ejection fraction)\s*(?:of|is)?[:\s]*([0-9]*\.?[0-9]*)\s*%']
         RegexTransformer.__init__(self, ['Car'], 'EF', re_patterns, method, num_horizon, time_horizon)    
 
     def select_doc(self, doc, operation_date, doc_type):

@@ -257,10 +257,14 @@ def execute_test(clf, data_size, num_cv_splits):
     logger.info(counts)
 
     precision = []
+    precision_train = []
     recall = []
+    recall_train = []
     f1 = []
-    accuracy = []
     specificity = []
+    f1_train = []
+    accuracy = []    
+    accuracy_train = []    
 
     logger.info("Beginning runs")
     
@@ -281,13 +285,18 @@ def execute_test(clf, data_size, num_cv_splits):
         logger.info("predicting")
         Y_predict = clf.predict(X_test)
         logger.info("alex debug, done predicting")
+        Y_train_predict = clf.predict(X_train)
         print Y_test
         print Y_predict
         precision += [precision_score(Y_test, Y_predict)]
+        precision_train += [precision_score(Y_train, Y_train_predict)]
         recall += [recall_score(Y_test, Y_predict)]
+        recall_train += [recall_score(Y_train, Y_train_predict)]
         f1 += [f1_score(Y_test, Y_predict)]
+        f1_train += [f1_score(Y_train, Y_train_predict)]
         accuracy += [accuracy_score(Y_test, Y_predict)]
         specificity += [_specificity_score(Y_test, Y_predict)]
+        accuracy_train += [accuracy_score(Y_train, Y_train_predict)]
 
         logger.info("CV Split #" + str(cv_run + 1))
         logger.info("\tPrecision: " + str(precision[-1]))
@@ -295,6 +304,10 @@ def execute_test(clf, data_size, num_cv_splits):
         logger.info("\tF1 Score: " + str(f1[-1]))
         logger.info("\tAccuracy: " + str(accuracy[-1]))
         logger.info("\tSpecificity: " + str(specificity[-1]))
+        logger.info("\tTrain Precision: " + str(precision_train[-1]))
+        logger.info("\tTrain Recall: " + str(recall_train[-1]))
+        logger.info("\tTrain F1 Score: " + str(f1_train[-1]))
+        logger.info("\tTrain Accuracy: " + str(accuracy_train[-1]))
 
     try:
         features, model = (clf.steps[0][1], clf.steps[-1][1])
@@ -316,6 +329,10 @@ def execute_test(clf, data_size, num_cv_splits):
     result['recall_mean'], result['recall_std'] = get_mu_std(recall)
     result['f1_mean'], result['f1_std'] = get_mu_std(f1)
     result['accuracy_mean'], result['accuracy_std'] = get_mu_std(accuracy)
+    result['train_precision_mean'], result['train_precision_std'] = get_mu_std(precision_train)
+    result['train_recall_mean'], result['train_recall_std'] = get_mu_std(recall_train)
+    result['train_f1_mean'], result['train_f1_std'] = get_mu_std(f1_train)
+    result['train_accuracy_mean'], result['train_accuracy_std'] = get_mu_std(accuracy_train)
     result['important_features'] = important_features
      
     return result    
