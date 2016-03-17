@@ -4,6 +4,7 @@ import time
 import csv
 from daemon import runner
 import pandas as pd
+from slack_log_handler import SlackLogHandler
 
 from model_tester import test_model, execute_test
 
@@ -85,6 +86,10 @@ if __name__ == "__main__":
     handler = logging.FileHandler("/home/ubuntu/experiments/runner.log")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
+    slack_handler = SlackLogHandler("https://hooks.slack.com/services/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")
+    slack_handler.setLevel(logging.INFO)
+    logger.addHandler(slack_handler)
 
     # Configure app to run as daemon
     exp_runner = ExperimentRunner()
