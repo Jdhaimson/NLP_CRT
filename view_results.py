@@ -4,10 +4,12 @@ import pandas as pd
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("id")
+    parser.add_argument("id", type=int)
+    parser.add_argument("--features", action="store_true")
     args = parser.parse_args()
 
-    result_id = int(args.id)
-
     results = pd.read_csv('/home/ubuntu/experiments/results.csv')
-    print results[results['Id'] == result_id].iloc[0]
+    row = results[results['Id'] == args.id].iloc[0]
+    print row
+    if args.features:
+        print row['Important Features'].replace("\\n", "\n")
