@@ -126,107 +126,7 @@ def get_mu_std(values):
     std = (sum(sq_dev) / len(values))**.5
     return (mu, std)
 
-def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
-
-    if method in ['logistic regression', 'lr', 'logitr', 'logistic']:
-        is_regression = False
-        clf = LogisticRegression(**model_args)
-    elif method in ['svm']:
-        is_regression = False
-        clf = SVC(**model_args)
-    elif method in ['boosting', 'adaboost']:
-        is_regression = False
-        clf = AdaBoostClassifier(**model_args)
-    elif method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
-        is_regression = False
-        clf = ClinicalDecisionModel()
-    else:
-        raise ValueError("'" + method + "' is not a supported classification method")
-
-    logger.info('Preprocessing...')
-    X, Y = get_preprocessed_patients(data_size)
-    Y = change_ef_values_to_categories(Y)
-    logger.info(str(len(X)) + " patients in dataset")
-    
-    if not is_regression:
-        counts = {}
-        for y in Y:
-            if y not in counts:
-                counts[y] = 0
-            counts[y] += 1
-        logger.info("Summary:")
-        logger.info(counts)
-    
-    pipeline =  Pipeline([
-        ('feature_union', features),
-        ('Classifier', clf)
-    ])
-
-    #If using the ClinicalDecisionModel then no pipeline needed
-    if method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
-        pipeline = clf
-
-    mse = []
-    r2 = []
-    precision = []
-    recall = []
-    f1 = []
-    accuracy = []
-    specificity = []    
-
-    for cv_run in range(num_cv_splits):
-
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
-        pipeline.fit(X_train, Y_train)
-        Y_predict = pipeline.predict(X_test)
-        if is_regression:
-            mse += [mean_squared_error(Y_test, Y_predict)]
-            r2 += [r2_score(Y_test, Y_predict)]
-            if show_progress:
-                logger.info("CV Split #" + str(cv_run + 1))
-                logger.info("\tMean Squared Error: ", mse[-1])
-                logger.info("\tR2 Score: ", r2[-1])
-        else:
-            precision += [precision_score(Y_test, Y_predict)]
-            recall += [recall_score(Y_test, Y_predict)]
-            f1 += [f1_score(Y_test, Y_predict)]
-            accuracy += [accuracy_score(Y_test, Y_predict)]
-            specificity += [_specificity_score(Y_test, Y_predict)]
-            if show_progress:
-                logger.info("CV Split #" + str(cv_run + 1))
-                logger.info("\tPrecision: " + str(precision[-1]))
-                logger.info("\tRecall: " + str(recall[-1]))
-                logger.info("\tF1 Score: " + str(f1[-1]))
-                logger.info("\tAccuracy: " + str(accuracy[-1]))
-                logger.info("\tSpecificity: " +  str(specificity[-1]))
-    logger.info("\n---------------------------------------")
-    logger.info("Overall (" + str(num_cv_splits) +  " cv cuts)")
-    if is_regression:
-        display_summary("Mean Squared Error", mse)
-        display_summary("R2 Score", r2)
-    else:
-        display_summary("Precision", precision)
-        display_summary("Recall", recall)
-        display_summary("F1 Score", f1)
-        display_summary("Accuracy", accuracy)
-        display_summary("Specificity", specificity)
-
-    try:
-        column_names = features.get_feature_names()
-        logger.info("Number of column names: " + str( len(column_names)))
-        feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
-        Z = zip(column_names, feature_importances)
-        Z.sort(key = lambda x: abs(x[1]), reverse = True)
-        logger.info("100 biggest theta components of last CV run:")
-        for z in Z[:min(100, len(Z))]:
-            logger.info(str(z[1]) + "\t" + z[0])
-    except Exception as e:
-        logger.info("Feature name extraction failed")
-        logger.info(e)
- 
-
 ############################################
-# Josh: use this one
 # Inputs:
 #       clf: some model object with a fit(X,y) and predict(X) function
 #       data_size: num patients
@@ -336,6 +236,106 @@ def execute_test(clf, data_size, num_cv_splits):
     result['important_features'] = important_features
      
     return result    
+
+# DEPRECATED
+def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
+
+    if method in ['logistic regression', 'lr', 'logitr', 'logistic']:
+        is_regression = False
+        clf = LogisticRegression(**model_args)
+    elif method in ['svm']:
+        is_regression = False
+        clf = SVC(**model_args)
+    elif method in ['boosting', 'adaboost']:
+        is_regression = False
+        clf = AdaBoostClassifier(**model_args)
+    elif method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        is_regression = False
+        clf = ClinicalDecisionModel()
+    else:
+        raise ValueError("'" + method + "' is not a supported classification method")
+
+    logger.info('Preprocessing...')
+    X, Y = get_preprocessed_patients(data_size)
+    Y = change_ef_values_to_categories(Y)
+    logger.info(str(len(X)) + " patients in dataset")
+    
+    if not is_regression:
+        counts = {}
+        for y in Y:
+            if y not in counts:
+                counts[y] = 0
+            counts[y] += 1
+        logger.info("Summary:")
+        logger.info(counts)
+    
+    pipeline =  Pipeline([
+        ('feature_union', features),
+        ('Classifier', clf)
+    ])
+
+    #If using the ClinicalDecisionModel then no pipeline needed
+    if method in ['clinical', 'decision', 'cdm', 'clinical decision model']:
+        pipeline = clf
+
+    mse = []
+    r2 = []
+    precision = []
+    recall = []
+    f1 = []
+    accuracy = []
+    specificity = []    
+
+    for cv_run in range(num_cv_splits):
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
+        pipeline.fit(X_train, Y_train)
+        Y_predict = pipeline.predict(X_test)
+        if is_regression:
+            mse += [mean_squared_error(Y_test, Y_predict)]
+            r2 += [r2_score(Y_test, Y_predict)]
+            if show_progress:
+                logger.info("CV Split #" + str(cv_run + 1))
+                logger.info("\tMean Squared Error: ", mse[-1])
+                logger.info("\tR2 Score: ", r2[-1])
+        else:
+            precision += [precision_score(Y_test, Y_predict)]
+            recall += [recall_score(Y_test, Y_predict)]
+            f1 += [f1_score(Y_test, Y_predict)]
+            accuracy += [accuracy_score(Y_test, Y_predict)]
+            specificity += [_specificity_score(Y_test, Y_predict)]
+            if show_progress:
+                logger.info("CV Split #" + str(cv_run + 1))
+                logger.info("\tPrecision: " + str(precision[-1]))
+                logger.info("\tRecall: " + str(recall[-1]))
+                logger.info("\tF1 Score: " + str(f1[-1]))
+                logger.info("\tAccuracy: " + str(accuracy[-1]))
+                logger.info("\tSpecificity: " +  str(specificity[-1]))
+    logger.info("\n---------------------------------------")
+    logger.info("Overall (" + str(num_cv_splits) +  " cv cuts)")
+    if is_regression:
+        display_summary("Mean Squared Error", mse)
+        display_summary("R2 Score", r2)
+    else:
+        display_summary("Precision", precision)
+        display_summary("Recall", recall)
+        display_summary("F1 Score", f1)
+        display_summary("Accuracy", accuracy)
+        display_summary("Specificity", specificity)
+
+    try:
+        column_names = features.get_feature_names()
+        logger.info("Number of column names: " + str( len(column_names)))
+        feature_importances = clf.coef_[0] if not method in ['boosting', 'adaboost'] else clf.feature_importances_
+        Z = zip(column_names, feature_importances)
+        Z.sort(key = lambda x: abs(x[1]), reverse = True)
+        logger.info("100 biggest theta components of last CV run:")
+        for z in Z[:min(100, len(Z))]:
+            logger.info(str(z[1]) + "\t" + z[0])
+    except Exception as e:
+        logger.info("Feature name extraction failed")
+        logger.info(e)
+ 
 
 if __name__ == "__main__":
     main()
