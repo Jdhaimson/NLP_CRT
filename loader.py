@@ -1,6 +1,9 @@
 import json
 import os
 
+#patients_path = '/PHShome/ju601/crt/patients_10_2015/json/'
+patients_path = '/PHShome/ju601/crt/MGHpallcare/json/'
+
 # Deprecated
 #loads old annonomyzed data from JSON file into nested dictionary
 def get_old_data():
@@ -10,7 +13,6 @@ def get_old_data():
 
 # Gets a specific patient by their EMPI
 def get_patient_by_EMPI(empi):
-    patients_path = '/home/ubuntu/project/data/patients/'
     file_path = patients_path + empi + '.json'
     if os.path.isfile(file_path):
         with open(file_path, 'r') as f:
@@ -23,10 +25,11 @@ def get_data(patient_range=range(0,10)):
     if len(patient_range) > 50:
         raise ValueError("You've attempted to load too many patients into memory at once.")
 
-    patients_path = '/home/ubuntu/project/data/patients/'
     files = os.listdir(patients_path)
     # Sort by number order
-    files = sorted(files, key=lambda x: int(x.split('.json')[0].split('_')[2]))
+    # Changed for pal care
+    #files = sorted(files, key=lambda x: int(x.split('.json')[0].split('_')[2]))
+    files = sorted(files, key=lambda x: int(x.split('.json')[0]))
 
     # Get all patients in patient range
     patients = []

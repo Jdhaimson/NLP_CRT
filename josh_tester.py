@@ -14,13 +14,13 @@ from language_processing import parse_date
 
 def main():
     features = FeatureUnion([
-               # ('Dia', icd9 ),
-                #('EF', EFTransformer('all', 1, None)),
-                #('EF', EFTransformer('mean', 5, None)),
-                #('EF', EFTransformer('max', 5, None)),
-                #('LBBB', LBBBTransformer()),
+                ('Dia', icd9 ),
+                ('EF', EFTransformer('all', 1, None)),
+                ('EF', EFTransformer('mean', 5, None)),
+                ('EF', EFTransformer('max', 5, None)),
+                ('LBBB', LBBBTransformer()),
                 #('SR', SinusRhythmTransformer()),
-                ('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10, dbow_file='doc2vec_models/car_dbow.model'))
+                #('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10, dbow_file='doc2vec_models/car_dbow.model'))
                # ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
                 #('Car', FeaturePipeline([
                 #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
@@ -66,7 +66,7 @@ def main():
     if len(sys.argv) > 2 and unicode(sys.argv[2]).isnumeric():
         num_cv_splits = int(sys.argv[2])
     else:
-        num_cv_splits = 5
+        num_cv_splits = 2
 
     print "Data size: " + str(data_size)
     print "CV splits: " + str(num_cv_splits)
