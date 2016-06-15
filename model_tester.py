@@ -174,20 +174,18 @@ def execute_test(clf, data_size, num_cv_splits):
         logger.info("fitting " + str(len(X_train)) + " patients...")
         if type(clf.steps[-1][1]) == MixtureOfExperts:
             logger.info("alex debug, mixture of experts")
-            print "I'm an expert!"
             Y_real = np.zeros((len(Y_train), 2))
             for i in range(len(Y_train)):    
                 Y_real[i, Y_train[i]] = 1
             Y_train = Y_real
-        print Y_train
-        logger.info("alex debug, fitting")
+
+        logger.info("Fitting")
         clf.fit(X_train, Y_train)
-        logger.info("predicting")
+        logger.info("Predicting on test set")
         Y_predict = clf.predict(X_test)
-        logger.info("alex debug, done predicting")
+        logger.info("Predicting on train set")
         Y_train_predict = clf.predict(X_train)
-        print Y_test
-        print Y_predict
+
         precision += [precision_score(Y_test, Y_predict)]
         precision_train += [precision_score(Y_train, Y_train_predict)]
         recall += [recall_score(Y_test, Y_predict)]
