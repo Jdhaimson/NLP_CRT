@@ -126,6 +126,116 @@ def get_mu_std(values):
     std = (sum(sq_dev) / len(values))**.5
     return (mu, std)
 
+############################################
+# Inputs:
+#       clf: some model object with a fit(X,y) and predict(X) function
+#       data_size: num patients
+#       num_cv_splits: number of cv runs
+#       status_file: opened status file (status_file.write("hello") should work)
+# Outputs: a dictionary with the following
+#       precision_mean(_std)
+#       recall_mean(_std)
+#       f1_mean(_std)
+#       accuracy_mean(_std)
+#       important_features: a string of the most 100 important features 
+############################################
+
+def execute_test(clf, data_size, num_cv_splits): 
+    
+    logger.info('Preprocessing...')
+    X, Y = get_preprocessed_patients(data_size)
+    Y = change_ef_values_to_categories(Y)
+
+    logger.info(str(len(X)) + " patients in dataset")
+    
+    counts = {}
+    for y in Y:
+        if y not in counts:
+            counts[y] = 0
+        counts[y] += 1
+    logger.info("Summary:")
+    logger.info(counts)
+
+    precision = []
+    precision_train = []
+    recall = []
+    recall_train = []
+    f1 = []
+    specificity = []
+    f1_train = []
+    accuracy = []    
+    accuracy_train = []    
+
+    logger.info("Beginning runs")
+    
+    for cv_run in range(int(num_cv_splits)):
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
+        logger.info("fitting " + str(len(X_train)) + " patients...")
+        if type(clf.steps[-1][1]) == MixtureOfExperts:
+            logger.info("alex debug, mixture of experts")
+            Y_real = np.zeros((len(Y_train), 2))
+            for i in range(len(Y_train)):    
+                Y_real[i, Y_train[i]] = 1
+            Y_train = Y_real
+
+        logger.info("Fitting")
+        clf.fit(X_train, Y_train)
+        logger.info("Predicting on test set")
+        Y_predict = clf.predict(X_test)
+        logger.info("Predicting on train set")
+        Y_train_predict = clf.predict(X_train)
+
+        precision += [precision_score(Y_test, Y_predict)]
+        precision_train += [precision_score(Y_train, Y_train_predict)]
+        recall += [recall_score(Y_test, Y_predict)]
+        recall_train += [recall_score(Y_train, Y_train_predict)]
+        f1 += [f1_score(Y_test, Y_predict)]
+        f1_train += [f1_score(Y_train, Y_train_predict)]
+        accuracy += [accuracy_score(Y_test, Y_predict)]
+        specificity += [_specificity_score(Y_test, Y_predict)]
+        accuracy_train += [accuracy_score(Y_train, Y_train_predict)]
+
+        logger.info("CV Split #" + str(cv_run + 1))
+        logger.info("\tPrecision: " + str(precision[-1]))
+        logger.info("\tRecall: " + str(recall[-1]))
+        logger.info("\tF1 Score: " + str(f1[-1]))
+        logger.info("\tAccuracy: " + str(accuracy[-1]))
+        logger.info("\tSpecificity: " + str(specificity[-1]))
+        logger.info("\tTrain Precision: " + str(precision_train[-1]))
+        logger.info("\tTrain Recall: " + str(recall_train[-1]))
+        logger.info("\tTrain F1 Score: " + str(f1_train[-1]))
+        logger.info("\tTrain Accuracy: " + str(accuracy_train[-1]))
+
+    try:
+        features, model = (clf.steps[0][1], clf.steps[-1][1])
+        column_names = features.get_feature_names()
+        feature_importances = model.coef_[0] if not type(model) in [type(AdaBoostClassifier()), type(DecisionTreeClassifier)]  else model.feature_importances_
+        if len(column_names) == len(feature_importances):
+            Z = zip(column_names, feature_importances)
+            Z.sort(key = lambda x: abs(x[1]), reverse = True)
+            important_features = ""
+            for z in  Z[:min(100, len(Z))]:
+                important_features += str(z[1]) + ": " + str(z[0]) + "\\n" 
+    except Exception as e:
+        logger.error(e)
+        important_features = "error"
+
+    result = dict()
+    result['mode'] = max([1. * x/ sum(counts.values()) for x in counts.values()])
+    result['precision_mean'], result['precision_std'] = get_mu_std(precision)
+    result['recall_mean'], result['recall_std'] = get_mu_std(recall)
+    result['f1_mean'], result['f1_std'] = get_mu_std(f1)
+    result['accuracy_mean'], result['accuracy_std'] = get_mu_std(accuracy)
+    result['train_precision_mean'], result['train_precision_std'] = get_mu_std(precision_train)
+    result['train_recall_mean'], result['train_recall_std'] = get_mu_std(recall_train)
+    result['train_f1_mean'], result['train_f1_std'] = get_mu_std(f1_train)
+    result['train_accuracy_mean'], result['train_accuracy_std'] = get_mu_std(accuracy_train)
+    result['important_features'] = important_features
+     
+    return result    
+
+# DEPRECATED
 def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic regression', show_progress = True, model_args = dict()):
 
     if method in ['logistic regression', 'lr', 'logitr', 'logistic']:
@@ -224,118 +334,6 @@ def test_model(features, data_size = 25, num_cv_splits = 5, method = 'logistic r
         logger.info("Feature name extraction failed")
         logger.info(e)
  
-
-############################################
-# Josh: use this one
-# Inputs:
-#       clf: some model object with a fit(X,y) and predict(X) function
-#       data_size: num patients
-#       num_cv_splits: number of cv runs
-#       status_file: opened status file (status_file.write("hello") should work)
-# Outputs: a dictionary with the following
-#       precision_mean(_std)
-#       recall_mean(_std)
-#       f1_mean(_std)
-#       accuracy_mean(_std)
-#       important_features: a string of the most 100 important features 
-############################################
-
-def execute_test(clf, data_size, num_cv_splits): 
-    
-    logger.info('Preprocessing...')
-    X, Y = get_preprocessed_patients(data_size)
-    Y = change_ef_values_to_categories(Y)
-
-    logger.info(str(len(X)) + " patients in dataset")
-    
-    counts = {}
-    for y in Y:
-        if y not in counts:
-            counts[y] = 0
-        counts[y] += 1
-    logger.info("Summary:")
-    logger.info(counts)
-
-    precision = []
-    precision_train = []
-    recall = []
-    recall_train = []
-    f1 = []
-    specificity = []
-    f1_train = []
-    accuracy = []    
-    accuracy_train = []    
-
-    logger.info("Beginning runs")
-    
-    for cv_run in range(int(num_cv_splits)):
-
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .33)
-        logger.info("fitting " + str(len(X_train)) + " patients...")
-        if type(clf.steps[-1][1]) == MixtureOfExperts:
-            logger.info("alex debug, mixture of experts")
-            print "I'm an expert!"
-            Y_real = np.zeros((len(Y_train), 2))
-            for i in range(len(Y_train)):    
-                Y_real[i, Y_train[i]] = 1
-            Y_train = Y_real
-        print Y_train
-        logger.info("alex debug, fitting")
-        clf.fit(X_train, Y_train)
-        logger.info("predicting")
-        Y_predict = clf.predict(X_test)
-        logger.info("alex debug, done predicting")
-        Y_train_predict = clf.predict(X_train)
-        print Y_test
-        print Y_predict
-        precision += [precision_score(Y_test, Y_predict)]
-        precision_train += [precision_score(Y_train, Y_train_predict)]
-        recall += [recall_score(Y_test, Y_predict)]
-        recall_train += [recall_score(Y_train, Y_train_predict)]
-        f1 += [f1_score(Y_test, Y_predict)]
-        f1_train += [f1_score(Y_train, Y_train_predict)]
-        accuracy += [accuracy_score(Y_test, Y_predict)]
-        specificity += [_specificity_score(Y_test, Y_predict)]
-        accuracy_train += [accuracy_score(Y_train, Y_train_predict)]
-
-        logger.info("CV Split #" + str(cv_run + 1))
-        logger.info("\tPrecision: " + str(precision[-1]))
-        logger.info("\tRecall: " + str(recall[-1]))
-        logger.info("\tF1 Score: " + str(f1[-1]))
-        logger.info("\tAccuracy: " + str(accuracy[-1]))
-        logger.info("\tSpecificity: " + str(specificity[-1]))
-        logger.info("\tTrain Precision: " + str(precision_train[-1]))
-        logger.info("\tTrain Recall: " + str(recall_train[-1]))
-        logger.info("\tTrain F1 Score: " + str(f1_train[-1]))
-        logger.info("\tTrain Accuracy: " + str(accuracy_train[-1]))
-
-    try:
-        features, model = (clf.steps[0][1], clf.steps[-1][1])
-        column_names = features.get_feature_names()
-        feature_importances = model.coef_[0] if not type(model) in [type(AdaBoostClassifier()), type(DecisionTreeClassifier)]  else model.feature_importances_
-        if len(column_names) == len(feature_importances):
-            Z = zip(column_names, feature_importances)
-            Z.sort(key = lambda x: abs(x[1]), reverse = True)
-            important_features = ""
-            for z in  Z[:min(100, len(Z))]:
-                important_features += str(z[1]) + ": " + str(z[0]) + "\\n" 
-    except Exception as e:
-        logger.error(e)
-        important_features = "error"
-
-    result = dict()
-    result['mode'] = max([1. * x/ sum(counts.values()) for x in counts.values()])
-    result['precision_mean'], result['precision_std'] = get_mu_std(precision)
-    result['recall_mean'], result['recall_std'] = get_mu_std(recall)
-    result['f1_mean'], result['f1_std'] = get_mu_std(f1)
-    result['accuracy_mean'], result['accuracy_std'] = get_mu_std(accuracy)
-    result['train_precision_mean'], result['train_precision_std'] = get_mu_std(precision_train)
-    result['train_recall_mean'], result['train_recall_std'] = get_mu_std(recall_train)
-    result['train_f1_mean'], result['train_f1_std'] = get_mu_std(f1_train)
-    result['train_accuracy_mean'], result['train_accuracy_std'] = get_mu_std(accuracy_train)
-    result['important_features'] = important_features
-     
-    return result    
 
 if __name__ == "__main__":
     main()

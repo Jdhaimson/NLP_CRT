@@ -1,8 +1,10 @@
+import logging
 import sys
 import cProfile
 
 from model_tester import FeaturePipeline, test_model
 from sklearn.pipeline import FeatureUnion
+from sklearn.feature_extraction.text import CountVectorizer
 
 from baseline_transformer import GetConcatenatedNotesTransformer, GetLatestNotesTransformer, GetEncountersFeaturesTransformer, GetLabsCountsDictTransformer, GetLabsLowCountsDictTransformer, GetLabsHighCountsDictTransformer, GetLabsLatestHighDictTransformer, GetLabsLatestLowDictTransformer, GetLabsHistoryDictTransformer
 from extract_data import get_doc_rel_dates, get_operation_date, get_ef_values
@@ -22,6 +24,10 @@ def main():
                 #('SR', SinusRhythmTransformer()),
                 #('Car_Doc2Vec', Doc2Vec_Note_Transformer('Car', 'doc2vec_models/car_1.model', 10, dbow_file='doc2vec_models/car_dbow.model'))
                # ('QRS', QRSTransformer('all', 1, None)),#Bugs with QRS
+                ('car_ngram', FeaturePipeline([
+                    ('notes_car', GetConcatenatedNotesTransformer(note_type='Car',look_back_months=12)),
+                    ('ngram_car', CountVectorizer(ngram_range=(2, 2), min_df=.05))
+                ]))
                 #('Car', FeaturePipeline([
                 #    ('notes_transformer_car', GetConcatenatedNotesTransformer('Car')),
                 #    ('tfidf', car_tfidf)
@@ -68,8 +74,6 @@ def main():
     else:
         num_cv_splits = 2
 
-    print "Data size: " + str(data_size)
-    print "CV splits: " + str(num_cv_splits)
     method = 'lr'
     #method = 'svm'
 
@@ -78,4 +82,15 @@ def main():
     test_model(features, data_size, num_cv_splits, method, show_progress)
 
 if __name__ == '__main__':
+
+    # Configure logging
+    logger = logging.getLogger("DaemonLog")
+    logger.setLevel(logging.INFO)
+
+    out = logging.StreamHandler(sys.stdout)
+    out.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    out.setFormatter(formatter)
+
+    logger.addHandler(out)
     main()
