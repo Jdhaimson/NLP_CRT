@@ -24,7 +24,7 @@ class SexTransformer(TransformerMixin):
     def get_sex(self, empi):
         person = loader.get_patient_by_EMPI(empi)
         if 'Sex' in person:
-            sex = person['Sex']
+            sex = person['Gender']
             return int(sex == 'Female\r\n')
         else:
             return 0

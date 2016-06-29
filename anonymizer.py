@@ -101,7 +101,7 @@ def get_patient_dem_info():
             patient = patients[empi]
             
             patient['Vital_status'] = cols[13].strip()
-            patient['Date_of_Death'] = cols[14].strip()
+            patient['Date_Of_Death'] = cols[14].strip()
         except:
             print('Error in dem build for row:')
             print row

@@ -1,8 +1,8 @@
 import json
 import os
 
-#patients_path = '/PHShome/ju601/crt/patients_10_2015/json/'
-patients_path = '/PHShome/ju601/crt/MGHpallcare/json/'
+patients_path = '/PHShome/ju601/crt/data/json/'
+#patients_path = '/PHShome/ju601/crt/data/MGHpallcare/json/'
 
 # Deprecated
 #loads old annonomyzed data from JSON file into nested dictionary
@@ -37,8 +37,12 @@ def get_data(patient_range=range(0,10)):
         if i < len(files):
             file_path = patients_path + files[i]
             with open(file_path, 'r') as f:
-                patient = json.load(f)
-                patients.append(patient)
+                try:
+                    patient = json.load(f)
+                    patients.append(patient)
+                except Exception as e:
+                    print "Error loading file: " + file_path
+                    raise e
     return patients
 
 def get_dummy_non_anonymized_patient():

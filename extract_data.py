@@ -4,40 +4,45 @@ import datetime
 from datetime import timedelta
 
 def get_operation_date(patient_data):
-    status = patient_data['Procedure']['Implant Status']
-    match = parse_m_d_y(status)
-    if not match:
-       match = parse_m_y(status)
-    oneMo = parse_m_d_y(patient_data['Procedure']['1 Mo. Appt'])
-    threeMo = parse_m_d_y(patient_data['Procedure']['3 Mo. Appt'])
-    
-    #checks if match makes sentence given the 1 month and 3 month checkups
-    if match:
-        if oneMo and threeMo:    
-            lower_range = max(threeMo - timedelta(days = 30*24), oneMo - timedelta(days = 30*6))
-            upper_range = min(threeMo - timedelta(days = 30*2), oneMo) 
-        elif not oneMo and threeMo:
-            lower_range = threeMo - timedelta(days = 30*24)
-            upper_range = threeMo - timedelta(days = 30*2) 
-        elif oneMo and not threeMo:
-            lower_range = oneMo - timedelta(days = 30*6)
-            upper_range = oneMo
-        else:
-            lower_range = datetime.date(datetime.MINYEAR, 1, 1)
-            upper_range = datetime.date(datetime.MAXYEAR, 1, 1)
-        if lower_range > match or upper_range < match:
-            match = None
+    if patient_data['Procedure']:
+        status = patient_data['Procedure']['Implant Status']
+        match = parse_m_d_y(status)
+        '''
+        if not match:
+           match = parse_m_y(status)
+           oneMo = parse_m_d_y(patient_data['Procedure']['1 Mo. Appt'])
+           threeMo = parse_m_d_y(patient_data['Procedure']['3 Mo. Appt'])
+        
+        #checks if match makes sentence given the 1 month and 3 month checkups
+        if match:
+            if oneMo and threeMo:    
+                lower_range = max(threeMo - timedelta(days = 30*24), oneMo - timedelta(days = 30*6))
+                upper_range = min(threeMo - timedelta(days = 30*2), oneMo) 
+            elif not oneMo and threeMo:
+                lower_range = threeMo - timedelta(days = 30*24)
+                upper_range = threeMo - timedelta(days = 30*2) 
+            elif oneMo and not threeMo:
+                lower_range = oneMo - timedelta(days = 30*6)
+                upper_range = oneMo
+            else:
+                lower_range = datetime.date(datetime.MINYEAR, 1, 1)
+                upper_range = datetime.date(datetime.MAXYEAR, 1, 1)
+            if lower_range > match or upper_range < match:
+                match = None
 
-    #if no good date found, subtrack from one month and three month checkups
-    if not match:
-        if oneMo:
-            match = oneMo - timedelta(days = 30)
-        elif threeMo:
-            match = threeMo - timedelta(days = 90)
-        else:
-            return None
-    
-    return match
+        #if no good date found, subtrack from one month and three month checkups
+        if not match:
+            if oneMo:
+                match = oneMo - timedelta(days = 30)
+            elif threeMo:
+                match = threeMo - timedelta(days = 90)
+            else:
+                return None
+        
+        '''
+        return match
+    else:
+        return None
 
 
 def get_doc_rel_dates(patient_data, dates = None, count_elements = True):
@@ -112,8 +117,8 @@ ADDED BY JOSH TO VALIDATE
 '''
 def get_ef_value_notes(patient_data, car_only = True):
 
-    keywords = ['(?:ef|ejection fraction)\s*(?:of|is)?[:\s]*([0-9]*\.?[0-9]*)\s*%']
     keywords = ['ef[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%', 'ejection fraction[{of}{0, 1}: \t]*([0-9]*\.{0,1}[0-9]*)[ ]*%']
+    keywords = ['(?:ef|ejection fraction)\s*(?:of|is)?[:\s]*([0-9]*\.?[0-9]*)\s*%']
     results = []
     procedure_date = get_operation_date(patient_data)
     if procedure_date == None: #throw out patient if no procedure date
@@ -198,7 +203,7 @@ def is_note_doc(doc_type):
     return doc_type.upper() in ["LNO", "CAR", "RAD", "PAT", "OPN", "DIS", "MIC", "PUL"]
 
 def get_date_key(doc_type):
-    keys = {u'Enc': u'Discharge_Date', u'Pat': u'date', u'Mic': u'date', u'Pul': u'date', u'Med': u'Medication_Date', u'Lab': u'Seq_Date_Time', u'Phy': u'Date', u'Opn': u'date', u'Lme': u'LMR_Medication_Date_Time', u'Rdt': u'Date', u'Lvs': u'LMR_Vital_Date_Time', u'Trn': u'Transaction_Date_Time', u'Car': u'date', u'Lhm': u'LMR_Health_Maintenance_Date_Time', u'Dia': u'Date', u'Lpr': u'LMR_Problem_Date', u'Dis': u'date', u'Rad': u'date', u'Prc': u'Date', u'Lno': u'date'}
+    keys = {u'Enc': u'Discharge_Date', u'Pat': u'date', u'Mic': u'date', u'Pul': u'date', u'Med': u'Medication_Date', u'Lab': u'Seq_Date_Time', u'Phy': u'Date', u'Opn': u'date', u'Lme': u'LMR_Medication_Date_Time', u'Rdt': u'Date', u'Lvs': u'LMR_Vital_Date_Time', u'Trn': u'Transaction_Date_Time', u'Car': u'Report_Date_Time', u'Lhm': u'LMR_Health_Maintenance_Date_Time', u'Dia': u'Date', u'Lpr': u'LMR_Problem_Date', u'Dis': u'date', u'Rad': u'Report_Date_Time', u'Prc': u'Date', u'Lno': u'LMRNote_Date'}
     if doc_type in keys:
         return keys[doc_type]
     else:

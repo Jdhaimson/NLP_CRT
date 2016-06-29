@@ -90,16 +90,26 @@ def get_ef_delta(patient_data):
         return (None, None, None, None, None)
 
 # Collect statistics
+has_procedure = 0
+has_baseline = 0 
+no_baseline = []
+has_followup = 0
 stats = defaultdict(list) 
-for i in range(906):
+total = 1056
+for i in range(total - 1):
     p = get_data([i])[0]
-    print p['NEW_EMPI']
+    print str(i) + " - " + p['EMPI']
 
     procedure_date = get_operation_date(p)
     if procedure_date:
+        has_procedure += 1
         (ef_delta, baseline_ef, followup_ef, baseline_date, followup_date) = get_ef_delta(p)    
-        if baseline_ef:
-            if followup_date > 100 and followup_date < 500 and baseline_date > -3:
+        if not baseline_ef:
+            no_baseline.append(p['EMPI'])
+        if baseline_ef and baseline_date > -60:
+            has_baseline += 1
+            if followup_date > 100 and followup_date < 500:
+                has_followup += 1
                 stats['procedure_date'].append(procedure_date)
                 stats['baseline_days'].append(baseline_date)
                 stats['followup_days'].append(followup_date)
@@ -107,11 +117,11 @@ for i in range(906):
                 stats['lvef_followup'].append(followup_ef)
                 stats['lvef_change'].append(ef_delta)
 
-                stats['sex'].append(p['Sex'])
+                stats['sex'].append(p['Gender'])
                 stats['n_enc'].append(len(filter_out_post_procedure(p['Enc'], procedure_date, 'Admit_Date')))
 
-                if p['Date_of_Death']:
-                    death_date = parse_m_d_y(p['Date_of_Death'])
+                if p['Date_Of_Death']:
+                    death_date = parse_m_d_y(p['Date_Of_Death'])
                     stats['died_in_year'].append((death_date - procedure_date) < timedelta(365))
                 else:
                     stats['died_in_year'].append(False)
@@ -146,11 +156,17 @@ for i in range(906):
                 stats['baseline_sodium'].append(get_baseline_lab_value(p, ['Plasma Sodium'], procedure_date))
                 stats['baseline_hgb'].append(get_baseline_lab_value(p, ['HGB'], procedure_date))
 
+print "Total: " + str(total)
+print "Has Procedure: " + str(has_procedure)
+print "Has Baseline: " + str(has_baseline)
+print "Has Follow up: " + str(has_followup)
+print "No Baseline:"
+print no_baseline
 
 print "Demographics:"
 print "Num: " + str(len(stats['procedure_date']))
 sex = Counter(stats['sex'])
-print "Male: " + str(sex["Male\r\n"]/float(sum(sex.values())))
+print "Male: " + str(sex["Male"]/float(sum(sex.values())))
 
 print "\nMGH Care:"
 iqr = np.subtract(*np.percentile(stats['n_enc'], [75, 25]))

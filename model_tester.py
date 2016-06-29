@@ -28,7 +28,7 @@ def _specificity_score(y,y_hat):
     return float(mc[0,0])/np.sum(mc[0,:])
 
 def get_preprocessed_patients(sample_size = 25, rebuild_cache=False):
-    cache_file = '/home/ubuntu/project/data/patient_cache.json'
+    cache_file = '/PHShome/ju601/crt/data/patient_cache.json'
     
     # Build cache
     if not os.path.isfile(cache_file) or rebuild_cache:
