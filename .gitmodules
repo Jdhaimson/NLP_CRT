@@ -1,0 +1,3 @@
+[submodule "umls"]
+	path = umls
+	url = https://github.com/Jdhaimson/py-umls
