@@ -21,6 +21,15 @@ def get_patient_by_EMPI(empi):
     else:
         raise ValueError("Patient with EMPI: " + empi + " does not exist")
 
+def save(patient):
+    file_path = patients_path + patient['EMPI'] + '.json'
+    if os.path.isfile(file_path):
+        with open(file_path, 'w') as f:
+            json.dump(patient, f)
+        return patient
+    else:
+        raise ValueError("Patient with EMPI: " + empi + " does not exist")
+
 def get_data(patient_range=range(0,10)):
     if len(patient_range) > 50:
         raise ValueError("You've attempted to load too many patients into memory at once.")
